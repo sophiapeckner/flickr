@@ -1,0 +1,9 @@
+@import url('@fontsource/inter/index.css');    html {
+      --lumo-primary-color: rgb(101, 85, 143);
+      --lumo-primary-color-50pct: rgba(101, 85, 143, 0.5);
+      --lumo-primary-color-10pct: rgba(101, 85, 143, 0.1);
+      --lumo-primary-text-color: rgb(101, 85, 143);
+      --lumo-body-text-color: rgb(74, 68, 89);
+--lumo-font-family: Inter;
+
+    }
