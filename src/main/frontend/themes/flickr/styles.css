@@ -1,4 +1,5 @@
-@import url('@fontsource/inter/index.css');    html {
+@import url('@fontsource/inter/index.css');
+html {
       --lumo-primary-color: rgb(101, 85, 143);
       --lumo-primary-color-50pct: rgba(101, 85, 143, 0.5);
       --lumo-primary-color-10pct: rgba(101, 85, 143, 0.1);
@@ -6,4 +7,100 @@
       --lumo-body-text-color: rgb(74, 68, 89);
 --lumo-font-family: Inter;
 
-    }
+}
+
+label {
+  margin-left: 15px;
+}
+
+h2 {
+  color: #62598b;
+  text-align: center;
+  font-size: 37px;
+  margin-top: 15px;
+}
+
+form {
+  margin: auto;
+  width: 80%;
+  border: 1px solid grey;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sign-up-form label {
+  margin-left: 15px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 90%;
+  height: 30px;
+  margin: auto;
+  border: 1px solid black;
+  margin-bottom: 20px;
+  font-size: 17px;
+  padding-left: 10px;
+}
+
+.input {
+  margin-bottom: 10px;
+}
+
+label {
+  font-size: 25px;
+}
+
+.redirect {
+  display: inline-block;
+  font-size: 20px;
+  margin: auto;
+}
+
+.sign-in,
+.sign-up {
+  width: 90%;
+  height: 30px;
+  margin: auto;
+  border: 1px solid black;
+  background-color: #62598b;
+  color: white;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 17px;
+  padding-left: 8px;
+}
+
+.sign-up {
+  margin-left: 15px;
+}
+
+.guest-btn {
+  width: 80%;
+  height: 30px;
+  margin: auto;
+  border: 1px solid black;
+  background-color: #62598b;
+  color: white;
+  text-align: center;
+  margin: 20px 40px;
+  font-size: 17px;
+}
+
+.guest-btn,
+.sign-in,
+.sign-up,
+input[type="text"],
+input[type="password"] {
+  border-radius: 8px;
+  height: 35px;
+}
+
+.redirect a {
+  margin-right: 25px;
+}
+
+img {
+  width: 100%;
+}
