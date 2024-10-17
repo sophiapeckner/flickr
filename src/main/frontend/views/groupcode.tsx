@@ -5,9 +5,25 @@ export const config: ViewConfig = { menu: { order: 3, icon: 'line-awesome/svg/fi
 export default function GroupCodeView() {
   return (
     <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-      <img style={{ width: '200px' }} src="images/empty-plant.png" />
-      <h2>This place intentionally left empty</h2>
-      <p>It’s a place where you can grow your own UI 🤗</p>
+      <div>
+        <a href="/login">
+          <button className='back-button'>X</button>
+        </a>
+        <h2>flickr</h2>
+      </div>
+		  
+		  <div>
+        <label style={{marginLeft: 10, fontSize: 22}}>Enter Group Code:</label>
+      </div>
+
+		  <div style={{marginLeft: 10}}><input></input></div>
+
+      {/* go to group landing page */}
+		  <div>
+        <a href="/">
+          <button className="join-group">Join</button>
+        </a>
+      </div>
     </div>
   );
 }
