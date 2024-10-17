@@ -5,8 +5,8 @@ export const config: ViewConfig = { menu: { order: 0, icon: 'line-awesome/svg/fi
 export default function LogInView() {
   return (
     <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
+        <img style={{ width: '100%' }} src="images/movie_reel.png" />
         <form className="login-form">
-            <img style={{ width: '100%' }} src="images/movie_reel.png" />
             <div className="input">
                 <label>Email</label>
                 <br />
@@ -35,7 +35,7 @@ export default function LogInView() {
 
             <div className="redirect">
                 <a href="/forgotPassword">Forgot Password</a>
-                <a href="/sign-up">Sign Up</a>
+                <a href="/signup">Sign Up</a>
             </div>
         </form>
         <a href="/join-group">
