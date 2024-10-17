@@ -136,3 +136,44 @@ img {
   margin-top: 20px;
   font-size: 18px;
 }
+
+/* StartAuth */
+.page-title {
+  color: #62598b;
+  text-align: center;
+  font-size: 37px;
+  margin-top: 50px;
+}
+
+.SignedInStartPage {
+  margin: auto;
+  width: 80%;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-link {
+  float: right;
+  margin-right: 20px;
+  margin-top: 15px;
+}
+
+.join-group-btn2,
+.create-group-btn {
+  height: 75px;
+  width: 200px;
+  background-color: #62598b;
+  color: white;
+  font-size: 17px;
+  border-radius: 8px;
+}
+
+.join-group-btn2 {
+  margin-top: 100px;
+}
+
+.create-group-btn {
+  margin-top: 60px;
+}
