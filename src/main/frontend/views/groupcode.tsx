@@ -9,7 +9,7 @@ export default function GroupCodeView() {
   return (
     <>
       <div className="back-gc">
-        <a href="/login">
+        <a href="/">
           <button className="back-button">X</button>
         </a>
       </div>
@@ -27,7 +27,7 @@ export default function GroupCodeView() {
 
         {/* go to group landing page */}
         <div>
-          <a className="joina" href="/group-landing">
+          <a className="joina" href="/grouplanding">
             <button className="join-group">join</button>
           </a>
         </div>
