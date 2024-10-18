@@ -1,11 +1,14 @@
-import { ViewConfig } from '@vaadin/hilla-file-router/types.js';
+import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 
-export const config: ViewConfig = { menu: { order: 2, icon: 'line-awesome/svg/file.svg' }, title: 'Start Auth' };
+export const config: ViewConfig = {
+  menu: { order: 2, icon: "line-awesome/svg/file.svg" },
+  title: "Start Auth",
+};
 
 export default function StartView() {
   return (
     <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-      <a className="profile-link" href="/profile">
+      <a className="profile-link" href="/userprofile">
         <img src="images/profile.png" />
       </a>
       <div className="SignedInStartPage">

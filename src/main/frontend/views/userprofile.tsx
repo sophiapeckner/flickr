@@ -5,7 +5,7 @@ export const config: ViewConfig = { menu: { order: 8, icon: 'line-awesome/svg/fi
 export default function UserProfileView() {
   return (
     <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-      <a href="/signed-in-start-page">
+      <a href="/start_auth">
         <button className="back-button">
           X
         </button>

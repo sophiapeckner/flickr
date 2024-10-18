@@ -32,16 +32,16 @@ export default function LogInView() {
           />
         </div>
 
-        <a href="/">
+        <a href="/start_auth">
           <input className="sign-in" value="Sign In" />
         </a>
 
         <div className="redirect">
-          <a href="/forgotPassword">Forgot Password</a>
+          <a href="/signup">Forgot Password</a>
           <a href="/signup">Sign Up</a>
         </div>
       </form>
-      <a href="/join-group">
+      <a href="/groupCode">
         <button className="guest-btn">Continue as Guest</button>
       </a>
     </div>

@@ -1,15 +1,16 @@
-import { ViewConfig } from '@vaadin/hilla-file-router/types.js';
+import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 
-export const config: ViewConfig = { menu: { order: 4, icon: 'line-awesome/svg/file.svg' }, title: 'Group Landing' };
+export const config: ViewConfig = {
+  menu: { order: 4, icon: "line-awesome/svg/file.svg" },
+  title: "Group Landing",
+};
 
 export default function GroupLandingView() {
   return (
     <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
       <div>
         <a href="/">
-          <button className="back-button">
-            X
-          </button>
+          <button className="back-button">X</button>
         </a>
         <a href="/userprofile">
           <img className="profile-img" src="images/profile.png" />
@@ -32,7 +33,7 @@ export default function GroupLandingView() {
 
       <div className="session-div">
         <button className="start-session-btn">
-          <a className="start-session-link" href="/movie-selection">
+          <a className="start-session-link" href="/swipe">
             Start Session
           </a>
         </button>

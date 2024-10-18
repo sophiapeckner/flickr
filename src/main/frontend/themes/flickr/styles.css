@@ -69,6 +69,7 @@ label {
   margin-bottom: 20px;
   font-size: 17px;
   padding-left: 8px;
+  cursor: pointer;
 }
 
 .sign-up {

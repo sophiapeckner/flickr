@@ -9,10 +9,10 @@ export default function MovieListView() {
   return (
     <div>
       <div>
-        <a href="/start-auth">
+        <a href="/start_auth">
           <button className="back-button">X</button>
         </a>
-        <a href="/user-profile">
+        <a href="/userprofile">
           <img className="profile-img" src="images/profile.png" />
         </a>
       </div>

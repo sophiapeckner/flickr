@@ -1,6 +1,9 @@
-import { ViewConfig } from '@vaadin/hilla-file-router/types.js';
+import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 
-export const config: ViewConfig = { menu: { order: 5, icon: 'line-awesome/svg/file.svg' }, title: 'Pick Genre' };
+export const config: ViewConfig = {
+  menu: { order: 5, icon: "line-awesome/svg/file.svg" },
+  title: "Pick Genre",
+};
 
 export default function PickGenreView() {
   return (
@@ -21,7 +24,7 @@ export default function PickGenreView() {
         </select>
         <br />
         <br />
-        <a href="/members">
+        <a href="/swipe">
           <input className="ready-btn" value="Ready" />
         </a>
       </form>
