@@ -1,12 +1,15 @@
-import { ViewConfig } from '@vaadin/hilla-file-router/types.js';
+import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 
-export const config: ViewConfig = { menu: { order: 7, icon: 'line-awesome/svg/file.svg' }, title: 'Movie List' };
+export const config: ViewConfig = {
+  menu: { order: 7, icon: "line-awesome/svg/file.svg" },
+  title: "Movie List",
+};
 
 export default function MovieListView() {
   return (
     <div>
       <div>
-        <a href="/">
+        <a href="/start-auth">
           <button className="back-button">X</button>
         </a>
         <a href="/user-profile">
@@ -32,11 +35,11 @@ export default function MovieListView() {
       </div>
 
       <div className="bottom-nav">
-        <a href="/movie-selection">
+        <a href="/swipe">
           <img src="images/pic.png" alt="pic" />
         </a>
 
-        <a href="/saved-movies">
+        <a href="/movielist">
           <img src="images/liked.png" alt="liked" />
         </a>
       </div>

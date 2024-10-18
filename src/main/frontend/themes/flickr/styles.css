@@ -1,12 +1,11 @@
-@import url('@fontsource/inter/index.css');
+@import url("@fontsource/inter/index.css");
 html {
-      --lumo-primary-color: rgb(101, 85, 143);
-      --lumo-primary-color-50pct: rgba(101, 85, 143, 0.5);
-      --lumo-primary-color-10pct: rgba(101, 85, 143, 0.1);
-      --lumo-primary-text-color: rgb(101, 85, 143);
-      --lumo-body-text-color: rgb(74, 68, 89);
---lumo-font-family: Inter;
-
+  --lumo-primary-color: rgb(101, 85, 143);
+  --lumo-primary-color-50pct: rgba(101, 85, 143, 0.5);
+  --lumo-primary-color-10pct: rgba(101, 85, 143, 0.1);
+  --lumo-primary-text-color: rgb(101, 85, 143);
+  --lumo-body-text-color: rgb(74, 68, 89);
+  --lumo-font-family: Inter;
 }
 
 label {
@@ -179,33 +178,33 @@ img {
 }
 
 h2 {
-	color: #62598b;
-	text-align: center;
-	font-size: 37px;
-	margin-top: 15px;
-  }
+  color: #62598b;
+  text-align: center;
+  font-size: 37px;
+  margin-top: 15px;
+}
 
 .join-group {
-	width: 150px;
-	height: 30px;
-	margin-right: auto;
-	margin-left: auto;
-	border: 1px solid black;
-	background-color: #62598b;
-	color: white;
-	text-align: center;
-	margin-top: 20px;
-	font-size: 17px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	border-radius: 8px;
-  }
+  width: 150px;
+  height: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  border: 1px solid black;
+  background-color: #62598b;
+  color: white;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
 
 .back-button {
-	border: 0px;
-	font-size: 20px;
+  border: 0px;
+  font-size: 20px;
 }
 
 .profile-img {
@@ -328,6 +327,9 @@ h2 {
 .back-button {
   border: 0px;
   font-size: 20px;
+  background-color: white;
+  float: right;
+  margin-right: 15px;
 }
 
 .movie-profile {
@@ -343,7 +345,7 @@ h2 {
 }
 
 .movie1 {
-  margin-top: 30px;
+  margin-top: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -371,11 +373,12 @@ h2 {
 }
 
 .bottom-nav {
-  width: 100%;
+  width: 100vw;
   background-color: #62598b;
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-evenly;
   margin-top: 25px;
   position: absolute;
   bottom: 0px;
@@ -385,12 +388,21 @@ h2 {
 .bottom-nav a {
   background-color: #62598b;
   color: #62598b;
-  width: 70%;
+  width: 45%;
   margin-left: 15px;
 }
 
+@media only screen and (min-width: 430px) {
+  .bottom-nav img,
+  .bottom-nav a {
+    width: auto;
+    margin-left: 15px;
+    height: 70px;
+  }
+}
+
 .movie-example1 {
-  width: 50%;
+  width: 35%;
   height: auto;
 }
 
