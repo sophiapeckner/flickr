@@ -206,6 +206,7 @@ h2 {
 .back-button {
   border: 0px;
   font-size: 20px;
+  float: right;
 }
 
 .profile-img {
@@ -424,9 +425,18 @@ h2 {
   margin-bottom: 30px;
 }
 
+.profile-link-img,
+.login-link {
+  float: right;
+}
+
+.login-link {
+  margin: 15px;
+}
+
 .movies-selected {
   background-color: #e5e0eb;
-  margin-top: 40px;
+  margin-top: 50px;
   margin-bottom: 280px;
   padding-bottom: 900px;
 }

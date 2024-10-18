@@ -7,30 +7,31 @@ export const config: ViewConfig = {
 
 export default function GroupCodeView() {
   return (
-    <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-      <div>
+    <>
+      <div className="back-gc">
         <a href="/login">
           <button className="back-button">X</button>
         </a>
-        <h2>flickr</h2>
       </div>
+      <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
+        <div>
+          <h2>flickr</h2>
+        </div>
 
-      <div>
-        <label style={{ marginLeft: 10, fontSize: 22 }}>
-          Enter Group Code:
-        </label>
-      </div>
+        <div className="enter-group-input">
+          <label style={{ marginLeft: 10, fontSize: 22 }}>
+            Enter Group Code:
+          </label>
+          <input placeholder="XXXXXX" type="text" />
+        </div>
 
-      <div style={{ marginLeft: 10 }}>
-        <input></input>
+        {/* go to group landing page */}
+        <div>
+          <a className="joina" href="/group-landing">
+            <button className="join-group">join</button>
+          </a>
+        </div>
       </div>
-
-      {/* go to group landing page */}
-      <div>
-        <a href="/genre">
-          <button className="join-group">Join</button>
-        </a>
-      </div>
-    </div>
+    </>
   );
 }

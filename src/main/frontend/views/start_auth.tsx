@@ -7,19 +7,21 @@ export const config: ViewConfig = {
 
 export default function StartView() {
   return (
-    <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
+    <>
       <a className="profile-link" href="/userprofile">
-        <img src="images/profile.png" />
+        <img className="profile-link-img" src="images/profile.png" />
       </a>
-      <div className="SignedInStartPage">
-        <h2 className="page-title">flickr</h2>
-        <a href="/groupcode">
-          <button className="join-group-btn2">Join Group</button>
-        </a>
-        <a href="/grouplanding">
-          <button className="create-group-btn">Create Group</button>
-        </a>
+      <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
+        <div className="SignedInStartPage">
+          <h2 className="page-title">flickr</h2>
+          <a href="/groupcode">
+            <button className="join-group-btn2">Join Group</button>
+          </a>
+          <a href="/grouplanding">
+            <button className="create-group-btn">Create Group</button>
+          </a>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
