@@ -279,3 +279,130 @@ h2 {
   padding: 20px;
   font-size: 20px;
 }
+
+.restrict-form {
+  margin: auto;
+  width: 80%;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.ready-btn {
+  width: 90%;
+  height: 30px;
+  margin: auto;
+  border: 1px solid black;
+  background-color: #62598b;
+  color: white;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 17px;
+  padding-left: 8px;
+}
+
+h2 {
+  color: #62598b;
+  text-align: center;
+  font-size: 37px;
+  margin-top: 15px;
+}
+
+.join-group {
+  width: 150px;
+  height: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  border: 1px solid black;
+  background-color: #62598b;
+  color: white;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.back-button {
+  border: 0px;
+  font-size: 20px;
+}
+
+.movie-profile {
+  background-color: #62598baa;
+  width: 150px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.movie1 {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.movie1 label {
+  font-size: 15px;
+  background-color: #62598b;
+  color: white;
+}
+
+.movie1-info {
+  background-color: #62598b;
+  width: 50%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bottom-nav {
+  width: 100%;
+  background-color: #62598b;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 25px;
+  position: absolute;
+  bottom: 0px;
+}
+
+.bottom-nav img,
+.bottom-nav a {
+  background-color: #62598b;
+  color: #62598b;
+  width: 70%;
+  margin-left: 15px;
+}
+
+.movie-example1 {
+  width: 50%;
+  height: auto;
+}
+
+.choices {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.choices img {
+  width: 10%;
+}

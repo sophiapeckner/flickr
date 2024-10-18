@@ -5,9 +5,37 @@ export const config: ViewConfig = { menu: { order: 6, icon: 'line-awesome/svg/fi
 export default function SwipeView() {
   return (
     <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-      <img style={{ width: '200px' }} src="images/empty-plant.png" />
-      <h2>This place intentionally left empty</h2>
-      <p>It’s a place where you can grow your own UI 🤗</p>
+      <div>
+        <a href="/">
+          <button className="back-button">
+            X
+          </button>
+        </a>
+        <h2>flickr</h2>
+      </div>
+
+      <div className="movie1">
+        <img className="movie-example1" src="images/movie.jpg" alt="" />
+        <div className="movie1-info">
+          <label>Title: Talladega Nights </label>
+          <label>Year: 2006 </label>
+        </div>
+      </div>
+
+      <div className="choices">
+        <img src="images/garbage.png" alt="dislike button" />
+        <img src="images/like.png" alt="like button" />
+      </div>
+
+      <div className="bottom-nav">
+        <a href="/movie-selection">
+          <img src="images/pic.png" alt="pic" />
+        </a>
+
+        <a href="/saved-movies">
+          <img src="images/liked.png" alt="liked" />
+        </a>
+      </div>
     </div>
   );
 }
