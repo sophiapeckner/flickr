@@ -406,3 +406,30 @@ h2 {
 .choices img {
   width: 10%;
 }
+
+.profile-link {
+  margin-bottom: 30px;
+}
+
+.movies-selected {
+  background-color: #e5e0eb;
+  margin-top: 40px;
+  margin-bottom: 280px;
+  padding-bottom: 900px;
+}
+
+.movies-selected img {
+  width: 10%;
+  background-color: #62598b;
+  margin-right: 20px;
+}
+
+.movie {
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+}
+
+.movie h4 {
+  margin-top: 10px;
+}

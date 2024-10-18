@@ -4,10 +4,42 @@ export const config: ViewConfig = { menu: { order: 7, icon: 'line-awesome/svg/fi
 
 export default function MovieListView() {
   return (
-    <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-      <img style={{ width: '200px' }} src="images/empty-plant.png" />
-      <h2>This place intentionally left empty</h2>
-      <p>It’s a place where you can grow your own UI 🤗</p>
+    <div>
+      <div>
+        <a href="/">
+          <button className="back-button">X</button>
+        </a>
+        <a href="/user-profile">
+          <img className="profile-img" src="images/profile.png" />
+        </a>
+      </div>
+
+      <div className="movies-selected">
+        <div className="movie">
+          <img className="movie-img" src="images/movie.jpg" alt="" />
+          <div>
+            <h4>Movie Number 1</h4>
+            <h5>Votes: 9</h5>
+          </div>
+        </div>
+        <div className="movie">
+          <img className="movie-img" src="images/movie.jpg" alt="" />
+          <div>
+            <h4>Movie Number 2</h4>
+            <h5>Votes: 9</h5>
+          </div>
+        </div>
+      </div>
+
+      <div className="bottom-nav">
+        <a href="/movie-selection">
+          <img src="images/pic.png" alt="pic" />
+        </a>
+
+        <a href="/saved-movies">
+          <img src="images/liked.png" alt="liked" />
+        </a>
+      </div>
     </div>
   );
 }
