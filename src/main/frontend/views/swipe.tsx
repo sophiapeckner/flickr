@@ -1,4 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
+import { Test } from "Frontend/generated/endpoints.ts";
+import { useState, useEffect } from "react";
 
 export const config: ViewConfig = {
   menu: { order: 6, icon: "line-awesome/svg/file.svg" },
@@ -6,6 +8,8 @@ export const config: ViewConfig = {
 };
 
 export default function SwipeView() {
+
+
   return (
     <>
       <a href="/start_auth">
