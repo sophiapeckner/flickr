@@ -26,11 +26,13 @@
     "@vaadin/vaadin-usage-statistics": "2.1.3",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
+    "dotenv": "^16.4.5",
     "lit": "3.2.1",
     "proj4": "2.12.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router-dom": "6.26.2"
+    "react-router-dom": "6.26.2",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@babel/preset-react": "7.25.7",
@@ -125,7 +127,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "b62b7d33ef06704a4227b1159745082b0088883e4099d14b2516211f304e405c"
+    "hash": "bdbe7fb93c11c3ce6edd0935df8269956c3b7886f6c8bea6f801d39d1db04654"
   },
   "overrides": {
     "@vaadin/vaadin-development-mode-detector": "$@vaadin/vaadin-development-mode-detector",
@@ -166,6 +168,8 @@
     "@vaadin/hilla-react-signals": "$@vaadin/hilla-react-signals",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
-    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles"
+    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
+    "ts-node": "$ts-node",
+    "dotenv": "$dotenv"
   }
 }

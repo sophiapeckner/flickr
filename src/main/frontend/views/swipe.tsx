@@ -3,11 +3,15 @@ import { useState, useEffect } from "react";
 
 export default function SwipeView() {
 
+   console.log(import.meta.env.VITE_KEY);
+   console.log(import.meta.env);
+  const fullAuth = 'Bearer ' + import.meta.env.VITE_KEY;
 
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
+      Authorization: fullAuth,
     },
   };
 
