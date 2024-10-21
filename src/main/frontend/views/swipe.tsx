@@ -1,10 +1,15 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
 
+interface Movie {
+    id: number;
+    title: string;
+    url: string;
+    year: string;
+}
+
 export default function SwipeView() {
 
-   console.log(import.meta.env.VITE_KEY);
-   console.log(import.meta.env);
   const fullAuth = 'Bearer ' + import.meta.env.VITE_KEY;
 
   const options = {
@@ -19,9 +24,7 @@ export default function SwipeView() {
     return Math.floor(Math.random() * max);
   }
 
-  const [titles, setTitles] = useState([]);
-  const [year, setYear] = useState([]);
-  const [url, setUrl] = useState([]);
+  const [movies, setMovies] = useState([]);
   useEffect(() => {
     let number = getRandomNumber(500);
     fetch(
@@ -32,11 +35,14 @@ export default function SwipeView() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.results[0]);
-        setTitles(data.results[0].original_title);
-        setYear(data.results[0].release_date);
-        setUrl(data.results[0].backdrop_path);
-      })
+        for (let i = 0; i < data.results.length; i++) {
+        console.log(data.results[i].original_title);
+            setMovies(data.results[i].original_title);
+           console.log(movies);
+        }
+      }
+
+      )
       .catch((err) => console.error(err));
   }, []);
 
@@ -53,12 +59,13 @@ export default function SwipeView() {
         <div className="movie1">
           <img
             className="movie-example1"
-            src={"https://image.tmdb.org/t/p/w500/" + url}
+            src={"https://image.tmdb.org/t/p/w500/" }
+
             alt=""
           />
           <div className="movie1-info">
-            <label>Title: {titles}</label>
-            <label>Year: {year} </label>
+            <label>Title: slakfd</label>
+            <label>Year: 2022 </label>
           </div>
         </div>
 
