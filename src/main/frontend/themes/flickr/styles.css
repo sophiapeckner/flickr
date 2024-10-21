@@ -418,8 +418,9 @@ h2 {
 }
 
 .choices img {
-  width: 10%;
-}
+  width: 80%;
+  margin-left: 50px;
+  }
 
 .profile-link {
   margin-bottom: 30px;
