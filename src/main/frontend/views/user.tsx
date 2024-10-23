@@ -3,7 +3,7 @@
 
 import { AutoGrid } from '@vaadin/hilla-react-crud';
 import { UserService } from 'Frontend/generated/endpoints';
-import UserModel from 'Frontend/generated/com/flickr/UserModel';
+import UserModel from 'Frontend/generated/com/flickr/entities/UserModel';
 
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 
