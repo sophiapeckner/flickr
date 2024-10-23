@@ -12,8 +12,16 @@ export default function PickGenreView() {
       <form className="restrict-form">
         <label htmlFor="Genre">Genre: </label>
         <select name="comedy" id="comedy">
+          <option>Any</option>
           <option>Comedy</option>
           <option>Action</option>
+          <option>Romance</option>
+          <option>Documentary</option>
+          <option>Horror</option>
+          <option>Drama</option>
+          <option>Science Fiction</option>
+          <option>Fantasy</option>
+          <option>Mystery</option>
         </select>
         <br />
         <br />
@@ -21,6 +29,8 @@ export default function PickGenreView() {
         <select name="R" id="R">
           <option>R</option>
           <option>PG-13</option>
+          <option>PG</option>
+          <option>G</option>
         </select>
         <br />
         <br />
