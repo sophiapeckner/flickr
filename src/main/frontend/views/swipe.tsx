@@ -1,50 +1,16 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
-
-interface Movie {
-    id: number;
-    title: string;
-    url: string;
-    year: string;
-}
+import { SuggestionsEndpoint } from "Frontend/generated/endpoints.ts";
 
 export default function SwipeView() {
 
-  const fullAuth = 'Bearer ' + import.meta.env.VITE_KEY;
+  const [currMovie, setCurrMovie] = useState();
 
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: fullAuth,
-    },
-  };
-
-  function getRandomNumber(max: number) {
-    return Math.floor(Math.random() * max);
-  }
-
-  const [movies, setMovies] = useState([]);
-  useEffect(() => {
-    let number = getRandomNumber(500);
-    fetch(
-      "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=" +
-        number +
-        "&sort_by=popularity.desc",
-      options
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let i = 0; i < data.results.length; i++) {
-        console.log(data.results[i].original_title);
-            setMovies(data.results[i].original_title);
-           console.log(movies);
-        }
-      }
-
-      )
-      .catch((err) => console.error(err));
-  }, []);
+      useEffect(() => {
+        SuggestionsEndpoint.generateSuggestions()
+            .then(setCurrMovie)
+            .then(console.log(currMovie));
+      });
 
   return (
     <>
@@ -64,7 +30,7 @@ export default function SwipeView() {
             alt=""
           />
           <div className="movie1-info">
-            <label>Title: slakfd</label>
+            <label>Title: asdlfjk</label>
             <label>Year: 2022 </label>
           </div>
         </div>
