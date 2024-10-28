@@ -1,9 +1,6 @@
 package com.flickr.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -15,8 +12,11 @@ public class Session {
 
     private String groupCode;
     @OneToMany
+    // Session can have many members where each member belongs to only one session
     private List<User> members;
-    @OneToMany
+    @ManyToMany
+    // Each Movie can be in many Session
+    // Each Session can have many Movie
     private List<Movie> movies;
 
     public Session(String groupCode) {

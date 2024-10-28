@@ -3,6 +3,7 @@ package com.flickr.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public class User {
     private String pass;
     private String username;
     private List<String> watchProviders;
+
+    @ManyToOne
+    private Session session;
 
     public User(Long id, String email, String pass, String username) {
         this.id = id;
