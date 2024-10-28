@@ -3,7 +3,7 @@ package com.flickr.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.OneToMany;
 import java.util.List;
 
 @Entity
@@ -13,7 +13,9 @@ public class Session {
     private Long id;
 
     private String groupCode;
+    @OneToMany
     private List<User> members;
+    @OneToMany
     private List<Movie> movies;
 
     public Session(String groupCode) {

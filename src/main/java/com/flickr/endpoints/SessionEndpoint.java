@@ -4,6 +4,7 @@ import com.flickr.entities.Movie;
 import com.flickr.storage.SessionRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
+import com.flickr.entities.Session;
 
 import java.util.List;
 
@@ -16,13 +17,11 @@ public class SessionEndpoint {
     }
 
     //    get or retrieve all the entities from the database table
-    public List<Movie> findAll() {
+    public List<Session> findAll() {
         return repository.findAll();
     }
 
-    public Movie add(String title, String imageURL) {
-        return repository.save(new Movie(title, imageURL));
+    public Session add(String groupcode) {
+        return repository.save(new Session(groupcode));
     }
-
-//    public Movie update
 }
