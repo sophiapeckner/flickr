@@ -1,4 +1,4 @@
-import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
+// import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
 
 interface Movie {
@@ -9,7 +9,6 @@ interface Movie {
 }
 
 export default function SwipeView() {
-
   const fullAuth = 'Bearer ' + import.meta.env.VITE_KEY;
 
   const options = {
@@ -19,6 +18,8 @@ export default function SwipeView() {
       Authorization: fullAuth,
     },
   };
+
+  const [titles, setTitles] = useState([]);
 
   function getRandomNumber(max: number) {
     return Math.floor(Math.random() * max);
@@ -35,11 +36,7 @@ export default function SwipeView() {
     )
       .then((response) => response.json())
       .then((data) => {
-        for (let i = 0; i < data.results.length; i++) {
-        console.log(data.results[i].original_title);
-            setMovies(data.results[i].original_title);
-           console.log(movies);
-        }
+        setMovies(data.results[0])
       }
 
       )
@@ -56,16 +53,15 @@ export default function SwipeView() {
           <h2>flickr</h2>
         </div>
 
-        <div className="movie1">
+        <div style={styles.movieProfile}>
           <img
-            className="movie-example1"
+            style={styles.moiveThumbnail}
             src={"https://image.tmdb.org/t/p/w500/" }
-
             alt=""
           />
-          <div className="movie1-info">
-            <label>Title: slakfd</label>
-            <label>Year: 2022 </label>
+          <div style={styles.movieInfo}>
+            <label style={styles.movieLabel}>Title: {titles}</label>
+            <label style={styles.movieLabel}>Year: 2022 </label>
           </div>
         </div>
 
@@ -91,4 +87,44 @@ export default function SwipeView() {
     </>
   );
 }
+
+const styles = {
+  movieProfile: {
+    marginTop: '15px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    label: {
+      color: 'white'
+    }
+  },
+  moiveThumbnail: {
+    width: '35%',
+    height: 'auto',
+  },
+  movieInfo: {
+    backgroundColor: '#62598b',
+    width: '50%',
+    padding: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+  },
+  movieLabel: {
+    fontSize: '15px',
+    color: 'white'
+  }
+}
+
+// .movie1 label {
+//   font-size: 15px;
+//   background-color: #62598b;
+//   color: white;
+// }
 

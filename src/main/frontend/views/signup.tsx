@@ -8,8 +8,8 @@ export const config: ViewConfig = {
 export default function SignUpView() {
   return (
     <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-      <img style={{ width: "100%" }} src="images/movie_reel.png" />
-      <form className="sign-up-form">
+      <img style={styles.headerImage} src="images/movie_reel.png" />
+      <form style={styles.signUpForm}>
         <label htmlFor="username">Email</label>
         <input
           type="text"
@@ -35,4 +35,13 @@ export default function SignUpView() {
       </form>
     </div>
   );
+}
+
+const styles = {
+  headerImage: {
+    width: '100%',
+  },
+  signUpForm: {
+    marginLeft: '15px'
+  },
 }
