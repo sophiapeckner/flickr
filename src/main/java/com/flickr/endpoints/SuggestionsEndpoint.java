@@ -1,9 +1,9 @@
 package com.flickr.endpoints;
 
 import com.flickr.entities.Movie;
-import com.nimbusds.jose.shaded.gson.Gson;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.List;
 public class SuggestionsEndpoint {
     private List<Movie> SuggestedMovies;
 
-    public String generateSuggestions() {
+    public String generateSuggestions() throws JSONException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc"))
                 .header("accept", "application/json")
@@ -35,8 +35,20 @@ public class SuggestionsEndpoint {
             throw new RuntimeException(e);
         }
 
+        JSONObject suggestionsObject = null;
+        try {
+            suggestionsObject = new JSONObject(response.body());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
-        return response.body();
+        JSONObject results = (JSONObject) suggestionsObject.get("results");
+        for (int i = 0; i < 20; i++) {
+            JSONObject movie = (JSONObject) results.get(String.valueOf(i));
+            Movie movieEntity = new Movie((String) movie.get("original_title"), (String) movie.get("poster_path"));
+        }
+
+        return results.toString();
     }
 
 }
