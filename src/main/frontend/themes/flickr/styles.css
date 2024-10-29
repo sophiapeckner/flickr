@@ -129,6 +129,15 @@ img {
   font-size: 17px;
   margin-top: 200px;
   border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.join-group-btn:hover{
+  background-color: #ac5fae;
+  height: 81px;
+  width: 205px;
+  margin-top: 197px;
+  margin-bottom: 22px;
 }
 
 .sign-in-prompt {
@@ -488,7 +497,7 @@ select{
 }
 
 select:hover{
-  background-color: rgb(193, 184, 217);
+  background-color: rgb(253, 201, 255);
 }
 
 .moreServices{
@@ -511,4 +520,12 @@ select:hover{
 
 option{
   font-size: 16px;
+}
+
+.emailInput:hover{
+  background-color: rgb(253, 201, 255);
+}
+
+input[type="password"]:hover{
+  background-color: rgb(253, 201, 255);
 }
