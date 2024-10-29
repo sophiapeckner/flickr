@@ -39,7 +39,7 @@ export default function SignUpView() {
 
 const styles = {
   headerImage: {
-    width: '100%',
+    width: '110%',
   },
   signUpForm: {
     marginLeft: '15px'

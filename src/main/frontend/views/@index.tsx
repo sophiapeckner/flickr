@@ -8,7 +8,7 @@ export const config: ViewConfig = {
 export default function LogInView() {
   return (
     <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-      <img style={{ width: "100%" }} src="images/movie_reel.png" />
+      <img style={{ width: "110%" }} src="images/movie_reel.png" />
       <form className="login-form">
         <div className="input">
           <label>Email</label>

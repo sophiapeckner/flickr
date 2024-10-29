@@ -1,4 +1,11 @@
 @import url("@fontsource/inter/index.css");
+
+/* currently not working */
+@font-face {
+  font-family: 'Nunito';
+  src: url('src/main/resources/META-INF/resources/fonts/Nunito-Regular.ttf') format('truetype');
+  font-display: swap;
+}
 html {
   --lumo-primary-color: rgb(101, 85, 143);
   --lumo-primary-color-50pct: rgba(101, 85, 143, 0.5);
@@ -121,7 +128,7 @@ img {
   margin-top: 50px;
 }
 
-.join-group-btn {
+/* .join-group-btn {
   height: 75px;
   width: 200px;
   background-color: #62598b;
@@ -129,7 +136,7 @@ img {
   font-size: 17px;
   margin-top: 200px;
   border-radius: 8px;
-}
+} */
 
 .sign-in-prompt {
   color: #62598b;
