@@ -10,13 +10,13 @@ interface Movie {
 
 export default function SwipeView() {
 
-  const fullAuth = 'Bearer ' + import.meta.env.VITE_KEY;
+  // const fullAuth = 'Bearer ' + import.meta.env.VITE_KEY;
 
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: fullAuth,
+      // Authorization: fullAuth,
     },
   };
 

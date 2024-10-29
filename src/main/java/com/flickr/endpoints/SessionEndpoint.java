@@ -1,8 +1,8 @@
 package com.flickr.endpoints;
 
+import com.flickr.entities.Member;
 import com.flickr.entities.Movie;
 import com.flickr.entities.Session;
-import com.flickr.entities.User;
 import com.flickr.storage.SessionRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
@@ -37,11 +37,12 @@ public class SessionEndpoint {
         return repository.findByGroupCode(groupCode);
     }
 
-    public Session joinSession(String groupCode, User user) {
-        // Add the specified user to the Session with groupCode
-        // Assume that the Session exists; so isPresent() isn't used
-        Session session = fetchSession(groupCode).get();
-        session.getMembers().add(user);
-        return repository.save(session);
+    public Session joinSession(String groupCode, Member user) {
+        return fetchSession(groupCode)
+            .map(session -> {
+                session.getMembers().add(user);
+                return repository.save(session);
+            })
+            .orElseThrow(() -> new IllegalArgumentException("Session not found for groupCode: " + groupCode));
     }
 }

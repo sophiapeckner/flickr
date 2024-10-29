@@ -8,7 +8,7 @@ import jakarta.persistence.ManyToOne;
 import java.util.List;
 
 @Entity
-public class User {
+public class Member {
     @Id
     @GeneratedValue
     private Long id;
@@ -21,11 +21,15 @@ public class User {
     @ManyToOne
     private Session session;
 
-    public User(Long id, String email, String pass, String username) {
+    public Member(Long id, String email, String pass, String username) {
         this.id = id;
         this.email = email;
         this.pass = pass;
         this.username = username;
+    }
+
+    public Member() {
+
     }
 
     public Long getId() {

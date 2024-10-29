@@ -1,6 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { MovieListController } from "Frontend/generated/endpoints.ts";
-import { useState, useEffect } from "react";
+// import { MovieListController } from "Frontend/generated/endpoints.ts";
+// import { useState, useEffect } from "react";
 
 export const config: ViewConfig = {
   menu: { order: 7, icon: "line-awesome/svg/file.svg" },
@@ -8,11 +8,11 @@ export const config: ViewConfig = {
 };
 
 export default function MovieListView() {
-  const [selectedMovies, setSelectedMovies] = useState([]);
-
-    useEffect(() => {
-      MovieListController.getSelectedMovieList().then(setSelectedMovies).then(console.log(selectedMovies));
-    });
+  // const [selectedMovies, setSelectedMovies] = useState([]);
+  //
+  //   useEffect(() => {
+  //     MovieListController.getSelectedMovieList().then(setSelectedMovies).then(console.log(selectedMovies));
+  //   });
 
 
   return (
@@ -25,14 +25,14 @@ export default function MovieListView() {
           <div className="movie">
             <img className="movie-img" src="images/movie.jpg" alt="" />
             <div>
-              <h4>{selectedMovies[0]}</h4>
+              {/*<h4>{selectedMovies[0]}</h4>*/}
               <h5>Votes: 9</h5>
             </div>
           </div>
           <div className="movie">
             <img className="movie-img" src="images/movie.jpg" alt="" />
             <div>
-              <h4>{selectedMovies[1]}</h4>
+              {/*<h4>{selectedMovies[1]}</h4>*/}
               <h5>Votes: 9</h5>
             </div>
           </div>
