@@ -28,7 +28,7 @@ export default function GroupCodeView() {
         </div>
 
         <a href="/grouplanding">
-          <button style={styles.joinButton}>join</button>
+          <button style={styles.button}>join</button>
         </a>
       </div>
     </div>
@@ -85,7 +85,7 @@ const styles = {
     fontSize: 32,
     paddingLeft: 16,
   },
-  joinButton: {
+  button: {
     width: 180,
     height: 36,
     marginRight: 'auto',

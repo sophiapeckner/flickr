@@ -46,7 +46,7 @@ export default function LogInView() {
       </form>
 
 
-      <a style={styles.buttonDiv} href="/groupCode">
+      <a style={styles.buttonDiv} href="/start">
         <button style={styles.button}>Continue as Guest</button>
       </a>
       </div>
