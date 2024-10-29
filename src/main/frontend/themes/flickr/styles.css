@@ -469,5 +469,46 @@ h2 {
 }
 
 .username{
-  margin-top: 500px;
+  margin-bottom: 12px;
+}
+
+.ServiceSelect{
+  height: 50px;
+  margin-top: 10px; 
+}
+
+select{
+  border-radius: 3px;
+  height: 50px;
+  display: flex;
+  text-align: center;
+  margin: auto;
+  font-family:'Times New Roman', Times, serif;
+  font-size: 20px;
+}
+
+select:hover{
+  background-color: rgb(193, 184, 217);
+}
+
+.moreServices{
+  width: 200px;
+  height: 35px;
+  background-color: #ffffff;
+  align-self: center;
+  border-color: #ffffff;
+}
+
+.moreServices:hover{
+  background-color: #e2e2e2;
+}
+
+.addAnotherService{
+  color: #979797;
+  font-weight: bold;
+  border-radius: 25px;
+}
+
+option{
+  font-size: 16px;
 }

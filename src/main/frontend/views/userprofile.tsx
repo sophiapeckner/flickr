@@ -51,43 +51,22 @@ export default function UserProfileView() {
           </div>
         </form>
         <form className="streamingServices">
-          <div className="input">
-            <label className="Services-label">Streaming Services</label>
-            <br />
-            <button className="Streaming-Button">
-              <a className="NetflixBoolean" href="/swipe">
-                Netflix
-              </a>
-            </button>
-            <br />
-            <br />
-            <button className="Streaming-Button">
-              <a className="HuluBoolean" href="/swipe">
-                Hulu
-              </a>
-            </button>
-            <br />
-            <br />
-            <button className="Streaming-Button">
-              <a className="DisneyBoolean" href="/swipe">
-                DisneyPlus
-              </a>
-            </button>
-            <br />
-            <br />
-            <button className="Streaming-Button">
-              <a className="ParamountBoolean" href="/swipe">
-                ParamountPlus
-              </a>
-            </button>
-            <br />
-            <br />
-            <button className="Streaming-Button">
-              <a className="MaxBoolean" href="/swipe">
-                Max
-              </a>
-            </button>
-          </div>
+        <label htmlFor="StreamService">Available Streaming Services: </label>
+        <br />
+        <div className = "ServiceSelect">
+          <select id="StreamService">
+            <option value="netflix">Netflix</option>
+            <option value="hulu">Hulu</option>
+            <option value="paramount">Paramount+</option>
+            <option value="disney">Disney+</option>
+          </select>
+        </div>
+        <br />
+        <div className="AddStreamingService">
+          <button className="moreServices">
+            <a className="addAnotherService" href="/swipe">+ Streaming Service</a>
+          </button>
+        </div>
         </form>
       </div>
     </>
