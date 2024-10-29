@@ -10,31 +10,30 @@ export default function StartView() {
   return (
     <div style={styles.outerDiv}>
       <div>
-        <a style={styles.loginButton} href="/">
+        <a style={styles.topCornerButton} href="/">
           Login
         </a>
       </div>
-      
-      <div>
-        <div style={styles.homePage}>
-          <h2 style={styles.pageTitle}>flickr</h2>
-          <a href="/groupcode">
-            <button style={styles.joinGroupButton}>Join Group</button>
-          </a>
-          
-          <p style={styles.signInPrompt}>
-            Please{" "}
-            <a href="/" style={{ textDecoration: "underline" }}>
-              login
-            </a>{" "}
-            or{" "}
-            <a href="/sign-up" style={{ textDecoration: "underline" }}>
-              sign up
-            </a>{" "}
-            to create a group
-          </p>
-        </div>
+      <h2 style={styles.pageTitle}>flickr</h2>
+
+      <div style={styles.mainPage}>
+        <a href="/groupcode">
+          <button style={styles.groupChoiceButton}>Join Group</button>
+        </a>
+        
+        <p style={styles.signInPrompt}>
+          Please{" "}
+          <a href="/" style={{ textDecoration: "underline" }}>
+            login
+          </a>{" "}
+          or{" "}
+          <a href="/sign-up" style={{ textDecoration: "underline" }}>
+            sign up
+          </a>{" "}
+          to create a group
+        </p>
       </div>
+
     </div>
   );
 }
@@ -45,38 +44,41 @@ const styles = {
     flexDirection: 'column',
     height: '100%',
   },
-  loginButton: {
+  topCornerButton: {
+    height: '50px',
     margin: '15px',
     float: 'right',
-  },
-  homePage: {
-    margin: 'auto',
-    width: '80%',
-    padding: '15px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
   },
   pageTitle: {
     color: colors.main, 
     textAlign: 'center',
     fontSize: '48px',
-    marginTop: '50px',
     fontFamily: 'Nunito, Verdana',
   },
-  joinGroupButton: {
+  mainPage: {
+    margin: 'auto',
+    width: '80%',
+    padding: '15px',
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  groupChoiceButton: {
     backgroundColor: colors.main,
-    height: '75px',
+    height: 75,
+    margin: 20,
+    fontSize: '16px',
     width: '200px',
     color: 'white',
-    fontSize: '20px',
-    marginTop: '200px',
     borderRadius: '12px',
     borderWidth: '0',
   },
   signInPrompt: {
     color: colors.main,
-    marginTop: '20px',
+    height: 75,
+    margin: 20,
     fontSize: '16px',
   }
 }
