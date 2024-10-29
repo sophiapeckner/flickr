@@ -48,7 +48,7 @@ const styles = {
   },
   mainPage: {
     margin: 'auto',
-    width: '80%',
+    width: '100%',
     padding: '15px',
     display: 'flex',
     flex: 1,
