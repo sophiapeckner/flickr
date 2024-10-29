@@ -50,6 +50,45 @@ export default function UserProfileView() {
             />
           </div>
         </form>
+        <form className="streamingServices">
+          <div className="input">
+            <label className="Services-label">Streaming Services</label>
+            <br />
+            <button className="Streaming-Button">
+              <a className="NetflixBoolean" href="/swipe">
+                Netflix
+              </a>
+            </button>
+            <br />
+            <br />
+            <button className="Streaming-Button">
+              <a className="HuluBoolean" href="/swipe">
+                Hulu
+              </a>
+            </button>
+            <br />
+            <br />
+            <button className="Streaming-Button">
+              <a className="DisneyBoolean" href="/swipe">
+                DisneyPlus
+              </a>
+            </button>
+            <br />
+            <br />
+            <button className="Streaming-Button">
+              <a className="ParamountBoolean" href="/swipe">
+                ParamountPlus
+              </a>
+            </button>
+            <br />
+            <br />
+            <button className="Streaming-Button">
+              <a className="MaxBoolean" href="/swipe">
+                Max
+              </a>
+            </button>
+          </div>
+        </form>
       </div>
     </>
   );

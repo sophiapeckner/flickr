@@ -457,3 +457,17 @@ h2 {
 .movie h4 {
   margin-top: 10px;
 }
+
+.Streaming-Button {
+  background-color: #5d5d5d;
+  color: white;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 0px;
+  width: 120px;
+  height: 120px;
+}
+
+.username{
+  margin-top: 500px;
+}
