@@ -60,7 +60,7 @@ const styles = {
     margin: 'auto',
   },
   headerImage: {
-    width: '110%',
+    width: '100%',
   },
   pageTitle: {
     color: colors.main, 

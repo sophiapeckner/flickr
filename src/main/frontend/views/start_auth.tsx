@@ -10,13 +10,16 @@ export default function StartView() {
   return (
     <div style={styles.outerDiv}>
       <div>
+        <a style={styles.backButton} href="/">
+          X
+        </a>
         <a style={styles.topCornerButton} href="/userprofile">
           <img src="images/profile.png" />
         </a>
       </div>
       <h2 style={styles.pageTitle}>flickr</h2>
       
-      <div style={styles.mainPage}>
+      <div style={styles.innerDiv}>
           <a href="/groupcode">
             <button style={styles.groupChoiceButton}>Join Group</button>
           </a>
@@ -24,7 +27,6 @@ export default function StartView() {
             <button style={styles.groupChoiceButton}>Create Group</button>
           </a>
       </div>
-
     </div>
   );
 }
@@ -34,6 +36,13 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+  },
+  backButton: {
+    height: '50px',
+    margin: '15px',
+    float: 'left',
+    fontSize: 20,
+    marginRight: 15,
   },
   topCornerButton: {
     height: '50px',
@@ -46,10 +55,9 @@ const styles = {
     fontSize: '48px',
     fontFamily: 'Nunito, Verdana',
   },
-  mainPage: {
+  innerDiv: {
     margin: 'auto',
     width: '100%',
-    padding: '15px',
     display: 'flex',
     flex: 1,
     flexDirection: 'column',

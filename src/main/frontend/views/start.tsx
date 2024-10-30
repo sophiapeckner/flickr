@@ -16,7 +16,7 @@ export default function StartView() {
       </div>
       <h2 style={styles.pageTitle}>flickr</h2>
 
-      <div style={styles.mainPage}>
+      <div style={styles.innerDiv}>
         <a href="/groupcode">
           <button style={styles.groupChoiceButton}>Join Group</button>
         </a>
@@ -55,10 +55,9 @@ const styles = {
     fontSize: '48px',
     fontFamily: 'Nunito, Verdana',
   },
-  mainPage: {
+  innerDiv: {
     margin: 'auto',
     width: '100%',
-    padding: '15px',
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
