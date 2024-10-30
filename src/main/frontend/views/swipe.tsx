@@ -141,7 +141,7 @@ const styles = {
     color: 'white'
   },
   choices: {
-    margin: '20px 50px 0px',
+    margin: '0px 150px',
   },
   bottomNav: {
     width: '100%',
