@@ -1,21 +1,15 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
-import {generateSuggestions, findAllSuggestions} from "Frontend/generated/SuggestionsEndpoint";
+import Movie from "Frontend/generated/com/flickr/entities/Movie";
+import {generateSuggestions, findAll} from "Frontend/generated/SuggestionsEndpoint";
 
 export default function SwipeView() {
+const [title, setTitle] = useState();
 
-  const [suggestions, setSuggestions] = useState();
+useEffect(() => {
+         generateSuggestions().then(setTitle)
+    }, []);
 
-
-  const handleCreateGroup = async () => {
-          try {
-              const session: String = await generateSuggestions();
-              if (session)
-                  console.log(sessions);
-          } catch (error) {
-              console.error("Error generating suggestions: ", error);
-          }
-      }
 
 
   return (
@@ -27,7 +21,6 @@ export default function SwipeView() {
         <div>
           <h2>flickr</h2>
         </div>
-        <button className="create-group-btn" onClick={handleCreateGroup}>Create Group</button>
 
         <div className="movie1">
           <img
@@ -37,7 +30,7 @@ export default function SwipeView() {
             alt=""
           />
           <div className="movie1-info">
-            <label>Title: asdlfjk</label>
+            <label>Title: {title}</label>
             <label>Year: 2022 </label>
           </div>
         </div>

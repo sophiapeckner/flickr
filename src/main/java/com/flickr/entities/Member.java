@@ -3,11 +3,12 @@ package com.flickr.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 import java.util.List;
 
 @Entity
-public class User {
+public class Member {
     @Id
     @GeneratedValue
     private Long id;
@@ -17,11 +18,18 @@ public class User {
     private String username;
     private List<String> watchProviders;
 
-    public User(Long id, String email, String pass, String username) {
+    @ManyToOne
+    private Session session;
+
+    public Member(Long id, String email, String pass, String username) {
         this.id = id;
         this.email = email;
         this.pass = pass;
         this.username = username;
+    }
+
+    public Member() {
+
     }
 
     public Long getId() {

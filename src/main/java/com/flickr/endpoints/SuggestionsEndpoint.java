@@ -2,8 +2,10 @@ package com.flickr.endpoints;
 
 import com.flickr.entities.Movie;
 import com.flickr.storage.MovieRepository;
+import com.flickr.storage.SessionRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,7 +19,11 @@ import java.util.List;
 @Endpoint
 @AnonymousAllowed
 public class SuggestionsEndpoint {
-    private MovieRepository SuggestedMovies;
+    private MovieRepository repository;
+
+    SuggestionsEndpoint(MovieRepository repository) {
+        this.repository = repository;
+    }
 
     public String generateSuggestions() throws JSONException {
         HttpRequest request = HttpRequest.newBuilder()
@@ -29,9 +35,7 @@ public class SuggestionsEndpoint {
         HttpResponse<String> response = null;
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
@@ -41,19 +45,14 @@ public class SuggestionsEndpoint {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+        JSONArray results = suggestionsObject.getJSONArray("results");
+        return results.getJSONObject(15).get("original_title").toString();
 
-        JSONObject results = (JSONObject) suggestionsObject.get("results");
-        for (int i = 0; i < 20; i++) {
-            JSONObject movie = (JSONObject) results.get(String.valueOf(i));
-            Movie movieEntity = new Movie((String) movie.get("original_title"), (String) movie.get("poster_path"));
-            SuggestedMovies.save(movieEntity);
-        }
-        return "Movie list created";
     }
 
-    public List<Movie> findAllSuggestions() {
+    public List<Movie> findAll() {
         // List all the suggestions(s) currently in the DB
-        return SuggestedMovies.findAll();
+        return repository.findAll();
     }
 
 }
