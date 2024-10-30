@@ -1,6 +1,7 @@
 package com.flickr.endpoints;
 
 import com.flickr.entities.Movie;
+import com.flickr.storage.MovieRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
 import org.json.JSONException;
@@ -11,13 +12,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Iterator;
 import java.util.List;
 
 @Endpoint
 @AnonymousAllowed
 public class SuggestionsEndpoint {
-    private List<Movie> SuggestedMovies;
+    private MovieRepository SuggestedMovies;
 
     public String generateSuggestions() throws JSONException {
         HttpRequest request = HttpRequest.newBuilder()
@@ -46,9 +46,14 @@ public class SuggestionsEndpoint {
         for (int i = 0; i < 20; i++) {
             JSONObject movie = (JSONObject) results.get(String.valueOf(i));
             Movie movieEntity = new Movie((String) movie.get("original_title"), (String) movie.get("poster_path"));
+            SuggestedMovies.save(movieEntity);
         }
+        return "Movie list created";
+    }
 
-        return results.toString();
+    public List<Movie> findAllSuggestions() {
+        // List all the suggestions(s) currently in the DB
+        return SuggestedMovies.findAll();
     }
 
 }

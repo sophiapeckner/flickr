@@ -12,7 +12,6 @@ public class Movie {
     @GeneratedValue
     private Long id;
     private String title;
-//     private String date;
 
     private List<String> genres;
 
