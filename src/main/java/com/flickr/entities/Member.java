@@ -18,6 +18,9 @@ public class Member {
     private String username;
     private List<String> watchProviders;
 
+    private Long sessionID;
+    private int currentMovieIndex;
+
     @ManyToOne
     private Session session;
 

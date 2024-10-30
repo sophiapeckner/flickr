@@ -44,7 +44,7 @@ export default function StartView() {
             <button style={styles.groupChoiceButton}>Join Group</button>
           </a>
           <a href="/grouplanding">
-            <button style={styles.groupChoiceButton}>Create Group</button>
+            <button style={styles.groupChoiceButton} onClick={handleCreateGroup}>Create Group</button>
           </a>
       </div>
         {sessions.map(session => (
