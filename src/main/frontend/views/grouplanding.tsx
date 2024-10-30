@@ -17,7 +17,6 @@ export default function GroupLandingView() {
           <img src="images/profile.png" />
         </a>
       </div>
-      {/* <h2 style={styles.pageTitle}>flickr</h2> */}
 
       <h6 style={styles.groupTitle}>Group Code: </h6>
       <h3 style={styles.groupCode}>XPJMRT</h3>

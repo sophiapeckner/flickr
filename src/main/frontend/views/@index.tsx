@@ -14,27 +14,22 @@ export default function LogInView() {
     
     <div style={styles.innerDiv}>
       <form style={styles.form}>
-        <div style={styles.inputDiv}>
-          <label style={styles.label}>Email</label>
-          <input style={styles.input}
-            type="text"
-            id="email"
-            name="email"
-            placeholder="example@gmail.com"
-          />
-        </div>
+        <label style={styles.label}>Email</label>
+        <input style={styles.input}
+          type="text"
+          id="email"
+          name="email"
+          placeholder="example@gmail.com"
+        />
 
-        <div style={styles.inputDiv}>
-          <label style={styles.label}>Password</label>
-          <input style={styles.input}
-            type="password"
-            id="password"
-            name="password"
-            placeholder="**********"
-          />
-        </div>
+        <label style={styles.label}>Password</label>
+        <input style={styles.input}
+          type="password"
+          id="password"
+          name="password"
+          placeholder="**********"
+        />
 
-        
         <a style={styles.buttonDiv} href="/start_auth">
           <input style={styles.signUpButton} value="Sign In" />
         </a>
@@ -85,11 +80,6 @@ const styles = {
     border: '1px solid grey',
     borderRadius: 8,
     padding: 15,
-  },
-  inputDiv: {
-    display: 'flex', 
-    width: '100%',
-    flexDirection: 'column',
   },
   label: {
     marginRight: 'auto', 

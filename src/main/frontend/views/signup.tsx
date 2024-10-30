@@ -14,35 +14,28 @@ export default function SignUpView() {
 
       <div style={styles.innerDiv}>
         <form style={styles.form}>
+          <label style={styles.label} htmlFor="username">Email</label>
+          <input style={styles.input}
+            type="text"
+            id="username"
+            name="username"
+            placeholder="example@gmail.com"
+          />
 
-          <div style={styles.inputDiv}>
-            <label style={styles.label} htmlFor="username">Email</label>
-            <input style={styles.input}
-              type="text"
-              id="username"
-              name="username"
-              placeholder="example@gmail.com"
-            />
-          </div>
-
-          <div style={styles.inputDiv}>
-            <label style={styles.label} htmlFor="password">Set Password</label>
-            <input style={styles.input}
-              type="password"
-              id="password"
-              name="password"
-              placeholder="5-7 characters long"
-            />
-          </div>
+          <label style={styles.label} htmlFor="password">Set Password</label>
+          <input style={styles.input}
+            type="password"
+            id="password"
+            name="password"
+            placeholder="5-7 characters long"
+          />
           
-          <div style={styles.inputDiv}>
-            <label style={styles.label} htmlFor="confirmPassword">Confirm Password</label>
-            <input style={styles.input} 
-              type="password" 
-              id="confirmPassword" 
-              name="confirmPassword" 
-            />
-          </div>
+          <label style={styles.label} htmlFor="confirmPassword">Confirm Password</label>
+          <input style={styles.input} 
+            type="password" 
+            id="confirmPassword" 
+            name="confirmPassword" 
+          />
           
           <a style={styles.signUpDiv} href="/start_auth">
             <input style={styles.signUp} value="Sign Up" />
@@ -86,11 +79,6 @@ const styles = {
     border: '1px solid grey',
     borderRadius: 8,
     padding: 15,
-  },
-  inputDiv: {
-    display: 'flex', 
-    width: '100%',
-    flexDirection: 'column',
   },
   label: {
     marginRight: 'auto', 
