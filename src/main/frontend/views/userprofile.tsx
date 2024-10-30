@@ -1,4 +1,5 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
+import { colors } from "../themes/flickr/colors";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
