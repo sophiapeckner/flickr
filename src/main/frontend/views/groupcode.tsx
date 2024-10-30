@@ -10,7 +10,7 @@ export default function GroupCodeView() {
   return (
     <div style={styles.outerDiv}>
       <div>
-        <a style={styles.backButton} href="/">
+        <a style={styles.backButton} href="/start_auth">
           X
         </a>
         <a style={styles.topCornerButton} href="/userprofile">
@@ -27,7 +27,7 @@ export default function GroupCodeView() {
           <input style={styles.codeInput} placeholder="XXXXXX" type="text" />
         </div>
 
-        <a href="/grouplanding">
+        <a href="/genre">
           <button style={styles.button}>join</button>
         </a>
       </div>

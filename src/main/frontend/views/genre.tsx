@@ -10,7 +10,7 @@ export default function PickGenreView() {
   return (
     <div style={styles.outerDiv}>
       <div>
-        <a style={styles.backButton} href="/">
+        <a style={styles.backButton} href="/start_auth">
           X
         </a>
         <a style={styles.topCornerButton} href="/userprofile">
@@ -34,7 +34,7 @@ export default function PickGenreView() {
           <option>PG-13</option>
         </select>
 
-        <a href="/swipe">
+        <a href="/grouplanding">
           <input style={styles.button} value="Ready" />
         </a>
       </form>

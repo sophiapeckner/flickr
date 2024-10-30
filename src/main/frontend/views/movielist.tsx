@@ -19,7 +19,7 @@ export default function MovieListView() {
   return (
     <div style={styles.outerDiv}>
       <div style={{backgroundColor: 'white'}}>
-        <a style={styles.backButton} href="/">
+        <a style={styles.backButton} href="/start_auth">
           X
         </a>
         <a style={styles.topCornerButton} href="/userprofile">

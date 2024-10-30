@@ -47,7 +47,7 @@ export default function SwipeView() {
   return (
     <div style={styles.outerDiv}>
       <div>
-        <a style={styles.backButton} href="/">
+        <a style={styles.backButton} href="/start_auth">
           X
         </a>
         <a style={styles.topCornerButton} href="/userprofile">
