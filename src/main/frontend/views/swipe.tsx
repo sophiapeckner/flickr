@@ -4,10 +4,10 @@ import Movie from "Frontend/generated/com/flickr/entities/Movie";
 import {generateSuggestions, findAll} from "Frontend/generated/SuggestionsEndpoint";
 
 export default function SwipeView() {
-const [title, setTitle] = useState();
+const [movie, setMovie] =useState<Movie[]>([]);
 
 useEffect(() => {
-         generateSuggestions().then(setTitle)
+         generateSuggestions().then(setMovie)
     }, []);
 
 
@@ -25,12 +25,12 @@ useEffect(() => {
         <div className="movie1">
           <img
             className="movie-example1"
-            src={"https://image.tmdb.org/t/p/w500/" }
+            src={movie.imgURL}
 
             alt=""
           />
           <div className="movie1-info">
-            <label>Title: {title}</label>
+            <label>Title: {movie.title}</label>
             <label>Year: 2022 </label>
           </div>
         </div>

@@ -25,7 +25,7 @@ public class SuggestionsEndpoint {
         this.repository = repository;
     }
 
-    public String generateSuggestions() throws JSONException {
+    public Movie generateSuggestions() throws JSONException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc"))
                 .header("accept", "application/json")
@@ -46,7 +46,8 @@ public class SuggestionsEndpoint {
             throw new RuntimeException(e);
         }
         JSONArray results = suggestionsObject.getJSONArray("results");
-        return results.getJSONObject(15).get("original_title").toString();
+        return repository.save(new Movie(results.getJSONObject(7).get("original_title").toString(),
+                results.getJSONObject(7).get("backdrop_path").toString()));
 
     }
 
