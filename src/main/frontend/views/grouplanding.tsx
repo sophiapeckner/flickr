@@ -1,4 +1,5 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
+import { colors } from "../themes/flickr/colors";
 
 export const config: ViewConfig = {
   menu: { order: 4, icon: "line-awesome/svg/file.svg" },
@@ -7,34 +8,98 @@ export const config: ViewConfig = {
 
 export default function GroupLandingView() {
   return (
-    <>
-      <a href="/">
-        <button className="back-button">X</button>
-      </a>
-      <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-        <div></div>
-        <h2>flickr</h2>
-        <h6 className="group-title">Group Code: </h6>
-        <h3 className="group-code">XPJMRT</h3>
-        <div className="members">
-          <div className="person">
-            <img className="person-img" src="images/person.png" alt="" />
-            <h4>Jane Mustang</h4>
-          </div>
-          <div className="person">
-            <img className="person-img" src="images/person.png" alt="" />
-            <h4>Jane Doe</h4>
-          </div>
-        </div>
+    <div style={styles.outerDiv}>
+      <div>
+        <a style={styles.backButton} href="/">
+          X
+        </a>
+        <a style={styles.topCornerButton} href="/userprofile">
+          <img src="images/profile.png" />
+        </a>
+      </div>
 
-        <div className="session-div">
-          <button className="start-session-btn">
-            <a className="start-session-link" href="/swipe">
-              Start Session
-            </a>
-          </button>
+      <h6 style={styles.groupTitle}>Group Code: </h6>
+      <h3 style={styles.groupCode}>XPJMRT</h3>
+
+      <div style={styles.membersDiv}>
+        <div style={styles.personDiv}>
+          <img style={styles.personImage} src="images/person.png" alt="" />
+          <h4 style={styles.personLabel}>Jane Mustang</h4>
+        </div>
+        <div style={styles.personDiv}>
+          <img style={styles.personImage} src="images/person.png" alt="" />
+          <h4 style={styles.personLabel}>Jane Doe</h4>
         </div>
       </div>
-    </>
+
+      <a href="/swipe">
+        <button style={styles.button}>Start Session</button>
+      </a>
+    </div>
   );
+}
+
+const styles = {
+  outerDiv: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+  backButton: {
+    height: '50px',
+    margin: '15px',
+    float: 'left',
+    fontSize: 20,
+    marginRight: 15,
+  },
+  topCornerButton: {
+    height: '50px',
+    margin: '15px',
+    float: 'right',
+  },
+  button: {
+    width: 180,
+    height: 36,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    borderWidth: 0,
+    backgroundColor: colors.main,
+    color: 'white',
+    textAlign: 'center',
+    marginTop: 36,
+    fontSize: '17px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '8px',
+  },
+  groupTitle: {
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  groupCode: {
+    textAlign: 'center',
+    fontSize: 40,
+  },
+  membersDiv: {
+    width: '60%',
+    margin: '10px auto',
+    height: '50%',
+    backgroundColor: colors.light,
+    borderRadius: 12,
+    padding: 10
+  },
+  personDiv: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  personImage: {
+    width: '20%',
+    height: '30%',
+  },
+  personLabel: {
+    padding: 20,
+    fontSize: 20,
+  }
 }
