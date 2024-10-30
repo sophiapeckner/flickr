@@ -55,37 +55,36 @@ export default function SwipeView() {
         </a>
       </div>
 
-      <div style={styles.innerDiv}>
-        <div style={styles.movieProfile}>
-          <img
-            style={styles.moiveThumbnail}
-            src={"https://image.tmdb.org/t/p/w500/" }
-            alt=""
-          />
-          <div style={styles.movieInfo}>
-            <label style={styles.movieLabel}>Title: {titles}</label>
-            <label style={styles.movieLabel}>Year: 2022 </label>
-          </div>
+      <div style={styles.movieProfile}>
+        {/* <img
+          style={styles.moiveThumbnail}
+          src={"https://image.tmdb.org/t/p/w500/" }
+          alt=""
+        /> */}
+        {/* temp movie thumbnail */}
+        <img style={styles.moiveThumbnail} src="images/movie.jpg" alt="" />
+        <div style={styles.movieInfo}>
+          <label style={styles.movieLabel}>Title: {titles}</label>
+          <label style={styles.movieLabel}>Year: 2022 </label>
         </div>
+      </div>
 
-        <div className="choices">
-          <a href="/swipe">
-            <img src="images/garbage.png" alt="dislike button" />
-          </a>
-          <a href="/swipe">
-            <img src="images/like.png" alt="like button" />
-          </a>
-        </div>
+      <div style={styles.choices}>
+        <a href="/swipe">
+          <img style={{float: 'left'}} src="images/garbage.png" alt="dislike button" />
+        </a>
+        <a href="/swipe">
+          <img style={{float: 'right'}} src="images/like.png" alt="like button" />
+        </a>
+      </div>
 
-        <div className="bottom-nav">
-          <a href="/swipe">
-            <img src="images/pic.png" alt="pic" />
-          </a>
-
-          <a href="/movieList">
-            <img src="images/liked.png" alt="liked" />
-          </a>
-        </div>
+      <div style={styles.bottomNav}>
+        <a href="/swipe">
+          <img src="images/pic.png" alt="pic" />
+        </a>
+        <a href="/movielist">
+          <img src="images/liked.png" alt="liked" />
+        </a>
       </div>
     </div>
   );
@@ -109,31 +108,27 @@ const styles = {
     margin: '15px',
     float: 'right',
   },
-  innerDiv: {
-    flexDirection: 'column',
-    width: '100%',
-    margin: 'auto',
-  },
   movieProfile: {
-    marginTop: '15px',
+    width: '40%',
+    height: '50%',
+    marginTop: 60,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    borderRadius: 12,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    label: {
-      color: 'white'
-    }
   },
   moiveThumbnail: {
-    width: '35%',
-    height: 'auto',
+    height: '60%',
+    width: 'auto'
   },
   movieInfo: {
-    backgroundColor: '#62598b',
-    width: '50%',
-    padding: '10px',
+    backgroundColor: colors.main,
+    margin: 20,
+    padding: '5px 40px',
+    borderRadius: 12,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -144,12 +139,19 @@ const styles = {
   movieLabel: {
     fontSize: '15px',
     color: 'white'
+  },
+  choices: {
+    margin: '20px 50px 0px',
+  },
+  bottomNav: {
+    width: '100%',
+    backgroundColor: colors.main,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    marginTop: '25px',
+    position: 'absolute',
+    bottom: '0px',
   }
 }
-
-// .movie1 label {
-//   font-size: 15px;
-//   background-color: #62598b;
-//   color: white;
-// }
-
