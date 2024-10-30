@@ -32,7 +32,7 @@
   "include": [
     "src/main/frontend/**/*",
     "types.d.ts"
-  ],
+, "src/main/frontend/themes/flickr/colors.ts"  ],
   "exclude": [
     "src/main/frontend/generated/jar-resources/**"
   ]
