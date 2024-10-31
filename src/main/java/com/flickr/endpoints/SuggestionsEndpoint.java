@@ -46,15 +46,16 @@ public class SuggestionsEndpoint {
             throw new RuntimeException(e);
         }
         JSONArray results = suggestionsObject.getJSONArray("results");
-        return repository.save(new Movie(results.getJSONObject(7).get("original_title").toString(),
-                results.getJSONObject(7).get("backdrop_path").toString()));
+        for (int i = 0; i < results.length(); i++) {
+            repository.save(new Movie(results.getJSONObject(i).get("original_title").toString(),
+                    results.getJSONObject(i).get("backdrop_path").toString()));
+            System.out.println(results.getJSONObject(i).get("original_title").toString());
+        }
+        return repository.save(new Movie(results.getJSONObject(0).get("original_title").toString(),
+                results.getJSONObject(0).get("backdrop_path").toString()));
 
     }
 
-    public List<Movie> findAll() {
-        // List all the suggestions(s) currently in the DB
-        return repository.findAll();
-    }
 
 }
 

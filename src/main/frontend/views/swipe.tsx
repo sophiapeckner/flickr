@@ -1,13 +1,13 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
 import Movie from "Frontend/generated/com/flickr/entities/Movie";
-import {generateSuggestions, findAll} from "Frontend/generated/SuggestionsEndpoint";
+import {generateSuggestions} from "Frontend/generated/SuggestionsEndpoint";
 
 export default function SwipeView() {
 const [movie, setMovie] =useState<Movie[]>([]);
 
 useEffect(() => {
-         generateSuggestions().then(setMovie)
+         generateSuggestions().then(setMovie);
     }, []);
 
 
