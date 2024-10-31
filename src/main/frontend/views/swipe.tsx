@@ -1,6 +1,7 @@
 // import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
-import { colors } from "../themes/flickr/colors";
+import { style } from "../themes/flickr/css.js";
+import { colors } from "Frontend/themes/flickr/colors.js";
 
 interface Movie {
     id: number;
@@ -45,12 +46,12 @@ export default function SwipeView() {
   }, []);
 
   return (
-    <div style={styles.outerDiv}>
+    <div style={style.outerDiv}>
       <div>
-        <a style={styles.backButton} href="/start_auth">
+        <a style={style.backButton} href="/start_auth">
           X
         </a>
-        <a style={styles.topCornerButton} href="/userprofile">
+        <a style={style.topCornerButton} href="/userprofile">
           <img src="images/profile.png" />
         </a>
       </div>
@@ -78,7 +79,7 @@ export default function SwipeView() {
         </a>
       </div>
 
-      <div style={styles.bottomNav}>
+      <div style={style.bottomNav}>
         <a href="/swipe">
           <img src="images/pic.png" alt="pic" />
         </a>
@@ -91,23 +92,6 @@ export default function SwipeView() {
 }
 
 const styles = {
-  outerDiv: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-  backButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'left',
-    fontSize: 20,
-    marginRight: 15,
-  },
-  topCornerButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'right',
-  },
   movieProfile: {
     width: '40%',
     height: '50%',
@@ -143,15 +127,4 @@ const styles = {
   choices: {
     margin: '0px 150px',
   },
-  bottomNav: {
-    width: '100%',
-    backgroundColor: colors.main,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    marginTop: '25px',
-    position: 'absolute',
-    bottom: '0px',
-  }
 }

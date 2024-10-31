@@ -1,5 +1,5 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { colors } from "../themes/flickr/colors";
+import { style } from "../themes/flickr/css.js";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
@@ -8,71 +8,25 @@ export const config: ViewConfig = {
 
 export default function StartView() {
   return (
-    <div style={styles.outerDiv}>
+    <div style={style.outerDiv}>
       <div>
-        <a style={styles.backButton} href="/">
+        <a style={style.backButton} href="/">
           X
         </a>
-        <a style={styles.topCornerButton} href="/userprofile">
+        <a style={style.topCornerButton} href="/userprofile">
           <img src="images/profile.png" />
         </a>
       </div>
-      <h2 style={styles.pageTitle}>flickr</h2>
+      <h2 style={style.pageTitle}>flickr</h2>
       
-      <div style={styles.innerDiv}>
+      <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
           <a href="/groupcode">
-            <button style={styles.groupChoiceButton}>Join Group</button>
+            <button style={style.groupChoiceButton}>Join Group</button>
           </a>
           <a href="/grouplanding">
-            <button style={styles.groupChoiceButton}>Create Group</button>
+            <button style={style.groupChoiceButton}>Create Group</button>
           </a>
       </div>
     </div>
   );
 }
-
-const styles = {
-  outerDiv: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-  backButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'left',
-    fontSize: 20,
-    marginRight: 15,
-  },
-  topCornerButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'right',
-  },
-  pageTitle: {
-    color: colors.main, 
-    textAlign: 'center',
-    fontSize: '48px',
-    fontFamily: 'Nunito, Verdana',
-  },
-  innerDiv: {
-    margin: 'auto',
-    width: '100%',
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  groupChoiceButton: {
-    backgroundColor: colors.main,
-    height: '75px',
-    width: '200px',
-    color: 'white',
-    fontSize: '16px',
-    margin: 20,
-    borderRadius: '12px',
-    borderWidth: '0',
-  },
-}
-

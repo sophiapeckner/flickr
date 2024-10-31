@@ -1,5 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { colors } from "../themes/flickr/colors";
+import { style } from "../themes/flickr/css.js";
+import { colors } from "Frontend/themes/flickr/colors.js";
 
 export const config: ViewConfig = {
   menu: { order: 4, icon: "line-awesome/svg/file.svg" },
@@ -8,18 +9,18 @@ export const config: ViewConfig = {
 
 export default function GroupLandingView() {
   return (
-    <div style={styles.outerDiv}>
+    <div style={style.outerDiv}>
       <div>
-        <a style={styles.backButton} href="/start_auth">
+        <a style={style.backButton} href="/start_auth">
           X
         </a>
-        <a style={styles.topCornerButton} href="/userprofile">
+        <a style={style.topCornerButton} href="/userprofile">
           <img src="images/profile.png" />
         </a>
       </div>
 
-      <h6 style={styles.groupTitle}>Group Code: </h6>
-      <h3 style={styles.groupCode}>XPJMRT</h3>
+      <h6 style={style.groupTitle}>Group Code: </h6>
+      <h3 style={style.groupCode}>XPJMRT</h3>
 
       <div style={styles.membersDiv}>
         <div style={styles.personDiv}>
@@ -33,54 +34,13 @@ export default function GroupLandingView() {
       </div>
 
       <a href="/swipe">
-        <button style={styles.button}>Start Session</button>
+        <button style={style.button}>Start Session</button>
       </a>
     </div>
   );
 }
 
 const styles = {
-  outerDiv: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-  backButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'left',
-    fontSize: 20,
-    marginRight: 15,
-  },
-  topCornerButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'right',
-  },
-  button: {
-    width: 180,
-    height: 36,
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    borderWidth: 0,
-    backgroundColor: colors.main,
-    color: 'white',
-    textAlign: 'center',
-    marginTop: 36,
-    fontSize: '17px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '8px',
-  },
-  groupTitle: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  groupCode: {
-    textAlign: 'center',
-    fontSize: 40,
-  },
   membersDiv: {
     width: '60%',
     margin: '10px auto',
