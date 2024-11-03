@@ -29,10 +29,8 @@ public class Movie {
         this.imgURL = "https://image.tmdb.org/t/p/w500/" + imgURL;
     }
 
-    public Movie(String title, List<String> genres, String overview, String imgURL, String release) {
+    public Movie(String title, String imgURL, String release) {
         this.title = title;
-        this.genres = genres;
-        this.overview = overview;
         this.imgURL = "https://image.tmdb.org/t/p/w500/" + imgURL;
         this.release = release;
     }
