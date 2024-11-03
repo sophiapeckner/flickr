@@ -7,6 +7,7 @@ import {findAll, generateSuggestions} from "Frontend/generated/SuggestionsEndpoi
 export default function SwipeView() {
   const [isBusy, setBusy] = useState(true);
   const [movies, setMovies] =useState<Movie[]>([]);
+  const [movieIndex, setMovieIndex] = useState(2);
 
 useEffect(() => {
          generateSuggestions()
@@ -30,26 +31,26 @@ useEffect(() => {
           <div className="movie1">
             <img
                 className="movie-example1"
-                src={movies[0].imgURL}
+                src={movies[movieIndex].imgURL}
 
                 alt="movie poster"/>
             <div className="movie1-info">
-              <label>Title: {movies[0].title}</label>
-              <label>Release date: {movies[0].release}</label>
+              <label>Title: {movies[movieIndex].title}</label>
+              <label>Release date: {movies[movieIndex].release}</label>
             </div>
           </div>
           <div className="choices">
-            <a href="/swipe">
+            <a onClick={() => setMovieIndex(movieIndex + 1)}>
               <img src="images/garbage.png" alt="dislike button"/>
             </a>
-            <a href="/swipe">
+            <a onClick={() => setMovieIndex(movieIndex + 1)}>
               <img src="images/like.png" alt="like button"/>
             </a>
           </div>
         </>}
 
         <div className="bottom-nav">
-          <a href="/swipe">
+          <a onClick={() => setMovieIndex(movieIndex + 1)}>
             <img src="images/pic.png" alt="pic"/>
           </a>
 
