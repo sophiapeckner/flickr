@@ -2,7 +2,6 @@ package com.flickr.endpoints;
 
 import com.flickr.entities.Movie;
 import com.flickr.storage.MovieRepository;
-import com.flickr.storage.SessionRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
 import org.json.JSONArray;
@@ -23,6 +22,10 @@ public class SuggestionsEndpoint {
 
     SuggestionsEndpoint(MovieRepository repository) {
         this.repository = repository;
+    }
+
+    public List<Movie> findAll() {
+        return repository.findAll();
     }
 
     public Movie generateSuggestions() throws JSONException {

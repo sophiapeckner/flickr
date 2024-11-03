@@ -1,7 +1,8 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
 import Movie from "Frontend/generated/com/flickr/entities/Movie";
-import {generateSuggestions} from "Frontend/generated/SuggestionsEndpoint";
+import {findAll, generateSuggestions} from "Frontend/generated/SuggestionsEndpoint";
+
 
 export default function SwipeView() {
 const [movie, setMovie] =useState<Movie[]>([]);
@@ -10,7 +11,16 @@ useEffect(() => {
          generateSuggestions().then(setMovie);
     }, []);
 
-
+  const handleGetMovies = async () => {
+    try {
+      const movies = await findAll();
+      if (movies)
+        console.log(movies);
+      setMovie(movie);
+    } catch (error) {
+      console.error("Error creating session: ", error);
+    }
+  }
 
   return (
     <>
@@ -20,6 +30,7 @@ useEffect(() => {
       <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
         <div>
           <h2>flickr</h2>
+          <button onClick={handleGetMovies}></button>
         </div>
 
         <div className="movie1">

@@ -37,6 +37,9 @@ public class Movie {
         this.release = release;
     }
 
+    public Movie() {
+    }
+
     public Long getId() {
         return id;
     }
