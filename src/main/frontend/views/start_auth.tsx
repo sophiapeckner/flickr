@@ -1,8 +1,9 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import Session from "Frontend/generated/com/flickr/entities/Session";
-import {createSession, findAll} from "Frontend/generated/SessionEndpoint";
+import {createSession, findAll, joinSession} from "Frontend/generated/SessionEndpoint";
 import { colors } from "../themes/flickr/colors";
+import member from "Frontend/generated/com/flickr/entities/Member";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
@@ -12,18 +13,35 @@ export const config: ViewConfig = {
 export default function StartView() {
     const [sessions, setSessions] = useState<Session[]>([]);
 
+    // For database visualization purposes
     useEffect(() => {
         findAll().then(setSessions)
     }, []);
 
     const handleCreateGroup = async () => {
+        let session;
+
+        // Try creating a Session and pushing to H2 DB
         try {
-            const session = await createSession();
-            if (session)
-                console.log(sessions);
-                setSessions([...sessions, session]);
+
+            session = await createSession();
         } catch (error) {
             console.error("Error creating session: ", error);
+            return;
+        }
+
+        // Try adding the group admin as a member of the Session that was just created
+        if (session && session.groupCode != null) {
+            try {
+                // For now, add the Group Admin as an Anon user
+                await joinSession(session.groupCode, "", "", "");
+            } catch (error) {
+                console.error("Error adding Group Admin to Session: ", error);
+                return;
+            }
+            // If both the session creation and join succeed, update state and redirect
+            window.location.href = `/landing/${session.groupCode}`;
+            setSessions([...sessions, session]);
         }
     }
 
@@ -43,15 +61,22 @@ export default function StartView() {
           <a href="/groupcode">
             <button style={styles.groupChoiceButton}>Join Group</button>
           </a>
-          <a href="/grouplanding">
+          <a>
             <button style={styles.groupChoiceButton} onClick={handleCreateGroup}>Create Group</button>
           </a>
       </div>
-        {sessions.map(session => (
+        {/*For viewing H2 Database entries*/}
+        {sessions.map((session) => (
             <div key={session.id}>
-                <h1>hi</h1>
-                <span>{session.id}</span>
-                <span>{session.groupCode}</span>
+                <span>Group Code: {session.groupCode}</span>
+                <br />
+                {session.members && session.members.length > 0 ? (
+                    session.members.map((member, idx) => (
+                        <span key={idx}>Member: {member?.username || 'Unknown'}</span>
+                    ))
+                ) : (
+                    <span>No members yet.</span>
+                )}
             </div>
         ))}
     </div>

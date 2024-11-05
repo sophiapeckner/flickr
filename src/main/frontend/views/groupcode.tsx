@@ -27,7 +27,7 @@ export default function GroupCodeView() {
           <input style={styles.codeInput} placeholder="XXXXXX" type="text" />
         </div>
 
-        <a href="/grouplanding">
+        <a href="/landing/{groupCode}">
           <button style={styles.button}>join</button>
         </a>
       </div>
