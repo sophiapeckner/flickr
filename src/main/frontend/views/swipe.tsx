@@ -1,48 +1,20 @@
 // import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
+import Movie from "Frontend/generated/com/flickr/entities/Movie";
+import {findAll, generateSuggestions} from "Frontend/generated/SuggestionsEndpoint";
 import { colors } from "../themes/flickr/colors";
 
-interface Movie {
-    id: number;
-    title: string;
-    url: string;
-    year: string;
-}
 
 export default function SwipeView() {
-  const fullAuth = 'Bearer ' + import.meta.env.VITE_KEY;
+  const [isBusy, setBusy] = useState(true);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movieIndex, setMovieIndex] = useState(0);
 
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: fullAuth,
-    },
-  };
-
-  const [titles, setTitles] = useState([]);
-
-  function getRandomNumber(max: number) {
-    return Math.floor(Math.random() * max);
-  }
-
-  const [movies, setMovies] = useState([]);
   useEffect(() => {
-    let number = getRandomNumber(500);
-    fetch(
-      "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=" +
-        number +
-        "&sort_by=popularity.desc",
-      options
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setMovies(data.results[0])
-      }
-
-      )
-      .catch((err) => console.error(err));
-  }, []);
+           generateSuggestions()
+               .then(r => findAll().then(r => setMovies(r)))
+               .then(r => setBusy(false));
+      }, []);
 
   return (
     <div style={styles.outerDiv}>
@@ -55,28 +27,32 @@ export default function SwipeView() {
         </a>
       </div>
 
-      <div style={styles.movieProfile}>
-        {/* <img
-          style={styles.moiveThumbnail}
-          src={"https://image.tmdb.org/t/p/w500/" }
-          alt=""
-        /> */}
-        {/* temp movie thumbnail */}
-        <img style={styles.moiveThumbnail} src="images/movie.jpg" alt="" />
-        <div style={styles.movieInfo}>
-          <label style={styles.movieLabel}>Title: {titles}</label>
-          <label style={styles.movieLabel}>Year: 2022 </label>
-        </div>
-      </div>
+      
+      {isBusy ? (
+            <h3>Loading Movies</h3>
+        ) : <>
+          <div style={styles.movieProfile}>
+            <img
+                style={styles.moiveThumbnail}
+                src={movies[movieIndex].imgURL}
 
-      <div style={styles.choices}>
-        <a href="/swipe">
-          <img style={{float: 'left'}} src="images/garbage.png" alt="dislike button" />
-        </a>
-        <a href="/swipe">
-          <img style={{float: 'right'}} src="images/like.png" alt="like button" />
-        </a>
-      </div>
+                alt="movie poster"/>
+            <div style={styles.movieInfo}>
+              <label style={styles.movieLabel}>Title: {movies[movieIndex].title}</label>
+              <label style={styles.movieLabel}>Release date: {movies[movieIndex].release}</label>
+            </div>
+          </div>
+          <div style={styles.choices}>
+            <a onClick={() => setMovieIndex(movieIndex + 1)} href="/swipe">
+              <img style={{float: 'left'}} src="images/garbage.png" alt="dislike button" />
+            </a>
+            <a onClick={() => setMovieIndex(movieIndex + 1)} href="/swipe">
+              <img style={{float: 'right'}} src="images/like.png" alt="like button" />
+            </a>
+          </div>
+        </>}
+
+      
 
       <div style={styles.bottomNav}>
         <a href="/swipe">
