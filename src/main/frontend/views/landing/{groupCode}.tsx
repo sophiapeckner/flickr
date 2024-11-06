@@ -18,7 +18,7 @@ export default function GroupLandingView() {
       fetch(`/api/session/${groupCode}`)
           .then(response => response.json())
           .then(data => setMembers(data.members));
-    }, 5000); // Poll every 5 seconds
+    }, 10); // Poll every 5 seconds
 
     return () => clearInterval(intervalId);
   }, [groupCode]);
