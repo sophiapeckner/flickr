@@ -12,7 +12,7 @@ public class Session {
 
     private String groupCode;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Member> members;
     // Session can have many members where each member belongs to only one session
 

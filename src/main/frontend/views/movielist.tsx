@@ -1,6 +1,8 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
 import { colors } from "../themes/flickr/colors";
+// import { MovieListController } from "Frontend/generated/endpoints.ts";
+// import { useState, useEffect } from "react";
 
 export const config: ViewConfig = {
   menu: { order: 7, icon: "line-awesome/svg/file.svg" },
@@ -8,6 +10,13 @@ export const config: ViewConfig = {
 };
 
 export default function MovieListView() {
+  // const [selectedMovies, setSelectedMovies] = useState([]);
+  //
+  //   useEffect(() => {
+  //     MovieListController.getSelectedMovieList().then(setSelectedMovies).then(console.log(selectedMovies));
+  //   });
+
+
   return (
     <div style={styles.outerDiv}>
       <div style={{ backgroundColor: "white" }}>

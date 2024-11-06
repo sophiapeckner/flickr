@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,20 +17,26 @@ public class Member {
     private String email;
     private String pass;
     private String username;
-    private List<String> watchProviders;
+    private List<String> watchProviders = new ArrayList<>();;
+
+    private Long sessionID;
+    private int currentMovieIndex;
 
     @ManyToOne
     private Session session;
 
-    public Member(Long id, String email, String pass, String username) {
-        this.id = id;
+    public Member(String email, String pass, String username) {
         this.email = email;
         this.pass = pass;
         this.username = username;
     }
 
     public Member() {
-
+        // Used for defining an Anon user
+        // Because Hilla expects all memember variable to be non-null, email & pass are set to dummy values
+        this.email = "anon@gmail.com";
+        this.pass = "anon";
+        this.username = "Anonymous";
     }
 
     public Long getId() {
