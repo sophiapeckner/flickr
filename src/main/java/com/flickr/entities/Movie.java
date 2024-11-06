@@ -4,14 +4,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Movie {
     @Id
-    @GeneratedValue
     private Long id;
+
     private String title;
 
     private List<String> genres;
@@ -24,15 +25,24 @@ public class Movie {
 
     private Integer votes;
 
-    public Movie(String title, String imgURL) {
-        this.title = title;
-        this.imgURL = "https://image.tmdb.org/t/p/w500/" + imgURL;
-    }
 
-    public Movie(String title, String imgURL, String release) {
+    public Movie(Long id, String title, String overview, String imgURL, String release) {
+        this.id = id;
         this.title = title;
+        // Figure out how to map genre ids to the genres
+        this.genres = new ArrayList<>();
+
+        // Figure out a better way to save the entire overview
+        if (overview.length() < 255) {
+            this.overview = overview;
+        }
+        else {
+            this.overview = overview.substring(0, 255);
+        }
+
         this.imgURL = "https://image.tmdb.org/t/p/w500/" + imgURL;
         this.release = release;
+        this.votes = 0;
     }
 
     public Movie() {
