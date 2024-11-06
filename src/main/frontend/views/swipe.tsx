@@ -43,10 +43,10 @@ export default function SwipeView() {
             </div>
           </div>
           <div style={styles.choices}>
-            <a onClick={() => setMovieIndex(movieIndex + 1)} href="/swipe">
+            <a onClick={() => setMovieIndex(movieIndex + 1)}>
               <img style={{float: 'left'}} src="images/garbage.png" alt="dislike button" />
             </a>
-            <a onClick={() => setMovieIndex(movieIndex + 1)} href="/swipe">
+            <a onClick={() => setMovieIndex(movieIndex + 1)}>
               <img style={{float: 'right'}} src="images/like.png" alt="like button" />
             </a>
           </div>
@@ -105,6 +105,7 @@ const styles = {
     margin: 20,
     padding: '5px 40px',
     borderRadius: 12,
+    width: '70%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
