@@ -2,6 +2,7 @@ package com.flickr.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,6 @@ public class Movie {
     @GeneratedValue
     private Long id;
     private String title;
-//     private String date;
 
     private List<String> genres;
 
@@ -29,12 +29,13 @@ public class Movie {
         this.imgURL = "https://image.tmdb.org/t/p/w500/" + imgURL;
     }
 
-    public Movie(String title, List<String> genres, String overview, String imgURL, String release) {
+    public Movie(String title, String imgURL, String release) {
         this.title = title;
-        this.genres = genres;
-        this.overview = overview;
         this.imgURL = "https://image.tmdb.org/t/p/w500/" + imgURL;
         this.release = release;
+    }
+
+    public Movie() {
     }
 
     public Long getId() {

@@ -2,6 +2,7 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import Session from "Frontend/generated/com/flickr/entities/Session";
 import {createSession, findAll, joinSession} from "Frontend/generated/SessionEndpoint";
+
 import { colors } from "../themes/flickr/colors";
 import member from "Frontend/generated/com/flickr/entities/Member";
 
