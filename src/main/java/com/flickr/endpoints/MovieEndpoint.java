@@ -70,5 +70,14 @@ public class MovieEndpoint {
         }
     }
 
+    // Gets movies with at least one vote
+    public List<Movie> getVotedMovies() {
+        List<Movie> allMovies = repository.findAll();
+        return allMovies
+                .stream()
+                .filter(movie -> movie.getVotes() > 0)
+                .toList();
+    }
+
 }
 

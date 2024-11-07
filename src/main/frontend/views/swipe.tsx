@@ -3,7 +3,6 @@ import Movie from "Frontend/generated/com/flickr/entities/Movie";
 import {addVotes, findAll, generateSuggestions} from "Frontend/generated/MovieEndpoint";
 import { style } from "../themes/flickr/css.js";
 import { colors } from "Frontend/themes/flickr/colors.js";
-import movie from "Frontend/generated/com/flickr/entities/Movie";
 
 
 export default function SwipeView() {
