@@ -53,6 +53,7 @@ public class SuggestionsEndpoint {
             repository.save(new Movie(
                     Long.parseLong(results.getJSONObject(i).getString("id")),
                     results.getJSONObject(i).get("original_title").toString(),
+                    results.getJSONObject(i).get("genre_ids").toString(),
                     results.getJSONObject(i).get("overview").toString(),
                     results.getJSONObject(i).get("backdrop_path").toString(),
                     results.getJSONObject(i).get("release_date").toString()));
