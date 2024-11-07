@@ -1,5 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { colors } from "../themes/flickr/colors";
+import { style } from "../themes/flickr/css.js";
+import { colors } from "Frontend/themes/flickr/colors.js";
 
 export const config: ViewConfig = {
   menu: { order: 0, icon: "line-awesome/svg/file.svg" },
@@ -8,22 +9,22 @@ export const config: ViewConfig = {
 
 export default function LogInView() {
   return (
-    <div style={styles.outerDiv}>
-      <h2 style={styles.pageTitle}>flickr</h2>
-      <img style={styles.headerImage} src="images/movie_reel.png" />
+    <div style={style.outerDiv}>
+      <h2 style={{...style.pageTitle, marginTop: 20}}>flickr</h2>
+      <img style={{width: '100%'}} src="images/movie_reel.png" />
     
-    <div style={styles.innerDiv}>
-      <form style={styles.form}>
-        <label style={styles.label}>Email</label>
-        <input style={styles.input}
+    <div style={style.innerDiv}>
+      <form style={{...style.authFormAddOn, ...style.form}}>
+        <label style={style.label}>Email</label>
+        <input style={style.input}
           type="text"
           id="email"
           name="email"
           placeholder="example@gmail.com"
         />
 
-        <label style={styles.label}>Password</label>
-        <input style={styles.input}
+        <label style={style.label}>Password</label>
+        <input style={style.input}
           type="password"
           id="password"
           name="password"
@@ -34,7 +35,7 @@ export default function LogInView() {
           <input style={styles.signUpButton} value="Sign In" />
         </a>
 
-        <div style={styles.redirect}>
+        <div style={style.redirect}>
           <a style={{float: 'left'}} href="/signup">Forgot Password</a>
           <a style={{float: 'right'}} href="/signup">Sign Up</a>
         </div>
@@ -50,51 +51,6 @@ export default function LogInView() {
 }
 
 const styles = {
-  outerDiv: {
-    display: 'flex',
-    height: '100%',
-    flexDirection: 'column',
-  },
-  innerDiv: {
-    flexDirection: 'column',
-    width: '100%',
-    margin: 'auto',
-  },
-  headerImage: {
-    width: '100%',
-  },
-  pageTitle: {
-    color: colors.main, 
-    textAlign: 'center',
-    fontSize: '48px',
-    fontFamily: 'Nunito, Verdana',
-    marginTop: 20
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 'auto',
-    width: '80%',
-    border: '1px solid grey',
-    borderRadius: 8,
-    padding: 15,
-  },
-  label: {
-    marginRight: 'auto', 
-    marginLeft: '5%'
-  },
-  input: {
-    width: '90%',
-    height: 30,
-    margin: 'auto',
-    border: '1px solid black',
-    marginBottom: 20,
-    fontSize: 16,
-    paddingLeft: 10,
-    borderRadius: 8,
-  },
   buttonDiv: {
     justifyContent: 'center', 
     display: 'flex',
@@ -125,10 +81,4 @@ const styles = {
     fontSize: 16,
     cursor: 'pointer',
   },
-  redirect: {
-    width: '100%',
-    fontSize: 16,
-    marginTop: 10,
-    justifyContent: 'center',
-  }
 }

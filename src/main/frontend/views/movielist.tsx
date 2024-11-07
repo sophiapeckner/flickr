@@ -1,6 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
-import { colors } from "../themes/flickr/colors";
+import { style } from "../themes/flickr/css.js";
+import { colors } from "Frontend/themes/flickr/colors.js";
 // import { MovieListController } from "Frontend/generated/endpoints.ts";
 // import { useState, useEffect } from "react";
 
@@ -18,12 +19,12 @@ export default function MovieListView() {
 
 
   return (
-    <div style={styles.outerDiv}>
-      <div style={{ backgroundColor: "white" }}>
-        <a style={styles.backButton} href="/">
+    <div style={{...style.outerDiv, backgroundColor: colors.light}}>
+      <div style={{backgroundColor: 'white'}}>
+        <a style={style.backButton} href="/start_auth">
           X
         </a>
-        <a style={styles.topCornerButton} href="/userprofile">
+        <a style={style.topCornerButton} href="/userprofile">
           <img src="images/profile.png" />
         </a>
       </div>
@@ -45,7 +46,7 @@ export default function MovieListView() {
         </div>
       </div>
 
-      <div style={styles.bottomNav}>
+      <div style={style.bottomNav}>
         <a href="/swipe">
           <img src="images/pic.png" alt="pic" />
         </a>
@@ -58,24 +59,6 @@ export default function MovieListView() {
 }
 
 const styles = {
-  outerDiv: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100%",
-    backgroundColor: colors.light,
-  },
-  backButton: {
-    height: "50px",
-    margin: "15px",
-    float: "left",
-    fontSize: 20,
-    marginRight: 15,
-  },
-  topCornerButton: {
-    height: "50px",
-    margin: "15px",
-    float: "right",
-  },
   moviesSelected: {
     backgroundColor: colors.light,
     display: "flex",
@@ -90,16 +73,5 @@ const styles = {
     width: 55,
     backgroundColor: colors.main,
     marginRight: 20,
-  },
-  bottomNav: {
-    width: "100%",
-    backgroundColor: colors.main,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    marginTop: "25px",
-    position: "absolute",
-    bottom: "0px",
   },
 };
