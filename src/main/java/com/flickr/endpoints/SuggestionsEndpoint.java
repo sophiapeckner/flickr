@@ -50,7 +50,11 @@ public class SuggestionsEndpoint {
         }
         JSONArray results = suggestionsObject.getJSONArray("results");
         for (int i = 0; i < results.length(); i++) {
-            repository.save(new Movie(results.getJSONObject(i).get("original_title").toString(),
+            repository.save(new Movie(
+                    Long.parseLong(results.getJSONObject(i).getString("id")),
+                    results.getJSONObject(i).get("original_title").toString(),
+                    results.getJSONObject(i).get("genre_ids").toString(),
+                    results.getJSONObject(i).get("overview").toString(),
                     results.getJSONObject(i).get("backdrop_path").toString(),
                     results.getJSONObject(i).get("release_date").toString()));
         }
