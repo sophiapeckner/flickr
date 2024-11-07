@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="IU-242.23726.103">
+    <data-source name="testdb" uuid="d32db1ca-5494-4c86-937e-00be0b97102e">
+      <database-info product="H2" version="2.2.220 (2023-07-04)" jdbc-version="4.2" driver-name="H2 JDBC Driver" driver-version="2.2.220 (2023-07-04)" dbms="H2" exact-version="2.2.220" exact-driver-version="2.2">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact" />
+      <user-name>sa</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+  </component>
+</project>
