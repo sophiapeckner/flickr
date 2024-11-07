@@ -43,12 +43,18 @@ export default function SwipeView() {
             </div>
           </div>
           <div style={styles.choices}>
-            <a onClick={() => setMovieIndex(movieIndex + 1)}>
+            <a onClick={() => {
+              if (movieIndex + 1 < movies.length) {
+                setMovieIndex(movieIndex + 1);
+              }}}>
               <img style={{float: 'left'}} src="images/garbage.png" alt="dislike button" />
             </a>
             <a onClick={() => {
                 addVotes(String(movies[movieIndex].id));
-                setMovieIndex(movieIndex + 1);}}>
+                if (movieIndex + 1 < movies.length) {
+                  setMovieIndex(movieIndex + 1);
+                }
+                }}>
               <img style={{float: 'right'}} src="images/like.png" alt="like button" />
             </a>
           </div>
