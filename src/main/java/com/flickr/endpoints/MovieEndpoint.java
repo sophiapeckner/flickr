@@ -14,13 +14,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Optional;
 
 @Endpoint
 @AnonymousAllowed
-public class SuggestionsEndpoint {
+public class MovieEndpoint {
     private MovieRepository repository;
 
-    SuggestionsEndpoint(MovieRepository repository) {
+    MovieEndpoint(MovieRepository repository, MovieRepository movieRepository) {
         this.repository = repository;
     }
 
@@ -60,6 +61,14 @@ public class SuggestionsEndpoint {
         }
     }
 
+    public void addVotes(String id) {
+        Optional<Movie> movieOptional = repository.findById(Long.valueOf(id));
+        if (movieOptional.isPresent()) {
+            Movie movie = movieOptional.get();
+            movie.setVotes(movie.getVotes() + 1);
+            repository.save(movie);
+        }
+    }
 
 }
 

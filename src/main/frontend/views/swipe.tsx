@@ -1,9 +1,9 @@
-// import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
 import Movie from "Frontend/generated/com/flickr/entities/Movie";
-import {findAll, generateSuggestions} from "Frontend/generated/SuggestionsEndpoint";
+import {addVotes, findAll, generateSuggestions} from "Frontend/generated/MovieEndpoint";
 import { style } from "../themes/flickr/css.js";
 import { colors } from "Frontend/themes/flickr/colors.js";
+import movie from "Frontend/generated/com/flickr/entities/Movie";
 
 
 export default function SwipeView() {
@@ -47,7 +47,9 @@ export default function SwipeView() {
             <a onClick={() => setMovieIndex(movieIndex + 1)}>
               <img style={{float: 'left'}} src="images/garbage.png" alt="dislike button" />
             </a>
-            <a onClick={() => setMovieIndex(movieIndex + 1)}>
+            <a onClick={() => {
+                addVotes(String(movies[movieIndex].id));
+                setMovieIndex(movieIndex + 1);}}>
               <img style={{float: 'right'}} src="images/like.png" alt="like button" />
             </a>
           </div>
