@@ -9,7 +9,17 @@ export const config: ViewConfig = {
 
 export default function UserProfileView() {
   // State to track the select menus
-  const [selectMenus, setSelectMenus] = useState<string[]>([]);
+  const [selectMenus, setSelectMenus] = useState<string[]>(['']);
+
+  const [addButtonHovered, setAddButtonHovered] = useState<boolean>(false);
+
+  const [usernameHovered, setUsernameHovered] = useState<boolean>(false);
+
+  const [passwordHovered, setPasswordHovered] = useState<boolean>(false);
+
+  const [emailHovered, setEmailHovered] = useState<boolean>(false);
+
+
 
   // Options for the select menus (can be customized)
   const options = ['Netflix', 'Hulu', 'Paramount+', 'Disney+'];
@@ -32,49 +42,66 @@ export default function UserProfileView() {
   return (
     <>
       <a href="/start_auth">
-        <button className="back-button">X</button>
+        <button style={styles.backButton}>X</button>
       </a>
       <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-        <h2>flickr</h2>
-        <h3 className="username">ExampleUser Profile</h3>
+        <h2 style={styles.header2}>flickr</h2>
+        <h3 style={styles.username}>ExampleUser Profile</h3>
         <form style={styles.form}>
-          <div className="input">
-            <label className="emailLabel">Username</label>
+          <div style={styles.profileInputs}>
+            <label style={styles.label}>Username</label>
             <br />
             <input
               type="text"
               id="email"
               name="email"
-              className="emailInput"
               placeholder="example-username"
+              style={{
+                ...styles.input,
+                backgroundColor: usernameHovered ? '#dbdbdb' : '#ffffff'
+              }}
+              onMouseEnter={() => setUsernameHovered(true)}
+              onMouseLeave={() => setUsernameHovered(false)}
             />
           </div>
 
-          <div className="input">
-            <label>Password</label>
+          <div style={styles.profileInputs}>
+            <label style={styles.label}>Password</label>
             <br />
             <input
               type="password"
               id="password"
               name="password"
               placeholder="**********"
+              style={{
+                ...styles.input,
+                backgroundColor: passwordHovered ? '#dbdbdb' : '#ffffff'
+              }}
+              onMouseEnter={() => setPasswordHovered(true)}
+              onMouseLeave={() => setPasswordHovered(false)}
             />
           </div>
 
-          <div className="input">
-            <label className="emailLabel">Email</label>
+          <div style={styles.profileInputs}>
+            <label style={styles.label}>Email</label>
             <br />
             <input
               type="text"
               id="email"
               name="email"
-              className="emailInput"
               placeholder="example@gmail.com"
+              style={{
+                ...styles.input,
+                backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'
+              }}
+              onMouseEnter={() => setEmailHovered(true)}
+              onMouseLeave={() => setEmailHovered(false)}
+               
             />
           </div>
         </form>
         <form style={styles.servicesForm}>
-          <label htmlFor="StreamService">Available Streaming Services: </label>
+          <label style={styles.label}>Available Streaming Services: </label>
           <div style={styles.servicesDiv}>
             {selectMenus.map((value, index) => (
               <div key={index}>
@@ -85,7 +112,7 @@ export default function UserProfileView() {
                 >
                   <option value="" style={styles.firstSelect}>Select an option</option>
                   {options.map((option) => (
-                    <option key={option} value={option}>
+                    <option key={option} value={option} style={styles.option}>
                       {option}
                     </option>
                   ))}
@@ -94,7 +121,18 @@ export default function UserProfileView() {
             
             ))}
           </div>
-          <button type="button" style={styles.moreServicesButton} onClick={addSelectMenu}>+ Streaming Service</button>
+          <button 
+            type="button" 
+            style={{
+              ...styles.moreServicesButton,
+               backgroundColor: addButtonHovered ? '#dbdbdb' : '#ffffff'
+            }} 
+            onClick={addSelectMenu}
+            onMouseEnter={() => setAddButtonHovered(true)}
+            onMouseLeave={() => setAddButtonHovered(false)}
+            >
+              + Streaming Service
+            </button>
         </form>
       </div>
     </>
@@ -102,6 +140,15 @@ export default function UserProfileView() {
 }
 
 const styles = {
+  header2:{
+    color: '#62598b',
+    textAlign: 'center',
+    fontSize: '37px',
+    marginTop: '15px',
+  },
+  label:{
+    fontSize:'25px'
+  },
   form: {
     margin: 'auto',
     width: '80%',
@@ -116,26 +163,72 @@ const styles = {
     width: '80%',
     border: '1px solid grey',
     height:'30%',
-    overflow:'auto',
   },
   servicesDiv:{
-    overflow:'auto',
+    overflowY:'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    unicodeBidi: 'isolate',
+    width: 'auto',
+    margin:'0 350px',
+    maxHeight: '60%',
   },
   serviceSelect: {
+    margin:'auto',
     marginBottom: '5px',
-    height: 50,
     marginTop: '5px', 
+    height: '50px',
+    borderRadius:'3px',
+    textAlign:'center',
+    fontSize: '20px',
+    fontFamily:'Times New Roman, Times, serif',
+    display: 'flex',
   },
   firstSelect: {
     color: 'gainsboro',
+    fontSize: 16,
+  },
+  option:{
+    fontSize: 16,
   },
   moreServicesButton:{
     width: '200px',
     height: '35px',
-    backgroundColor: '#ffffff',
     alignSelf: 'center',
     borderColor: '#ffffff',
-    marginTop: '20px',
-  }
+    marginTop: '10px',
+    marginBottom: '10px',
+  },
+  select:{
+    borderRadius: '3px',
+    height: '50px',
+    display: 'flex',
+    textAlign: 'center',
+    margin: 'auto',
+    fontFamily:'Times New Roman, Times, serif',
+    fontSize: '20px',
+  },
+  backButton:{
+    border: '0px',
+    fontSize: '20px',
+    float: 'right',
+  },
+  username: {
+    marginBottom: '12px',
+  },
+  profileInputs:{
+    marginBottom:'10px',
+  },
+  input: {
+    width: '90%',
+    height: 30,
+    margin: 'auto',
+    border: '1px solid black',
+    marginBottom: 20,
+    fontSize: 16,
+    paddingLeft: 10,
+    borderRadius: 8,
+  },
+
   
 }
