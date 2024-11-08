@@ -1,6 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { colors } from "../themes/flickr/colors";
 import { useState } from "react";
+import { style } from "../themes/flickr/css.js";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -99,6 +100,10 @@ export default function UserProfileView() {
                
             />
           </div>
+          
+          <a href="/start_auth">
+            <input style={style.button} value="Save" />
+          </a>
         </form>
         <form style={styles.servicesForm}>
           <label style={styles.label}>Available Streaming Services: </label>
@@ -232,3 +237,5 @@ const styles = {
 
   
 }
+
+

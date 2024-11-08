@@ -1,84 +1,68 @@
-// import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
-import { colors } from "../themes/flickr/colors";
+import Movie from "Frontend/generated/com/flickr/entities/Movie";
+import {addVotes, findAll, generateSuggestions} from "Frontend/generated/MovieEndpoint";
+import { style } from "../themes/flickr/css.js";
+import { colors } from "Frontend/themes/flickr/colors.js";
 
-interface Movie {
-    id: number;
-    title: string;
-    url: string;
-    year: string;
-}
 
 export default function SwipeView() {
-  const fullAuth = 'Bearer ' + import.meta.env.VITE_KEY;
+  const [isBusy, setBusy] = useState(true);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movieIndex, setMovieIndex] = useState(0);
 
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: fullAuth,
-    },
-  };
-
-  const [titles, setTitles] = useState([]);
-
-  function getRandomNumber(max: number) {
-    return Math.floor(Math.random() * max);
-  }
-
-  const [movies, setMovies] = useState([]);
   useEffect(() => {
-    let number = getRandomNumber(500);
-    fetch(
-      "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=" +
-        number +
-        "&sort_by=popularity.desc",
-      options
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setMovies(data.results[0])
-      }
-
-      )
-      .catch((err) => console.error(err));
-  }, []);
+           generateSuggestions()
+               .then(r => findAll().then(r => setMovies(r)))
+               .then(r => setBusy(false));
+      }, []);
 
   return (
-    <div style={styles.outerDiv}>
+    <div style={style.outerDiv}>
       <div>
-        <a style={styles.backButton} href="/">
+        <a style={style.backButton} href="/start_auth">
           X
         </a>
-        <a style={styles.topCornerButton} href="/userprofile">
+        <a style={style.topCornerButton} href="/userprofile">
           <img src="images/profile.png" />
         </a>
       </div>
 
-      <div style={styles.movieProfile}>
-        {/* <img
-          style={styles.moiveThumbnail}
-          src={"https://image.tmdb.org/t/p/w500/" }
-          alt=""
-        /> */}
-        {/* temp movie thumbnail */}
-        <img style={styles.moiveThumbnail} src="images/movie.jpg" alt="" />
-        <div style={styles.movieInfo}>
-          <label style={styles.movieLabel}>Title: {titles}</label>
-          <label style={styles.movieLabel}>Year: 2022 </label>
-        </div>
-      </div>
+      
+      {isBusy ? (
+            <h3>Loading Movies</h3>
+        ) : <>
+          <div style={styles.movieProfile}>
+            <img
+                style={styles.moiveThumbnail}
+                src={movies[movieIndex].imgURL}
 
-      <div style={styles.choices}>
-        <a href="/swipe">
-          <img style={{float: 'left'}} src="images/garbage.png" alt="dislike button" />
-        </a>
-        <a href="/swipe">
-          <img style={{float: 'right'}} src="images/like.png" alt="like button" />
-        </a>
-      </div>
+                alt="movie poster"/>
+            <div style={styles.movieInfo}>
+              <label style={styles.movieLabel}>Title: {movies[movieIndex].title}</label>
+              <label style={styles.movieLabel}>Release date: {movies[movieIndex].release}</label>
+            </div>
+          </div>
+          <div style={styles.choices}>
+            <a onClick={() => {
+              if (movieIndex + 1 < movies.length) {
+                setMovieIndex(movieIndex + 1);
+              }}}>
+              <img style={{float: 'left'}} src="images/garbage.png" alt="dislike button" />
+            </a>
+            <a onClick={() => {
+                addVotes(String(movies[movieIndex].id));
+                if (movieIndex + 1 < movies.length) {
+                  setMovieIndex(movieIndex + 1);
+                }
+                }}>
+              <img style={{float: 'right'}} src="images/like.png" alt="like button" />
+            </a>
+          </div>
+        </>}
 
-      <div style={styles.bottomNav}>
+      
+
+      <div style={style.bottomNav}>
         <a href="/swipe">
           <img src="images/pic.png" alt="pic" />
         </a>
@@ -91,23 +75,6 @@ export default function SwipeView() {
 }
 
 const styles = {
-  outerDiv: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-  backButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'left',
-    fontSize: 20,
-    marginRight: 15,
-  },
-  topCornerButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'right',
-  },
   movieProfile: {
     width: '40%',
     height: '50%',
@@ -129,6 +96,7 @@ const styles = {
     margin: 20,
     padding: '5px 40px',
     borderRadius: 12,
+    width: '70%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -143,15 +111,4 @@ const styles = {
   choices: {
     margin: '0px 150px',
   },
-  bottomNav: {
-    width: '100%',
-    backgroundColor: colors.main,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    marginTop: '25px',
-    position: 'absolute',
-    bottom: '0px',
-  }
 }
