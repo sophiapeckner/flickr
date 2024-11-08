@@ -1,12 +1,73 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { colors } from "../themes/flickr/colors";
+import { colors } from "../../themes/flickr/colors";
+import {useParams} from "react-router-dom";
+import {MultiSelectComboBox, Select} from "@vaadin/react-components";
+import {useEffect, useState} from "react";
 
 export const config: ViewConfig = {
   menu: { order: 5, icon: "line-awesome/svg/file.svg" },
   title: "Pick Genre",
 };
 
-export default function PickGenreView() {
+export default function PreferencesView() {
+  const { groupCode } = useParams();
+  const [genres, setGenres] = useState([]);
+  const [streamingPlatforms, setStreamingPlatforms] = useState([]);
+
+  // Retrieve every genre option available on The Movie Database
+  const fetchGenres = async () => {
+    try {
+      const response = await fetch(
+          "https://api.themoviedb.org/3/genre/movie/list?language=en",
+          {
+            headers: {
+              Authorization: `Bearer ${import.meta.env.VITE_MOVIE_DB_TOKEN}`,
+              accept: "application/json",
+            },
+          }
+      )
+      const data = await response.json();
+      if (data.genres) {
+        return data.genres.map((genre) => (
+            {
+              label: genre.name,
+              value: genre.name,
+            }));
+      }
+    } catch (error) {
+      console.error("Error fetching genres: ", error);
+    }
+  };
+
+  const fetchStreamingPlatforms = async () => {
+    try {
+      const response = await fetch(
+          "https://api.themoviedb.org/3/watch/providers/movie?language=en-US",
+          {
+            headers: {
+              Authorization: `Bearer ${import.meta.env.VITE_MOVIE_DB_TOKEN}`,
+              accept: "application/json",
+            },
+          }
+      )
+      const data = await response.json();
+      if (data.results) {
+        return data.results.map((platform) => (
+            {
+              label: platform.provider_name,
+              value: platform.provider_name,
+            }));
+      }
+    } catch (error) {
+      console.error("Error fetching genres: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGenres().then(setGenres)
+    fetchStreamingPlatforms().then(setStreamingPlatforms)
+  }, []);
+
   return (
     <div style={styles.outerDiv}>
       <div>
@@ -19,26 +80,24 @@ export default function PickGenreView() {
       </div>
 
       <h6 style={styles.groupTitle}>Group Code: </h6>
-      <h3 style={styles.groupCode}>XPJMRT</h3>
+      <h3 style={styles.groupCode}>{groupCode}</h3>
 
       <form style={styles.form}>
-        <label style={styles.label} htmlFor="Genre">Genre: </label>
-        <select style={styles.input} name="comedy" id="comedy">
-          <option>Comedy</option>
-          <option>Action</option>
-        </select>
+        <MultiSelectComboBox
+            label="Select Genre(s):"
+            itemLabelPath="label"
+            itemIdPath="value"
+            items={genres}
+            style={{ width: '300px' }}
+        />
 
-        {/*<label style={styles.label} htmlFor="Rating">Rating: </label>*/}
-        {/*<select style={styles.input} name="R" id="R">*/}
-        {/*  <option>R</option>*/}
-        {/*  <option>PG-13</option>*/}
-        {/*</select>*/}
-
-        <label style={styles.label} htmlFor="Streaming Platform">Streaming Platform: </label>
-        <select style={styles.input} name="Netflix" id="Netflix">
-          <option>Netflix</option>
-          <option>Hulu</option>
-        </select>
+        <MultiSelectComboBox
+            label="Select Streaming Platform(s):"
+            itemLabelPath="label"
+            itemIdPath="value"
+            items={streamingPlatforms}
+            style={{ width: '300px' }}
+        />
 
         <a href="/swipe">
           <input style={styles.button} value="Ready"/>
