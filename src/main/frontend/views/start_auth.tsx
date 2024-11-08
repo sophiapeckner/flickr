@@ -24,7 +24,6 @@ export default function StartView() {
 
         // Try creating a Session and pushing to H2 DB
         try {
-
             session = await createSession();
         } catch (error) {
             console.error("Error creating session: ", error);
@@ -41,7 +40,7 @@ export default function StartView() {
                 return;
             }
             // If both the session creation and join succeed, update state and redirect
-            window.location.href = `/landing/${session.groupCode}`;
+            window.location.href = `/preferences/${session.groupCode}`;
             setSessions([...sessions, session]);
         }
     }
