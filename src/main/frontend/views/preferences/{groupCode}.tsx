@@ -28,14 +28,20 @@ export default function PickGenreView() {
           <option>Action</option>
         </select>
 
-        <label style={styles.label} htmlFor="Rating">Rating: </label>
-        <select style={styles.input} name="R" id="R">
-          <option>R</option>
-          <option>PG-13</option>
+        {/*<label style={styles.label} htmlFor="Rating">Rating: </label>*/}
+        {/*<select style={styles.input} name="R" id="R">*/}
+        {/*  <option>R</option>*/}
+        {/*  <option>PG-13</option>*/}
+        {/*</select>*/}
+
+        <label style={styles.label} htmlFor="Streaming Platform">Streaming Platform: </label>
+        <select style={styles.input} name="Netflix" id="Netflix">
+          <option>Netflix</option>
+          <option>Hulu</option>
         </select>
 
         <a href="/swipe">
-          <input style={styles.button} value="Ready" />
+          <input style={styles.button} value="Ready"/>
         </a>
       </form>
     </div>
