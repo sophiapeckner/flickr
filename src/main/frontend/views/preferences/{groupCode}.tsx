@@ -90,6 +90,8 @@ export default function PreferencesView() {
     if (!platformResponse.ok) {
       throw new Error(`Failed to update Session ${groupCode} streaming platforms`);
     }
+
+    window.location.href = `/landing/${groupCode}`;
   }
 
   // Used to populate the dropdowns with every option available in The Movie DB
