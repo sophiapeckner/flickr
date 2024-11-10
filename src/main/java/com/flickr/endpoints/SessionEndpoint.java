@@ -6,10 +6,7 @@ import com.flickr.entities.Session;
 import com.flickr.storage.SessionRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,10 +54,34 @@ public class SessionEndpoint {
                 .orElseThrow(() -> new IllegalArgumentException("Session not found for groupCode: " + groupCode));
     }
 
-    // REST endpoint to fetch a session by groupCode
+    // REST endpoint to fetch a session by groupCode so that it's data can be viewed
     @GetMapping("/{groupCode}")
     public Optional<Session> fetchSession(@PathVariable String groupCode) {
         // Returns Session with corresponding groupCode
         return repository.findByGroupCode(groupCode);
+    }
+
+    @PutMapping("/{groupCode}/genres")
+    public Session updateGenres(@PathVariable String groupCode, @RequestBody List<String> genres) {
+        Optional<Session> session = fetchSession(groupCode);
+        if (session.isPresent()) {
+            // Append all the genres to the session's genre member variable
+            session.get().getGenres().addAll(genres);
+            return repository.save(session.get());
+        } else {
+            throw new IllegalArgumentException("Session not found for groupCode: " + groupCode);
+        }
+    }
+
+    @PutMapping("/{groupCode}/platforms")
+    public Session updateStreamingPlatforms(@PathVariable String groupCode, @RequestBody List<String> platforms) {
+        Optional<Session> session = fetchSession(groupCode);
+        if (session.isPresent()) {
+            // Append all the streaming platforms to the session's streaming member variable
+            session.get().getStreamingPlatforms().addAll(platforms);
+            return repository.save(session.get());
+        } else {
+            throw new IllegalArgumentException("Session not found for groupCode: " + groupCode);
+        }
     }
 }
