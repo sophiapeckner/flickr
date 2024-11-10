@@ -2,7 +2,9 @@ package com.flickr.entities;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Session {
@@ -19,6 +21,12 @@ public class Session {
     @ManyToMany
     private List<Movie> movies;
     // Each Movie can be in many Session; each Session can have many Movie
+
+    @ElementCollection
+    private Set<String> genres = new HashSet<>();
+
+    @ElementCollection
+    private Set<String> streamingPlatforms = new HashSet<>();
 
     public Session(String groupCode) {
         this.groupCode = groupCode;
@@ -60,4 +68,12 @@ public class Session {
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
+
+    public Set<String> getGenres() { return genres; }
+
+    public void setGenres(HashSet<String> genres) { this.genres = genres; }
+
+    public Set<String> getStreamingPlatforms() { return streamingPlatforms; }
+
+    public void setStreamingPlatforms(HashSet<String> streaming_platforms) { this.streamingPlatforms = streaming_platforms; }
 }
