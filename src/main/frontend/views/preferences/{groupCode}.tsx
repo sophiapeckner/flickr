@@ -11,8 +11,11 @@ export const config: ViewConfig = {
 
 export default function PreferencesView() {
   const { groupCode } = useParams();
+
   const [genres, setGenres] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([]);
 
   // Retrieve every genre option available on The Movie Database
   const fetchGenres = async () => {
@@ -31,7 +34,7 @@ export default function PreferencesView() {
         return data.genres.map((genre) => (
             {
               label: genre.name,
-              value: genre.name,
+              value: genre.id,
             }));
       }
     } catch (error) {
@@ -39,6 +42,7 @@ export default function PreferencesView() {
     }
   };
 
+  // Retrieve every streaming platform option available on The Movie Database
   const fetchStreamingPlatforms = async () => {
     try {
       const response = await fetch(
@@ -55,7 +59,7 @@ export default function PreferencesView() {
         return data.results.map((platform) => (
             {
               label: platform.provider_name,
-              value: platform.provider_name,
+              value: platform.provider_id,
             }));
       }
     } catch (error) {
@@ -63,6 +67,32 @@ export default function PreferencesView() {
     }
   };
 
+  const submit = async () => {
+    // selectedGenres & selectedPlatforms are a list of objects
+    // The PUT request only accepts a list of Strings as the body of the request
+    // The conversion from [Object] to [String] is accomplished here:
+    const selectedGenreList = selectedGenres.map((genre) => genre.value);
+    const genreResponse = await fetch(`/api/session/${groupCode}/genres`, {
+      method: "PUT",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(selectedGenreList)
+    });
+    if (!genreResponse.ok) {
+      throw new Error(`Failed to update Session ${groupCode} genres`);
+    }
+
+    const selectedPlatformList = selectedPlatforms.map((platform) => platform.value);
+    const platformResponse = await fetch(`/api/session/${groupCode}/platforms`, {
+      method: "PUT",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(selectedPlatformList)
+    });
+    if (!platformResponse.ok) {
+      throw new Error(`Failed to update Session ${groupCode} streaming platforms`);
+    }
+  }
+
+  // Used to populate the dropdowns with every option available in The Movie DB
   useEffect(() => {
     fetchGenres().then(setGenres)
     fetchStreamingPlatforms().then(setStreamingPlatforms)
@@ -89,6 +119,9 @@ export default function PreferencesView() {
             itemIdPath="value"
             items={genres}
             style={{ width: '300px' }}
+            autoExpandHorizontally
+            autoExpandVertically
+            onChange={e => setSelectedGenres(e.target.selectedItems)}
         />
 
         <MultiSelectComboBox
@@ -97,10 +130,14 @@ export default function PreferencesView() {
             itemIdPath="value"
             items={streamingPlatforms}
             style={{ width: '300px' }}
+            autoExpandHorizontally
+            autoExpandVertically
+            onChange={e => setSelectedPlatforms(e.target.selectedItems)}
         />
 
-        <a href="/swipe">
-          <input style={styles.button} value="Ready"/>
+        {/*<a href="/swipe">*/}
+        <a>
+          <input style={styles.button} onClick={submit} value="Ready"/>
         </a>
       </form>
     </div>
