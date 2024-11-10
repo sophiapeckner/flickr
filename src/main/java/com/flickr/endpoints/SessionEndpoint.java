@@ -1,13 +1,27 @@
 package com.flickr.endpoints;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flickr.entities.Member;
 import com.flickr.entities.Movie;
 import com.flickr.entities.Session;
+import com.flickr.entities.SessionMovie;
+import com.flickr.storage.MovieRepository;
+import com.flickr.storage.SessionMovieRepository;
 import com.flickr.storage.SessionRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
+import org.atmosphere.config.service.Post;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,9 +31,14 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/session") // Base URL with RESTful access
 public class SessionEndpoint {
+    private final MovieRepository movieRepository;
+    private final SessionMovieRepository sessionMovieRepository;
     private SessionRepository repository;
-    SessionEndpoint(SessionRepository repository) {
+
+    SessionEndpoint(SessionRepository repository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository) {
         this.repository = repository;
+        this.movieRepository = movieRepository;
+        this.sessionMovieRepository = sessionMovieRepository;
     }
 
     // Hilla Endpoint
@@ -54,34 +73,92 @@ public class SessionEndpoint {
                 .orElseThrow(() -> new IllegalArgumentException("Session not found for groupCode: " + groupCode));
     }
 
-    // REST endpoint to fetch a session by groupCode so that it's data can be viewed
+    // REST GET endpoint to fetch a session by groupCode so that it's data can be viewed
     @GetMapping("/{groupCode}")
     public Optional<Session> fetchSession(@PathVariable String groupCode) {
         // Returns Session with corresponding groupCode
         return repository.findByGroupCode(groupCode);
     }
 
+    // REST PUT endpoint to insert the genre(s) each member is interested in watching
+    // into the Session associated with the groupCode
     @PutMapping("/{groupCode}/genres")
     public Session updateGenres(@PathVariable String groupCode, @RequestBody List<String> genres) {
         Optional<Session> session = fetchSession(groupCode);
-        if (session.isPresent()) {
-            // Append all the genres to the session's genre member variable
-            session.get().getGenres().addAll(genres);
-            return repository.save(session.get());
-        } else {
+        if (session.isEmpty()) {
             throw new IllegalArgumentException("Session not found for groupCode: " + groupCode);
         }
+        // Append all the genres to the session's genre member variable
+        session.get().getGenres().addAll(genres);
+        return repository.save(session.get());
     }
 
+    // REST PUT endpoint to insert the streaming platform(s) each member has
+    // into the Session associated with the groupCode
     @PutMapping("/{groupCode}/platforms")
     public Session updateStreamingPlatforms(@PathVariable String groupCode, @RequestBody List<String> platforms) {
         Optional<Session> session = fetchSession(groupCode);
-        if (session.isPresent()) {
-            // Append all the streaming platforms to the session's streaming member variable
-            session.get().getStreamingPlatforms().addAll(platforms);
-            return repository.save(session.get());
-        } else {
+        if (session.isEmpty()) {
             throw new IllegalArgumentException("Session not found for groupCode: " + groupCode);
         }
+        // Append all the streaming platforms to the session's streaming member variable
+        session.get().getStreamingPlatforms().addAll(platforms);
+        return repository.save(session.get());
+    }
+
+    @PostMapping("/{groupCode}/movies")
+    public Session generateSuggestions(@PathVariable String groupCode) throws JSONException, IOException, InterruptedException {
+        Optional<Session> sessionOptional = fetchSession(groupCode);
+
+        if (sessionOptional.isEmpty()) {
+            throw new IllegalArgumentException("Session not found for groupCode: " + groupCode);
+        }
+
+        Session session = sessionOptional.get();
+        // Build the API URL
+        String genreParam = String.join("OR", session.getGenres());
+        String platformParam = String.join("AND", session.getStreamingPlatforms());
+        String URL = String.format("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=%s&with_watch_providers=%s", genreParam, platformParam);
+
+        // Create the request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(URL))
+                .header("accept", "application/json")
+                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNDY1MTE3ZTA3NDY3NGJiMjZkNTE4NTNkMTU5YzllMyIsIm5iZiI6MTczMDExMjc5Ni4xOTc1ODYsInN1YiI6IjVkNGY3YmM0MDc5YTk3MGI5ZWFkMTEzMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.egTJfOX1iiqPAjjbNF07G92XzbZQ5HwThmAMC3wv_3A")
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+
+        // Execute the request and get the response
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        JSONObject suggestionsObject = new JSONObject(response.body());
+        JSONArray results = suggestionsObject.getJSONArray("results");
+
+        // Create a list to store SessionMovie objects
+        List<SessionMovie> sessionMovies = new ArrayList<>();
+        for (int i = 0; i < Math.min(20, results.length()); i++) {
+            JSONObject movieData = results.getJSONObject(i);
+
+            Movie movie = new Movie(
+                    movieData.getString("original_title"),
+                    movieData.getString("overview"),
+                    movieData.getString("backdrop_path"),
+                    movieData.getString("release_date")
+            );
+
+            // Each movie must be saved
+            movie = movieRepository.save(movie);
+
+            SessionMovie sessionMovie = new SessionMovie();
+            sessionMovie.setSession(session);
+            sessionMovie.setMovie(movie);
+            sessionMovie.setVoteCount(0);
+
+            sessionMovie = sessionMovieRepository.save(sessionMovie);
+
+            sessionMovies.add(sessionMovie);
+        }
+        session.getMovies().addAll(sessionMovies);
+        System.out.println(new ObjectMapper().writeValueAsString(session));
+        return repository.save(session);
     }
 }

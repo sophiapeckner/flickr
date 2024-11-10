@@ -13,6 +13,7 @@ export default function GroupLandingView() {
   const { groupCode } = useParams();
   const [members, setMembers] = useState<Member[]>([]);
 
+  // Fetch the Session with groupCode and update the members currently in the Session
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetch(`/api/session/${groupCode}`)
@@ -23,6 +24,11 @@ export default function GroupLandingView() {
     return () => clearInterval(intervalId);
   }, [groupCode]);
 
+  const submit = async () => {
+    await fetch(`/api/session/${groupCode}/movies`, { method: "POST" });
+    window.location.href = `/swipe/${groupCode}`;
+  }
+
   return (
       <div style={styles.outerDiv}>
         <div>
@@ -30,7 +36,7 @@ export default function GroupLandingView() {
             X
           </a>
           <a style={styles.topCornerButton} href="/userprofile">
-            <img src="../../../resources/META-INF/resources/images/profile.png"/>
+            <img src="images/profile.png"/>
           </a>
         </div>
 
@@ -40,14 +46,15 @@ export default function GroupLandingView() {
         <div style={styles.membersDiv}>
           {members.map((member) => (
               <div style={styles.personDiv} key={member.id}>
-                <img style={styles.personImage} src="../../../resources/META-INF/resources/images/person.png" alt=""/>
+                <img style={styles.personImage} src="images/person.png" alt=""/>
                 <h4 style={styles.personLabel}>{member?.username || 'Unknown'}</h4>
               </div>
           ))}
         </div>
 
-          <a href="/swipe">
-            <button style={styles.button}>Start Session</button>
+          {/*<a href="/swipe">*/}
+          <a>
+            <button style={styles.button} onClick={submit}>Start Session</button>
           </a>
       </div>
   );

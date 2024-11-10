@@ -27,7 +27,7 @@ export default function SwipeView() {
         </a>
       </div>
 
-      
+
       {isBusy ? (
             <h3>Loading Movies</h3>
         ) : <>
@@ -52,7 +52,7 @@ export default function SwipeView() {
           </div>
         </>}
 
-      
+
 
       <div style={styles.bottomNav}>
         <a href="/swipe">
