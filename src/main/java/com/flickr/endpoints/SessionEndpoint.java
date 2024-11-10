@@ -5,6 +5,7 @@ import com.flickr.entities.Member;
 import com.flickr.entities.Movie;
 import com.flickr.entities.Session;
 import com.flickr.entities.SessionMovie;
+import com.flickr.storage.MemberRepository;
 import com.flickr.storage.MovieRepository;
 import com.flickr.storage.SessionMovieRepository;
 import com.flickr.storage.SessionRepository;
@@ -21,10 +22,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Endpoint
 @AnonymousAllowed
@@ -33,12 +31,14 @@ import java.util.UUID;
 public class SessionEndpoint {
     private final MovieRepository movieRepository;
     private final SessionMovieRepository sessionMovieRepository;
-    private SessionRepository repository;
+    private final MemberRepository memberRepository;
+    private final SessionRepository repository;
 
-    SessionEndpoint(SessionRepository repository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository) {
+    SessionEndpoint(SessionRepository repository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository) {
         this.repository = repository;
         this.movieRepository = movieRepository;
         this.sessionMovieRepository = sessionMovieRepository;
+        this.memberRepository = memberRepository;
     }
 
     // Hilla Endpoint
@@ -158,7 +158,26 @@ public class SessionEndpoint {
             sessionMovies.add(sessionMovie);
         }
         session.getMovies().addAll(sessionMovies);
-        System.out.println(new ObjectMapper().writeValueAsString(session));
+//        System.out.println(new ObjectMapper().writeValueAsString(session));
         return repository.save(session);
+    }
+
+    @PutMapping("/member/{memberId}/updateMovieIndex")
+    public Member updateMemberMovieIndex(@PathVariable Long memberId, @RequestBody Map<String, Integer> request) {
+        int movieIndex = request.get("movieIndex");
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+        member.setMovieIndex(movieIndex);
+        return memberRepository.save(member);
+    }
+
+    @PutMapping("/{groupCode}/movie/{movieId}/incrementVote")
+    public SessionMovie incrementMovieVoteCount(@PathVariable String groupCode, @PathVariable Long movieId) {
+        Session session = repository.findByGroupCode(groupCode)
+                .orElseThrow(() -> new RuntimeException("Session not found"));
+        SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("SessionMovie not found"));
+        sessionMovie.setVoteCount(sessionMovie.getVoteCount() + 1);
+        return sessionMovieRepository.save(sessionMovie);
     }
 }
