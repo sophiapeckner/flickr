@@ -1,5 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { colors } from "../themes/flickr/colors";
+import {joinSession} from "Frontend/generated/SessionEndpoint";
+import {useState} from "react";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -7,6 +9,13 @@ export const config: ViewConfig = {
 };
 
 export default function GroupCodeView() {
+  const [groupCode, setGroupCode] = useState("")
+
+  const submit = async () => {
+    await joinSession(groupCode, "", "", "");
+    window.location.href = `/preferences/${groupCode}`;
+  }
+
   return (
     <div style={styles.outerDiv}>
       <div>
@@ -24,11 +33,11 @@ export default function GroupCodeView() {
           <label style={styles.label}>
             Enter Group Code:
           </label>
-          <input style={styles.codeInput} placeholder="XXXXXX" type="text" />
+          <input style={styles.codeInput} placeholder="XXXXXXXX" type="text" onInput={(e) => setGroupCode(e.target.value)}/>
         </div>
 
         <a href="/landing/{groupCode}">
-          <button style={styles.button}>join</button>
+          <button style={styles.button} onClick={submit}>join</button>
         </a>
       </div>
     </div>

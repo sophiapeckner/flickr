@@ -46,7 +46,7 @@ export default function MovieListView() {
       </div>
 
       <div style={styles.bottomNav}>
-        <a href="/swipe">
+        <a href="/swipe/{groupCode}">
           <img src="images/pic.png" alt="pic" />
         </a>
         <a href="/movielist">
