@@ -1,5 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
+import React, { useState } from "react";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -7,6 +8,17 @@ export const config: ViewConfig = {
 };
 
 export default function GroupCodeView() {
+
+  const [groupCodeInput, setGroupCodeInput] = useState("");
+
+  const limitLetters = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    // Regular expression to allow only letters (uppercase and lowercase)
+    if (/^[a-zA-Z0-9]*$/.test(value)) {
+      setGroupCodeInput(value); // Update state only if input contains letters
+    }
+  };
+
   return (
     <div style={style.outerDiv}>
       <div>
@@ -24,11 +36,18 @@ export default function GroupCodeView() {
           <label style={{fontSize: 22}}>
             Enter Group Code:
           </label>
-          <input style={styles.codeInput} placeholder="XXXXXX" type="text" />
+          <input
+              style={styles.codeInput}
+              value={groupCodeInput}
+              maxLength={8}
+              placeholder="XXXXXXXX"
+              type="text"
+              onChange={limitLetters}
+          />
         </div>
 
         <a href="/landing/{groupCode}">
-          <button style={style.button}>join</button>
+          <button style={style.button}>Join</button>
         </a>
       </div>
     </div>
@@ -51,5 +70,6 @@ const styles = {
     marginBottom: '20px',
     fontSize: 32,
     paddingLeft: 16,
+    textTransform: 'uppercase',
   },
 }
