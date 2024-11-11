@@ -1,4 +1,3 @@
-// Uses the Vaadin provided login an logout helper methods
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import { MemberServices } from 'Frontend/generated/endpoints';
 
@@ -18,6 +17,10 @@ let member: undefined | Member;
  */
 export async function login(email: string, password: string) {
     member = await MemberServices.login(email, password);
+    if (member !== undefined) {
+        // @ts-ignore
+        localStorage.setItem('token', member.username.toString());
+    }
     return member;
 }
 
@@ -25,7 +28,7 @@ export async function login(email: string, password: string) {
  * Checks if the user is logged in.
  */
 export function isLoggedIn() {
-    return member !== undefined;
+    return localStorage.getItem('token') != null;
 }
 
 /**
@@ -33,14 +36,9 @@ export function isLoggedIn() {
  *
  * Uses `localStorage` for offline support.
  */
-// export async function logout(options: LogoutOptions = ) {
-//     return await logoutImpl({
-//         ...options,
-//         onSuccess() {
-//             setSessionExpired();
-//         },
-//     });
-// }
+export async function logout() {
+    localStorage.removeItem('token');
+}
 
 /**
  * Checks if the user has the role.

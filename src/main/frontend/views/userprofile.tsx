@@ -1,5 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
+import { logout } from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -46,6 +47,7 @@ export default function UserProfileView() {
           placeholder="example@gmail.com"
         />
 
+        <button onClick={e => logout()}>Logout</button>
         <a href="/start_auth">
           <input style={style.button} value="Save" />
         </a>
