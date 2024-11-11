@@ -5,7 +5,7 @@ import com.flickr.storage.MemberRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Optional;
 
 @AnonymousAllowed
 @Endpoint
@@ -21,14 +21,22 @@ public class MemberServices {
         memberRepository.save(member);
     }
 
-    public Member login(String email, String password) {
-        AtomicReference<Member> user = new AtomicReference<>();
-        memberRepository.findByEmail(email).ifPresent(member -> {
+    public Optional<Member> login(String email, String password) {
+        Optional<Member> memberOptional = memberRepository.findByEmail(email);
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+            System.out.println("User found");
             if (member.getPass().equals(password)) {
-                user.set(member);
+                return Optional.of(member);
             }
-        });
-        return user.get();
+            else {
+                System.out.println("Wrong password");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("User Not found");
+        }
+        return Optional.empty();
     }
 
 }

@@ -63,7 +63,7 @@ export default function SignUpView() {
 
           <a style={styles.signUpDiv} onClick={e => {
             e.preventDefault();
-            createUser(username, password, email);
+            createUser(email, username, password);
             navigate("/");
           }}>
             <input style={styles.signUp} value="Sign Up"/>

@@ -4,12 +4,6 @@ import Session from "Frontend/generated/com/flickr/entities/Session";
 import {createSession, findAll, joinSession} from "Frontend/generated/SessionEndpoint";
 
 import { style } from "../themes/flickr/css.js";
-import member from "Frontend/generated/com/flickr/entities/Member";
-
-export const config: ViewConfig = {
-  menu: { order: 2, icon: "line-awesome/svg/file.svg" },
-  title: "Start Auth",
-};
 
 export default function StartView() {
     const [sessions, setSessions] = useState<Session[]>([]);
