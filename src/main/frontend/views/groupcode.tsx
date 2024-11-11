@@ -33,7 +33,7 @@ export default function GroupCodeView() {
           <label style={styles.label}>
             Enter Group Code:
           </label>
-          <input style={styles.codeInput} placeholder="XXXXXXXX" type="text" onInput={(e) => setGroupCode(e.target.value)}/>
+          <input style={styles.codeInput} placeholder="XXXXXXXX" type="text" onInput={(e: React.ChangeEvent<HTMLInputElement>) => setGroupCode(e.target.value)}/>
         </div>
 
         <a href="/landing/{groupCode}">
