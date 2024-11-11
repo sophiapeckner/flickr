@@ -4,6 +4,7 @@ import com.flickr.entities.Member;
 import com.flickr.storage.MemberRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -26,7 +27,9 @@ public class MemberServices {
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
             System.out.println("User found");
-            if (member.getPass().equals(password)) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            if (encoder.matches(password, member.getPass())) {
+                System.out.println("Login successful");
                 return Optional.of(member);
             }
             else {

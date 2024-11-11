@@ -29,7 +29,7 @@ public class Member {
 
     private String username;
 
-    public Member(String email, String password, String username) {
+    public Member(String email, String username, String password) {
         this.email = email;
         this.password = password;
         this.username = username;
