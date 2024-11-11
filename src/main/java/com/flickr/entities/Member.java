@@ -36,11 +36,6 @@ public class Member {
     }
 
     public Member() {
-        // Used for defining an Anon user
-        // Because Hilla expects all memember variable to be non-null, email & pass are set to dummy values
-        this.email = "anon@gmail.com";
-        this.password = "anon";
-        this.username = "Anonymous";
     }
 
     public Long getId() {
