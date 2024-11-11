@@ -1,4 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
+import { colors } from "../themes/flickr/colors";
+import {joinSession} from "Frontend/generated/SessionEndpoint";
+import {useState} from "react";
 import { style } from "../themes/flickr/css.js";
 
 export const config: ViewConfig = {
@@ -24,11 +27,11 @@ export default function GroupCodeView() {
           <label style={{fontSize: 22}}>
             Enter Group Code:
           </label>
-          <input style={styles.codeInput} placeholder="XXXXXX" type="text" />
+          <input style={styles.codeInput} placeholder="XXXXXXXX" type="text" onInput={(e: React.ChangeEvent<HTMLInputElement>) => setGroupCode(e.target.value)}/>
         </div>
 
         <a href="/landing/{groupCode}">
-          <button style={style.button}>join</button>
+          <button style={style.button} onClick={submit}>join</button>
         </a>
       </div>
     </div>

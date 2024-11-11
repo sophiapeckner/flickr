@@ -24,7 +24,6 @@ export default function StartView() {
 
         // Try creating a Session and pushing to H2 DB
         try {
-
             session = await createSession();
         } catch (error) {
             console.error("Error creating session: ", error);
@@ -41,7 +40,7 @@ export default function StartView() {
                 return;
             }
             // If both the session creation and join succeed, update state and redirect
-            window.location.href = `/landing/${session.groupCode}`;
+            window.location.href = `/preferences/${session.groupCode}`;
             setSessions([...sessions, session]);
         }
     }
@@ -66,17 +65,44 @@ export default function StartView() {
             <button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</button>
           </a>
       </div>
-        {/*For viewing H2 Database entries*/}
+        {/*/!*For viewing H2 Database entries*!/*/}
         {sessions.map((session) => (
             <div key={session.id}>
                 <span>Group Code: {session.groupCode}</span>
-                <br />
+                <br/>
                 {session.members && session.members.length > 0 ? (
                     session.members.map((member, idx) => (
-                        <span key={idx}>Member: {member?.username || 'Unknown'}</span>
+                        <span key={idx}>Member: {member?.username || 'Unknown'} {member?.movieIndex}</span>
                     ))
                 ) : (
                     <span>No members yet.</span>
+                )}
+                <br/>
+                <span>Genre(s): </span>
+                {session.genres && session.genres.length > 0 ? (
+                    session.genres.map((genre, idx) => (
+                        <span key={idx}>{genre || 'Unknown'}, </span>
+                    ))
+                ) : (
+                    <span>No genres yet.</span>
+                )}
+                <br/>
+                <span>Platform(s): </span>
+                {session.streamingPlatforms && session.streamingPlatforms.length > 0 ? (
+                    session.streamingPlatforms.map((platform, idx) => (
+                        <span key={idx}>{platform || 'Unknown'}, </span>
+                    ))
+                ) : (
+                    <span>No streaming platforms yet.</span>
+                )}
+                <br/>
+                <span>Movie List: </span>
+                {session.movies && session.movies.length > 0 ? (
+                    session.movies.map((sessionMovie, idx) => (
+                        <span key={idx}>{ sessionMovie?.movie?.title || 'Unknown'} = {sessionMovie?.voteCount}</span>
+                    ))
+                ) : (
+                    <span>No movies yet.</span>
                 )}
             </div>
         ))}

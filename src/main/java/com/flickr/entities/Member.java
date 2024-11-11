@@ -1,9 +1,6 @@
 package com.flickr.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +12,20 @@ public class Member {
     private Long id;
 
     private String email;
+
     private String pass;
+
     private String username;
-    private List<String> watchProviders = new ArrayList<>();;
 
-    private Long sessionID;
-    private int currentMovieIndex;
+    @ElementCollection
+    private List<String> watchProviders = new ArrayList<>();
 
-    @ManyToOne
-    private Session session;
+    private int movieIndex;
+
+//    private Long sessionID;
+//
+//    @ManyToOne
+//    private Session session;
 
     public Member(String email, String pass, String username) {
         this.email = email;
@@ -33,7 +35,7 @@ public class Member {
 
     public Member() {
         // Used for defining an Anon user
-        // Because Hilla expects all memember variable to be non-null, email & pass are set to dummy values
+        // Because Hilla expects all member variable to be non-null, email & pass are set to dummy values
         this.email = "anon@gmail.com";
         this.pass = "anon";
         this.username = "Anonymous";
@@ -78,4 +80,8 @@ public class Member {
     public void setWatchProviders(List<String> watchProviders) {
         this.watchProviders = watchProviders;
     }
+
+    public int getMovieIndex() { return movieIndex; }
+
+    public void setMovieIndex(int movieIndex) { this.movieIndex = movieIndex; }
 }
