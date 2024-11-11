@@ -26,12 +26,20 @@ export default function PickGenreView() {
         <select style={style.input} name="comedy" id="comedy">
           <option>Comedy</option>
           <option>Action</option>
+          <option>Romance</option>
+          <option>Documentary</option>
+          <option>Horror</option>
+          <option>Drama</option>
+          <option>Science Fiction</option>
+          <option>Fantasy</option>
+          <option>Mystery</option>
         </select>
-
         <label style={style.label} htmlFor="Rating">Rating: </label>
         <select style={style.input} name="R" id="R">
           <option>R</option>
           <option>PG-13</option>
+          <option>PG</option>
+          <option>G</option>
         </select>
 
         <a href="/grouplanding">
