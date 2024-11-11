@@ -1,20 +1,16 @@
-// import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
-import Movie from "Frontend/generated/com/flickr/entities/Movie";
-import {findAll, generateSuggestions} from "Frontend/generated/SuggestionsEndpoint";
 import { colors } from "../../themes/flickr/colors";
-import {useNavigate, useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
-import movie from "Frontend/generated/com/flickr/entities/Movie";
+import Member from "Frontend/generated/com/flickr/entities/Member";
 
 
 export default function SwipeView() {
   const { groupCode } = useParams();
 
-  // const [isBusy, setBusy] = useState(true);
   const [movies, setMovies] = useState<SessionMovie[]>([]);
   const [movieIndex, setMovieIndex] = useState(0);
-  const [member, setMember] = useState(null);
+  const [member, setMember] = useState<Member>();
 
   useEffect(() => {
     const fetchSessionData = async () => {
@@ -31,7 +27,12 @@ export default function SwipeView() {
     fetchSessionData();
   }, [groupCode]);
 
-  const handleNextMovie = async (liked) => {
+  const handleNextMovie = async (liked: boolean) => {
+    if (!member) {
+      console.error("Member is null");
+      return;
+    }
+
     if (movieIndex < movies.length - 1) {
       const newMovieIndex = movieIndex + 1;
 
@@ -51,7 +52,6 @@ export default function SwipeView() {
           headers: { "Content-Type": "application/json" },
         });
       }
-
       setMovieIndex(newMovieIndex);
     } else {
       console.log("All movies shown");
