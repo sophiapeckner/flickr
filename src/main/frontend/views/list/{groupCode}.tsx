@@ -1,6 +1,9 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
-import { colors } from "../themes/flickr/colors";
+import { colors } from "../../themes/flickr/colors";
+import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
+import {useParams} from "react-router-dom";
+import session from "Frontend/generated/com/flickr/entities/Session";
 // import { MovieListController } from "Frontend/generated/endpoints.ts";
 // import { useState, useEffect } from "react";
 
@@ -11,49 +14,63 @@ export const config: ViewConfig = {
 
 export default function MovieListView() {
   // const [selectedMovies, setSelectedMovies] = useState([]);
-  //
-  //   useEffect(() => {
-  //     MovieListController.getSelectedMovieList().then(setSelectedMovies).then(console.log(selectedMovies));
-  //   });
+  const { groupCode } = useParams();
+  const [selectedMovies, setSelectedMovies] = useState<SessionMovie[]>([]);
 
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await fetch(`/api/session/${groupCode}`);
+        const data = await response.json();
+        const filteredMovies = (data.movies || []).filter(sessionMovie => sessionMovie.voteCount > 0);
+        setSelectedMovies(filteredMovies);
+      } catch (error) {
+        console.error("Failed to fetch movies:", error);
+      }
+    };
+    fetchMovies();
+  }, [groupCode]);
+
+  const swipe = () => {
+    window.location.href = `/swipe/${groupCode}`;
+  };
 
   return (
-    <div style={styles.outerDiv}>
-      <div style={{ backgroundColor: "white" }}>
-        <a style={styles.backButton} href="/">
-          X
-        </a>
-        <a style={styles.topCornerButton} href="/userprofile">
-          <img src="images/profile.png" />
-        </a>
-      </div>
-
-      <div style={styles.moviesSelected}>
-        <div style={styles.movie}>
-          <img style={styles.movieImage} src="images/movie.jpg" alt="" />
-          <div>
-            <h4>Step Brothers</h4>
-            <h5>Votes: 9</h5>
-          </div>
+      <div style={styles.outerDiv}>
+        <div style={{backgroundColor: "white"}}>
+          <a style={styles.backButton} href="/">
+            X
+          </a>
+          <a style={styles.topCornerButton} href="/userprofile">
+            <img src="/images/profile.png"/>
+          </a>
         </div>
-        <div style={styles.movie}>
-          <img style={styles.movieImage} src="images/movie.jpg" alt="" />
-          <div>
-            <h4>Cars</h4>
-            <h5>Votes: 6</h5>
-          </div>
+
+        <div style={styles.moviesSelected}>
+          {selectedMovies.length > 0 ? (
+              selectedMovies.map((sessionMovie) => (
+                  <div key={sessionMovie.id} style={styles.movie}>
+                    <img style={styles.movieImage} src={sessionMovie.movie?.imgURL} alt=""/>
+                    <div>
+                      <h4>{sessionMovie.movie?.title}</h4>
+                      <h5>Votes: {sessionMovie.voteCount}</h5>
+                    </div>
+                  </div>
+              ))
+          ) : (
+              <p>No movies have been voted on :(</p>
+          )}
+        </div>
+
+        <div style={styles.bottomNav}>
+          <a onClick={swipe}>
+            <img src="/images/pic.png" alt="pic"/>
+          </a>
+          <a>
+            <img src="/images/liked.png" alt="liked"/>
+          </a>
         </div>
       </div>
-
-      <div style={styles.bottomNav}>
-        <a href="/swipe/{groupCode}">
-          <img src="images/pic.png" alt="pic" />
-        </a>
-        <a href="/movielist">
-          <img src="images/liked.png" alt="liked" />
-        </a>
-      </div>
-    </div>
   );
 }
 

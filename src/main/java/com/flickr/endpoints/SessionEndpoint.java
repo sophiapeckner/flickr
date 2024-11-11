@@ -67,7 +67,8 @@ public class SessionEndpoint {
         // then add the newest member to the Session's members list
         return repository.findByGroupCode(groupCode)
                 .map(session -> {
-                    session.getMembers().add(member);
+                    Member savedMember = memberRepository.save(member);
+                    session.getMembers().add(savedMember);
                     return repository.save(session);
                 })
                 .orElseThrow(() -> new IllegalArgumentException("Session not found for groupCode: " + groupCode));

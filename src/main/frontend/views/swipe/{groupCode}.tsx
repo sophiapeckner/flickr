@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Movie from "Frontend/generated/com/flickr/entities/Movie";
 import {findAll, generateSuggestions} from "Frontend/generated/SuggestionsEndpoint";
 import { colors } from "../../themes/flickr/colors";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import movie from "Frontend/generated/com/flickr/entities/Movie";
 
@@ -36,7 +36,7 @@ export default function SwipeView() {
       const newMovieIndex = movieIndex + 1;
 
       // Update member's movieIndex in the backend
-      await fetch(`/api/member/${member.id}/updateMovieIndex`, {
+      await fetch(`/api/session/member/${member.id}/updateMovieIndex`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -56,6 +56,10 @@ export default function SwipeView() {
     } else {
       console.log("All movies shown");
     }
+  };
+
+  const viewList = () => {
+    window.location.href = `/list/${groupCode}`;
   };
 
   return (
@@ -89,8 +93,8 @@ export default function SwipeView() {
           <a>
             <img src="images/pic.png" alt="pic"/>
           </a>
-          <a href="/movielist">
-            <img src="images/liked.png" alt="liked"/>
+          <a>
+            <img src="images/liked.png" alt="liked" onClick={viewList}/>
           </a>
         </div>
       </div>
