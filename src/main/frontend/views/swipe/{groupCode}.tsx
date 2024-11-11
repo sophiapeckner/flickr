@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 
-
 export default function SwipeView() {
   const { groupCode } = useParams();
 
   const [movies, setMovies] = useState<SessionMovie[]>([]);
   const [movieIndex, setMovieIndex] = useState(0);
   const [member, setMember] = useState<Member>();
+  const [isVotingComplete, setIsVotingComplete] = useState(false);
 
   useEffect(() => {
     const fetchSessionData = async () => {
@@ -27,13 +27,19 @@ export default function SwipeView() {
     fetchSessionData();
   }, [groupCode]);
 
+  useEffect(() => {
+    if (member && movies.length > 0) {
+      setIsVotingComplete(member.movieIndex >= movies.length);
+    }
+  }, [member, movies]);
+
   const handleNextMovie = async (liked: boolean) => {
     if (!member) {
       console.error("Member is null");
       return;
     }
 
-    if (movieIndex < movies.length - 1) {
+    if (movieIndex <= movies.length - 1) {
       const newMovieIndex = movieIndex + 1;
 
       // Update member's movieIndex in the backend
@@ -53,8 +59,10 @@ export default function SwipeView() {
         });
       }
       setMovieIndex(newMovieIndex);
-    } else {
-      console.log("All movies shown");
+
+      if (movieIndex == movies.length - 1) {
+        setIsVotingComplete(true);
+      }
     }
   };
 
@@ -64,30 +72,36 @@ export default function SwipeView() {
 
   return (
       <div style={styles.outerDiv}>
-        {movies.length > 0 && movies[movieIndex] ? ( // Only render if movies are loaded and index is valid
-            <>
-              <div style={styles.movieProfile}>
-                <img
-                    style={styles.movieThumbnail}
-                    src={movies[movieIndex].movie?.imgURL}
-                    alt="movie poster"
-                />
-                <div style={styles.movieInfo}>
-                  <label style={styles.movieLabel}>Title: {movies[movieIndex].movie?.title}</label>
-                  <label style={styles.movieLabel}>Release date: {movies[movieIndex].movie?.release}</label>
-                </div>
-              </div>
-              <div style={styles.choices}>
-                <a onClick={() => handleNextMovie(false)}>
-                  <img style={{float: "left"}} src="images/garbage.png" alt="dislike button"/>
-                </a>
-                <a onClick={() => handleNextMovie(true)}>
-                  <img style={{float: "right"}} src="images/like.png" alt="like button"/>
-                </a>
-              </div>
-            </>
+        {isVotingComplete ? (
+            <p>You're done voting!</p>
         ) : (
-            <p>Loading movies...</p> // Show a loading message while data is being fetched
+            movies.length > 0 && movies[movieIndex] && (
+                <>
+                  <div style={styles.movieProfile}>
+                    <img
+                        style={styles.movieThumbnail}
+                        src={movies[movieIndex].movie?.imgURL}
+                        alt="movie poster"
+                    />
+                    <div style={styles.movieInfo}>
+                      <label style={styles.movieLabel}>
+                        Title: {movies[movieIndex].movie?.title}
+                      </label>
+                      <label style={styles.movieLabel}>
+                        Release date: {movies[movieIndex].movie?.release}
+                      </label>
+                    </div>
+                  </div>
+                  <div style={styles.choices}>
+                    <a onClick={() => handleNextMovie(false)}>
+                      <img style={{ float: "left" }} src="images/garbage.png" alt="dislike button" />
+                    </a>
+                    <a onClick={() => handleNextMovie(true)}>
+                      <img style={{ float: "right" }} src="images/like.png" alt="like button" />
+                    </a>
+                  </div>
+                </>
+            )
         )}
         <div style={styles.bottomNav}>
           <a>
@@ -100,7 +114,6 @@ export default function SwipeView() {
       </div>
   );
 }
-
 
 const styles = {
   outerDiv: {
