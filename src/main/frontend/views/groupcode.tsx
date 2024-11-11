@@ -10,6 +10,13 @@ export const config: ViewConfig = {
 };
 
 export default function GroupCodeView() {
+  const [groupCode, setGroupCode] = useState("")
+
+  const submit = async () => {
+    await joinSession(groupCode, "", "", "");
+    window.location.href = `/preferences/${groupCode}`;
+  }
+
   return (
     <div style={style.outerDiv}>
       <div>
