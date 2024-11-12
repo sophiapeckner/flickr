@@ -1,8 +1,9 @@
 package com.flickr.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 @Entity
 public class Session {
@@ -16,14 +17,23 @@ public class Session {
     private List<Member> members;
     // Session can have many members where each member belongs to only one session
 
-    @ManyToMany
-    private List<Movie> movies;
-    // Each Movie can be in many Session; each Session can have many Movie
+//    @ManyToMany
+//    private List<Movie> movies = new ArrayList<>();
+//    // Each Movie can be in many Session; each Session can have many Movie
+
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<SessionMovie> movies = new ArrayList<>();
+
+    @ElementCollection
+    private Set<String> genres = new HashSet<>();
+
+    @ElementCollection
+    private Set<String> streamingPlatforms = new HashSet<>();
 
     public Session(String groupCode) {
         this.groupCode = groupCode;
         this.members = new ArrayList<>();
-        this.movies = new ArrayList<>();
     }
 
     public Session() {
@@ -53,11 +63,15 @@ public class Session {
         this.members = members;
     }
 
-    public List<Movie> getMovies() {
-        return movies;
-    }
+    public Set<String> getGenres() { return genres; }
 
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
-    }
+    public void setGenres(HashSet<String> genres) { this.genres = genres; }
+
+    public Set<String> getStreamingPlatforms() { return streamingPlatforms; }
+
+    public void setStreamingPlatforms(HashSet<String> streaming_platforms) { this.streamingPlatforms = streaming_platforms; }
+
+    public List<SessionMovie> getMovies() { return movies; }
+
+    public void setMovies(List<SessionMovie> movies) { this.movies = movies; }
 }
