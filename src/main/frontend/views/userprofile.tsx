@@ -3,6 +3,10 @@ import { colors } from "../themes/flickr/colors";
 import { useState } from "react";
 import { style } from "../themes/flickr/css.js";
 import { logout } from "Frontend/auth";
+import { useState } from "react";
+import { getUsername, getEmail } from "Frontend/auth";
+import { MemberServices } from 'Frontend/generated/endpoints';
+
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -10,6 +14,25 @@ export const config: ViewConfig = {
 };
 
 export default function UserProfileView() {
+  const og_email = getEmail();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+
+  function getProfile() {
+    if (getUsername()) {
+      // @ts-ignore
+      setUsername(getUsername());
+    }
+    if (getEmail()) {
+      // @ts-ignore
+      setEmail(getEmail());
+    }
+  }
+
+  if (email.length == 0) {
+    getProfile();
+  }
+
   // State to track the select menus
   const [selectMenus, setSelectMenus] = useState<string[]>(['']);
 
@@ -92,6 +115,8 @@ export default function UserProfileView() {
                 id="email"
                 name="email"
                 placeholder="example@gmail.com"
+                value={username? username : ''}
+                onChange={e => setUsername(e.target.value)}
                 style={{
                   ...styles.input,
                   backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'
@@ -139,9 +164,17 @@ export default function UserProfileView() {
             >
               + Streaming Service
             </button>
+            <button style={style.button} onClick={e => logout()}>Logout</button>
+            <a>
+              <input style={style.button} onClick={e => {
+                // @ts-ignore
+                MemberServices.updateUser(og_email, email, username);
+                localStorage.setItem("email", email);
+                localStorage.setItem("username", username);
+              }} value="Save" />
+            </a>
         </form>
       </div>
-    </>
   );
 }
 
