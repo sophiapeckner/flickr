@@ -1,5 +1,9 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
+import {items} from "Frontend/themes/flickr/ProfileMenuBar";
+import {MenuBar} from "@vaadin/react-components";
+import React from "react";
+import {useNavigate} from "react-router-dom";
 
 export const config: ViewConfig = {
   menu: { order: 5, icon: "line-awesome/svg/file.svg" },
@@ -7,15 +11,28 @@ export const config: ViewConfig = {
 };
 
 export default function PickGenreView() {
+
+  const navigate = useNavigate()
+
+  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
+    const selectedItem = e.detail.value;
+    if(selectedItem && selectedItem.path){
+      navigate(selectedItem.path);
+    }
+  }
+  
   return (
     <div style={style.outerDiv}>
       <div>
         <a style={style.backButton} href="/start_auth">
           X
         </a>
-        <a style={style.topCornerButton} href="/userprofile">
-          <img src="images/profile.png" />
-        </a>
+        <MenuBar
+            items={items}
+            theme = "tertiary"
+            style={style.topCornerButton}
+            onItemSelected={handleProfileMenuSelection}
+        />
       </div>
 
       <h6 style={style.groupTitle}>Group Code: </h6>

@@ -11,7 +11,7 @@ export default function LogInView() {
   return (
     <div style={style.outerDiv}>
       <h2 style={{...style.pageTitle, marginTop: 20}}>flickr</h2>
-      <img style={{width: '100%'}} src="images/movie_reel.png" />
+      <img style={{width: '100%'}} src="images/movie_reel.png"  alt={""}/>
     
     <div style={style.innerDiv}>
       <form style={{...style.authFormAddOn, ...style.form}}>

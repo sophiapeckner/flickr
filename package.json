@@ -31,7 +31,7 @@
     "proj4": "2.12.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router-dom": "6.26.2",
+    "react-router-dom": "^6.26.2",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
@@ -127,7 +127,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "bdbe7fb93c11c3ce6edd0935df8269956c3b7886f6c8bea6f801d39d1db04654"
+    "hash": "3a25792f2b5992745b3346519bcf63ec20d80f94086a66caf596e890f9834d2c"
   },
   "overrides": {
     "@vaadin/vaadin-development-mode-detector": "$@vaadin/vaadin-development-mode-detector",

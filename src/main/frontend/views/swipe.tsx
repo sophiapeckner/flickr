@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Movie from "Frontend/generated/com/flickr/entities/Movie";
 import {addVotes, findAll, generateSuggestions} from "Frontend/generated/MovieEndpoint";
 import { style } from "../themes/flickr/css.js";
 import { colors } from "Frontend/themes/flickr/colors.js";
+import {items} from "Frontend/themes/flickr/ProfileMenuBar";
+import {MenuBar} from "@vaadin/react-components";
+import {useNavigate} from "react-router-dom";
 
 
 export default function SwipeView() {
@@ -16,15 +19,26 @@ export default function SwipeView() {
                .then(r => setBusy(false));
       }, []);
 
+  const navigate = useNavigate()
+
+  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
+    const selectedItem = e.detail.value;
+    if(selectedItem && selectedItem.path){
+      navigate(selectedItem.path);
+    }
+  }
   return (
     <div style={style.outerDiv}>
       <div>
         <a style={style.backButton} href="/start_auth">
           X
         </a>
-        <a style={style.topCornerButton} href="/userprofile">
-          <img src="images/profile.png" />
-        </a>
+        <MenuBar
+            items={items}
+            theme = "tertiary"
+            style={style.topCornerButton}
+            onItemSelected={handleProfileMenuSelection}
+        />
       </div>
 
       

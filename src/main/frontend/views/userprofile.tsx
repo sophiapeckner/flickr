@@ -13,12 +13,10 @@ export default function UserProfileView() {
   const [selectMenus, setSelectMenus] = useState<string[]>(['']);
 
   const [addButtonHovered, setAddButtonHovered] = useState<boolean>(false);
-
   const [usernameHovered, setUsernameHovered] = useState<boolean>(false);
-
   const [passwordHovered, setPasswordHovered] = useState<boolean>(false);
-
   const [emailHovered, setEmailHovered] = useState<boolean>(false);
+  const [saveButtonHovered, setSaveButtonHovered] = useState<boolean>(false);
 
 
 
@@ -37,7 +35,6 @@ export default function UserProfileView() {
       updatedMenus[index] = value;
       return updatedMenus;
     });
-    
   };
 
   return (
@@ -48,7 +45,7 @@ export default function UserProfileView() {
       <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
         <h2 style={styles.header2}>flickr</h2>
         <h3 style={styles.username}>ExampleUser Profile</h3>
-        <form style={styles.form}>
+        <form style={{...styles.form, backgroundColor: colors.light, borderRadius: 25,}}>
           <div style={styles.profileInputs}>
             <label style={styles.label}>Username</label>
             <br />
@@ -59,7 +56,8 @@ export default function UserProfileView() {
               placeholder="example-username"
               style={{
                 ...styles.input,
-                backgroundColor: usernameHovered ? '#dbdbdb' : '#ffffff'
+                backgroundColor: usernameHovered ? colors.inputHover : 'white',
+                marginTop: 15,
               }}
               onMouseEnter={() => setUsernameHovered(true)}
               onMouseLeave={() => setUsernameHovered(false)}
@@ -76,7 +74,7 @@ export default function UserProfileView() {
               placeholder="**********"
               style={{
                 ...styles.input,
-                backgroundColor: passwordHovered ? '#dbdbdb' : '#ffffff'
+                backgroundColor: passwordHovered ? colors.inputHover : 'white'
               }}
               onMouseEnter={() => setPasswordHovered(true)}
               onMouseLeave={() => setPasswordHovered(false)}
@@ -93,7 +91,7 @@ export default function UserProfileView() {
               placeholder="example@gmail.com"
               style={{
                 ...styles.input,
-                backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'
+                backgroundColor: emailHovered ? colors.inputHover : 'white'
               }}
               onMouseEnter={() => setEmailHovered(true)}
               onMouseLeave={() => setEmailHovered(false)}
@@ -102,7 +100,15 @@ export default function UserProfileView() {
           </div>
           
           <a href="/start_auth">
-            <input style={{...style.button, ...styles.saveButton}} value="Save" />
+            <input
+                value="Save"
+                style={{
+                  ...style.button,
+                  marginBottom: 10,
+                  backgroundColor: saveButtonHovered ? colors.mainHovered : colors.main,
+                }}
+                onMouseEnter={() => setSaveButtonHovered(true)}
+                onMouseLeave={() => setSaveButtonHovered(false)}/>
           </a>
         </form>
         <form style={styles.servicesForm}>
@@ -115,7 +121,7 @@ export default function UserProfileView() {
                   value={value}
                   onChange={(e) => handleSelectChange(index, e.target.value)}
                 >
-                  <option value="" style={styles.firstSelect}>Select an option</option>
+                  <option value="" style={{...styles.option, color: colors.light}}>Select an option</option>
                   {options.map((option) => (
                     <option key={option} value={option} style={styles.option}>
                       {option}
@@ -129,8 +135,10 @@ export default function UserProfileView() {
           <button 
             type="button" 
             style={{
-              ...styles.moreServicesButton,
-               backgroundColor: addButtonHovered ? '#dbdbdb' : '#ffffff'
+              ...style.button,
+               backgroundColor: addButtonHovered ? colors.mainHovered : colors.main,
+              marginBottom: '10px',
+              marginTop: '10px',
             }} 
             onClick={addSelectMenu}
             onMouseEnter={() => setAddButtonHovered(true)}
@@ -165,9 +173,12 @@ const styles = {
   },
   servicesForm: {
     margin: 'auto',
+    marginTop: 15,
     width: '80%',
     border: '1px solid grey',
     height:'30%',
+    backgroundColor: colors.light,
+    borderRadius: 25,
   },
   servicesDiv:{
     overflowY:'auto',
@@ -184,14 +195,11 @@ const styles = {
     marginTop: '5px', 
     height: '50px',
     borderRadius:'3px',
+    border: '0px',
     textAlign:'center',
     fontSize: '20px',
     fontFamily:'Times New Roman, Times, serif',
     display: 'flex',
-  },
-  firstSelect: {
-    color: 'gainsboro',
-    fontSize: 16,
   },
   option:{
     fontSize: 16,

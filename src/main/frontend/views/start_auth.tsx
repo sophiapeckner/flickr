@@ -1,10 +1,13 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Session from "Frontend/generated/com/flickr/entities/Session";
 import {createSession, findAll, joinSession} from "Frontend/generated/SessionEndpoint";
 
 import { style } from "../themes/flickr/css.js";
 import member from "Frontend/generated/com/flickr/entities/Member";
+import {useNavigate} from "react-router-dom";
+import {items} from "Frontend/themes/flickr/ProfileMenuBar";
+import {MenuBar} from "@vaadin/react-components";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
@@ -45,6 +48,15 @@ export default function StartView() {
             setSessions([...sessions, session]);
         }
     }
+//the menu bar isnt working on this page so lets just ignore this for now
+    // const navigate = useNavigate()
+    //
+    // const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
+    //     const selectedItem = e.detail.value;
+    //     if(selectedItem && selectedItem.path){
+    //         navigate(selectedItem.path);
+    //     }
+    // }
 
   return (
     <div style={style.outerDiv}>
@@ -52,9 +64,14 @@ export default function StartView() {
         <a style={style.backButton} href="/">
           X
         </a>
-        <a style={style.topCornerButton} href="/userprofile">
-          <img src="images/profile.png" />
-        </a>
+          {/*I tried to add the menu bar here but for some reason it doesnt work on this page*/}
+          {/*<MenuBar*/}
+          {/*    items={items}*/}
+          {/*    theme = "tertiary"*/}
+          {/*    style={style.topCornerButton}*/}
+          {/*    onItemSelected={handleProfileMenuSelection}*/}
+          {/*/>*/}
+
       </div>
       <h2 style={style.pageTitle}>flickr</h2>
       

@@ -1,9 +1,9 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
 import React, { useState } from "react";
-import { colors } from "Frontend/themes/flickr/colors.js";
-import {useSignal} from "@vaadin/hilla-react-signals";
-import {Icon, MenuBar, MenuBarItem} from "@vaadin/react-components";
+import { colors } from "../themes/flickr/colors.js";
+import { MenuBar } from "@vaadin/react-components";
+import { items } from "../themes/flickr/ProfileMenuBar";
 import {useNavigate} from "react-router-dom";
 
 export const config: ViewConfig = {
@@ -27,59 +27,27 @@ export default function GroupCodeView() {
     }
   };
 
-  const selectedItem = useSignal<MenuBarItem | undefined>(undefined);
-
-  function createItem(iconName: string, text: string, isChild = false) {
-    const iconStyle: React.CSSProperties = {
-      width: isChild ? 'var(--lumo-icon-size-s)' : '',
-      height: isChild ? 'var(--lumo-icon-size-s)' : '',
-      marginRight: isChild ? 'var(--lumo-space-s)' : '',
-    };
-
-    let ariaLabel = '';
-    if (iconName === 'copy') {
-      ariaLabel = 'duplicate';
-    }
-
-    return (
-        <>
-          <Icon icon={`vaadin:${iconName}`} style={iconStyle} aria-label={ariaLabel} />
-        </>
-    );
-  }
-
-  const items = [
-    { component: createItem('user', 'Profile'),
-      children: [
-        { text: 'Profile' },
-        { text: 'Log Out' },
-      ],
-    },
-  ];
   const navigate = useNavigate()
 
-  const newPageSelection=(location: string)=>{
-    navigate("/" + location);
+  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
+    const selectedItem = e.detail.value;
+    if(selectedItem && selectedItem.path){
+      navigate(selectedItem.path);
+    }
   }
+
   return (
     <div style={style.outerDiv}>
       <div>
         <a style={style.backButton} href="/start_auth">
           X
         </a>
-
-
         <MenuBar
             items={items}
-            theme = "end-aligned"
+            theme = "tertiary"
             style={style.topCornerButton}
-            onItemSelected={(event) => {
-              selectedItem.value = event.detail.value;
-            }}
+            onItemSelected={handleProfileMenuSelection}
         />
-
-
-
       </div>
       <h2 style={style.pageTitle}>flickr</h2>
       <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
@@ -88,7 +56,7 @@ export default function GroupCodeView() {
             Enter Group Code:
           </label>
           <input
-              style={{...styles.codeInput, backgroundColor: groupCodeHovered ? '#e5e5e5' : '#ffffff'}}
+              style={{...styles.codeInput, backgroundColor: groupCodeHovered ? colors.light : 'white'}}
               value={groupCodeInput}
               maxLength={8}
               placeholder="XXXXXXXX"
@@ -129,8 +97,7 @@ const styles = {
     paddingLeft: 16,
     textTransform: 'uppercase',
   },
-  profileMenuBar:{
+  menuBarIcon:{
 
-    marginRight: '20px',
-  },
+  }
 }
