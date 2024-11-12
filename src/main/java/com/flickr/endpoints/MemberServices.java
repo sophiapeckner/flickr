@@ -42,4 +42,14 @@ public class MemberServices {
         return Optional.empty();
     }
 
+    public void updateUser(String og_email, String new_email, String new_username) {
+        Optional<Member> memberOptional = memberRepository.findByEmail(og_email);
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+            member.setEmail(new_email);
+            member.setUsername(new_username);
+            memberRepository.save(member);
+        }
+    }
+
 }

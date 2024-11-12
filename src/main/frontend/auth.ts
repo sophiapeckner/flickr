@@ -9,7 +9,6 @@ interface Authentication {
 let member: undefined | Member;
 
 
-
 /**
  * Login wrapper method that retrieves user information.
  *
@@ -19,7 +18,9 @@ export async function login(email: string, password: string) {
     member = await MemberServices.login(email, password);
     if (member !== undefined) {
         // @ts-ignore
-        localStorage.setItem('token', member.username.toString());
+        localStorage.setItem('username', member.username.toString());
+        // @ts-ignore
+        localStorage.setItem('email', member.email.toString());
     }
     return member;
 }
@@ -28,8 +29,31 @@ export async function login(email: string, password: string) {
  * Checks if the user is logged in.
  */
 export function isLoggedIn() {
-    return localStorage.getItem('token') != null;
+    return localStorage.getItem('username') != null;
 }
+
+/**
+ * Gets the username if the user is logged in.
+ */
+export function getUsername() {
+    if (isLoggedIn()) {
+        return localStorage.getItem('username');
+    } else {
+        return null;
+    }
+}
+
+/**
+ * Gets the email if the user is logged in.
+ */
+export function getEmail() {
+    if (isLoggedIn()) {
+        return localStorage.getItem('email');
+    } else {
+        return null;
+    }
+}
+
 
 /**
  * Login wrapper method that retrieves user information.
@@ -37,17 +61,6 @@ export function isLoggedIn() {
  * Uses `localStorage` for offline support.
  */
 export async function logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('email');
 }
-
-/**
- * Checks if the user has the role.
- */
-// export function isUserInRole(role: string) {
-//     if (!authentication) {
-//         return false;
-//     }
-//
-//     return authentication.user.authorities.includes(`ROLE_${role}`);
-// }
-
