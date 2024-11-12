@@ -1,9 +1,6 @@
 package com.flickr.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.crypto.Cipher;
@@ -29,6 +26,8 @@ public class Member {
 
     private String username;
 
+    private int movieIndex;
+
     public Member(String email, String username, String password) {
         this.email = email;
         this.password = password;
@@ -36,6 +35,11 @@ public class Member {
     }
 
     public Member() {
+        // Used for defining an Anon user
+        // Because Hilla expects all member variable to be non-null, email & pass are set to dummy values
+        this.email = "anon@gmail.com";
+        this.password = "anon";
+        this.username = "Anonymous";
     }
 
     public Long getId() {
@@ -74,4 +78,8 @@ public class Member {
     public void encryptPassword() {
         this.password = new BCryptPasswordEncoder().encode(this.password);
     }
+
+    public int getMovieIndex() { return movieIndex; }
+
+    public void setMovieIndex(int movieIndex) { this.movieIndex = movieIndex; }
 }
