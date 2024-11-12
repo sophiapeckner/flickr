@@ -1,46 +1,62 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
+import {useEffect, useState} from "react";
+import Session from "Frontend/generated/com/flickr/entities/Session";
+import {createSession, findAll, joinSession} from "Frontend/generated/SessionEndpoint";
+
 import { style } from "../themes/flickr/css.js";
-import { colors } from "Frontend/themes/flickr/colors.js";
-import { isLoggedIn} from "Frontend/auth";
+import member from "Frontend/generated/com/flickr/entities/Member";
+import {isLoggedIn} from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
-  title: "Start",
+  title: "Start Auth",
 };
 
 export default function StartView() {
+  const [sessions, setSessions] = useState<Session[]>([]);
   const user = isLoggedIn();
+
+  // For database visualization purposes
+  useEffect(() => {
+    console.log("user: ", user);
+    findAll().then(setSessions)
+  }, []);
+
+  const handleCreateGroup = async () => {
+    let session;
+
+    // Try creating a Session and pushing to H2 DB
+    try {
+      session = await createSession();
+    } catch (error) {
+      console.error("Error creating session: ", error);
+      return;
+    }
+
+    // Try adding the group admin as a member of the Session that was just created
+    if (session && session.groupCode != null) {
+      try {
+        // For now, add the Group Admin as an Anon user
+        await joinSession(session.groupCode, "", "", "");
+      } catch (error) {
+        console.error("Error adding Group Admin to Session: ", error);
+        return;
+      }
+      // If both the session creation and join succeed, update state and redirect
+      setSessions([...sessions, session]);
+      console.log("redirecting..");
+      window.location.href = `/preferences/${session.groupCode}`;
+    }
+  }
 
   return (
       <div style={style.outerDiv}>
-        {user ? (
-            <>
-            <div>
-              <a style={style.backButton} href="/">
-                X
-              </a>
-              <a style={style.topCornerButton} href="/userprofile">
-                <img src="images/profile.png"/>
-              </a>
-            </div>
-            <h2 style={style.pageTitle}>flickr</h2>
-
-            <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
-              <a href="/groupcode">
-                <button style={style.groupChoiceButton}>Join Group</button>
-              </a>
-              <a>
-                <button style={style.groupChoiceButton}>Create Group</button>
-              </a>
-            </div>
-          </>
-          ) : <>
         <div>
           <a style={style.backButton} href="/">
             X
           </a>
-          <a style={style.topCornerButton} href="/">
-            Login
+          <a style={style.topCornerButton} href="/userprofile">
+            <img src="images/profile.png" />
           </a>
         </div>
         <h2 style={style.pageTitle}>flickr</h2>
@@ -49,31 +65,53 @@ export default function StartView() {
           <a href="/groupcode">
             <button style={style.groupChoiceButton}>Join Group</button>
           </a>
-
-          <p style={styles.signInPrompt}>
-            Please{" "}
-            <a href="/" style={{textDecoration: "underline"}}>
-              login
-            </a>{" "}
-            or{" "}
-            <a href="/sign-up" style={{textDecoration: "underline"}}>
-              sign up
-            </a>{" "}
-            to create a group
-          </p>
+          {user && (
+              <a>
+                <button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</button>
+              </a>
+          )}
         </div>
-
-
-</>}
+        {/*/!*For viewing H2 Database entries*!/*/}
+        {sessions.map((session) => (
+            <div key={session.id}>
+              <span>Group Code: {session.groupCode}</span>
+              <br/>
+              {session.members && session.members.length > 0 ? (
+                  session.members.map((member, idx) => (
+                      <span key={idx}>Member: {member?.username || 'Unknown'} {member?.movieIndex}</span>
+                  ))
+              ) : (
+                  <span>No members yet.</span>
+              )}
+              <br/>
+              <span>Genre(s): </span>
+              {session.genres && session.genres.length > 0 ? (
+                  session.genres.map((genre, idx) => (
+                      <span key={idx}>{genre || 'Unknown'}, </span>
+                  ))
+              ) : (
+                  <span>No genres yet.</span>
+              )}
+              <br/>
+              <span>Platform(s): </span>
+              {session.streamingPlatforms && session.streamingPlatforms.length > 0 ? (
+                  session.streamingPlatforms.map((platform, idx) => (
+                      <span key={idx}>{platform || 'Unknown'}, </span>
+                  ))
+              ) : (
+                  <span>No streaming platforms yet.</span>
+              )}
+              <br/>
+              <span>Movie List: </span>
+              {session.movies && session.movies.length > 0 ? (
+                  session.movies.map((sessionMovie, idx) => (
+                      <span key={idx}>{ sessionMovie?.movie?.title || 'Unknown'} = {sessionMovie?.voteCount}</span>
+                  ))
+              ) : (
+                  <span>No movies yet.</span>
+              )}
+            </div>
+        ))}
       </div>
-);
-}
-
-const styles = {
-  signInPrompt: {
-    color: colors.main,
-    height: 75,
-    margin: 20,
-    fontSize: '16px',
-  }
+  );
 }
