@@ -46,7 +46,11 @@ export default function LogInView() {
 
         <a style={styles.buttonDiv} onClick={e => {
           e.preventDefault();
-          login(email, password).then(r => console.log(isLoggedIn()));
+          login(email, password).then(r => {
+            if (isLoggedIn()) {
+              navigate("/start");
+            }
+          });
         }}>
           <input style={styles.signUpButton} value="Sign In" />
         </a>
