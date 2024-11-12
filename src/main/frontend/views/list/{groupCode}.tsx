@@ -22,7 +22,9 @@ export default function MovieListView() {
       try {
         const response = await fetch(`/api/session/${groupCode}`);
         const data = await response.json();
-        const filteredMovies = (data.movies || []).filter(sessionMovie => sessionMovie.voteCount > 0);
+        const filteredMovies = (data.movies as SessionMovie[] || []).filter(
+            (sessionMovie) => (sessionMovie.voteCount ?? 0) > 0
+        );
         setSelectedMovies(filteredMovies);
       } catch (error) {
         console.error("Failed to fetch movies:", error);
