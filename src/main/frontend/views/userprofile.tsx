@@ -3,7 +3,6 @@ import { colors } from "../themes/flickr/colors";
 import { useState } from "react";
 import { style } from "../themes/flickr/css.js";
 import { logout } from "Frontend/auth";
-import { useState } from "react";
 import { getUsername, getEmail } from "Frontend/auth";
 import { MemberServices } from 'Frontend/generated/endpoints';
 
@@ -165,16 +164,9 @@ export default function UserProfileView() {
               + Streaming Service
             </button>
             <button style={style.button} onClick={e => logout()}>Logout</button>
-            <a>
-              <input style={style.button} onClick={e => {
-                // @ts-ignore
-                MemberServices.updateUser(og_email, email, username);
-                localStorage.setItem("email", email);
-                localStorage.setItem("username", username);
-              }} value="Save" />
-            </a>
         </form>
       </div>
+      </>
   );
 }
 
