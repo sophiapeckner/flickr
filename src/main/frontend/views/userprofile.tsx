@@ -2,6 +2,7 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { colors } from "../themes/flickr/colors";
 import { useState } from "react";
 import { style } from "../themes/flickr/css.js";
+import { logout } from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -37,7 +38,7 @@ export default function UserProfileView() {
       updatedMenus[index] = value;
       return updatedMenus;
     });
-    
+
   };
 
   return (
@@ -51,62 +52,62 @@ export default function UserProfileView() {
         <form style={styles.form}>
           <div style={styles.profileInputs}>
             <label style={styles.label}>Username</label>
-            <br />
+            <br/>
             <input
-              type="text"
-              id="email"
-              name="email"
-              placeholder="example-username"
-              style={{
-                ...styles.input,
-                backgroundColor: usernameHovered ? '#dbdbdb' : '#ffffff'
-              }}
-              onMouseEnter={() => setUsernameHovered(true)}
-              onMouseLeave={() => setUsernameHovered(false)}
+                type="text"
+                id="email"
+                name="email"
+                placeholder="example-username"
+                style={{
+                  ...styles.input,
+                  backgroundColor: usernameHovered ? '#dbdbdb' : '#ffffff'
+                }}
+                onMouseEnter={() => setUsernameHovered(true)}
+                onMouseLeave={() => setUsernameHovered(false)}
             />
           </div>
 
           <div style={styles.profileInputs}>
             <label style={styles.label}>Password</label>
-            <br />
+            <br/>
             <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="**********"
-              style={{
-                ...styles.input,
-                backgroundColor: passwordHovered ? '#dbdbdb' : '#ffffff'
-              }}
-              onMouseEnter={() => setPasswordHovered(true)}
-              onMouseLeave={() => setPasswordHovered(false)}
+                type="password"
+                id="password"
+                name="password"
+                placeholder="**********"
+                style={{
+                  ...styles.input,
+                  backgroundColor: passwordHovered ? '#dbdbdb' : '#ffffff'
+                }}
+                onMouseEnter={() => setPasswordHovered(true)}
+                onMouseLeave={() => setPasswordHovered(false)}
             />
           </div>
 
           <div style={styles.profileInputs}>
             <label style={styles.label}>Email</label>
-            <br />
+            <br/>
             <input
-              type="text"
-              id="email"
-              name="email"
-              placeholder="example@gmail.com"
-              style={{
-                ...styles.input,
-                backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'
-              }}
-              onMouseEnter={() => setEmailHovered(true)}
-              onMouseLeave={() => setEmailHovered(false)}
-               
+                type="text"
+                id="email"
+                name="email"
+                placeholder="example@gmail.com"
+                style={{
+                  ...styles.input,
+                  backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'
+                }}
+                onMouseEnter={() => setEmailHovered(true)}
+                onMouseLeave={() => setEmailHovered(false)}
+
             />
           </div>
-          
+          <button onClick={e => logout()}>Logout</button>
           <a href="/start_auth">
-            <input style={style.button} value="Save" />
+            <input style={style.button} value="Save"/>
           </a>
         </form>
         <form style={styles.servicesForm}>
-          <label style={styles.label}>Available Streaming Services: </label>
+        <label style={styles.label}>Available Streaming Services: </label>
           <div style={styles.servicesDiv}>
             {selectMenus.map((value, index) => (
               <div key={index}>
@@ -123,15 +124,15 @@ export default function UserProfileView() {
                   ))}
                 </select>
               </div>
-            
+
             ))}
           </div>
-          <button 
-            type="button" 
+          <button
+            type="button"
             style={{
               ...styles.moreServicesButton,
                backgroundColor: addButtonHovered ? '#dbdbdb' : '#ffffff'
-            }} 
+            }}
             onClick={addSelectMenu}
             onMouseEnter={() => setAddButtonHovered(true)}
             onMouseLeave={() => setAddButtonHovered(false)}
@@ -181,7 +182,7 @@ const styles = {
   serviceSelect: {
     margin:'auto',
     marginBottom: '5px',
-    marginTop: '5px', 
+    marginTop: '5px',
     height: '50px',
     borderRadius:'3px',
     textAlign:'center',
@@ -235,7 +236,7 @@ const styles = {
     borderRadius: 8,
   },
 
-  
+
 }
 
 

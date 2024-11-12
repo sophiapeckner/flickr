@@ -1,6 +1,9 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
 import { colors } from "Frontend/themes/flickr/colors.js";
+import { createUser } from "Frontend/generated/MemberServices";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export const config: ViewConfig = {
   menu: { order: 1, icon: "line-awesome/svg/file.svg" },
@@ -8,6 +11,12 @@ export const config: ViewConfig = {
 };
 
 export default function SignUpView() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
+
   return (
     <div style={style.outerDiv}>
       <h2 style={{...style.pageTitle, marginTop: 20}}>flickr</h2>
@@ -17,31 +26,49 @@ export default function SignUpView() {
         <form style={{...style.authFormAddOn, ...style.form}}>
           <label style={style.label} htmlFor="username">Email</label>
           <input style={style.input}
-            type="text"
-            id="username"
-            name="username"
-            placeholder="example@gmail.com"
+                 type="text"
+                 onChange={e => setEmail(e.target.value)}
+                 value={email}
+                 id="email"
+                 name="email"
+                 placeholder="example@gmail.com"
+          />
+
+          <label style={style.label} htmlFor="username">Username</label>
+          <input style={style.input}
+                 type="text"
+                 onChange={e => setUsername(e.target.value)}
+                 value={username}
+                 id="username"
+                 name="username"
+                 placeholder="user123"
           />
 
           <label style={style.label} htmlFor="password">Set Password</label>
           <input style={style.input}
-            type="password"
-            id="password"
-            name="password"
-            placeholder="5-7 characters long"
+                 type="password"
+                 onChange={e => setPassword(e.target.value)}
+                 value={password}
+                 id="password"
+                 name="password"
+                 placeholder="5-7 characters long"
           />
-          
+
           <label style={style.label} htmlFor="confirmPassword">Confirm Password</label>
-          <input style={style.input} 
-            type="password" 
-            id="confirmPassword" 
-            name="confirmPassword" 
+          <input style={style.input}
+                 type="password"
+                 id="confirmPassword"
+                 name="confirmPassword"
           />
-          
-          <a style={styles.signUpDiv} href="/start_auth">
-            <input style={styles.signUp} value="Sign Up" />
+
+          <a style={styles.signUpDiv} onClick={e => {
+            e.preventDefault();
+            createUser(email, username, password);
+            navigate("/");
+          }}>
+            <input style={styles.signUp} value="Sign Up"/>
           </a>
-         
+
           <a style={{...style.redirect, display: 'flex'}} href="/">
             Already have an account
           </a>
@@ -53,9 +80,9 @@ export default function SignUpView() {
 
 const styles = {
   signUpDiv: {
-      justifyContent: 'center', 
-      display: 'flex',
-      width: '100%'
+    justifyContent: 'center',
+    display: 'flex',
+    width: '100%'
   },
   signUp: {
     borderRadius: 8,

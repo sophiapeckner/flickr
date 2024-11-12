@@ -1,6 +1,10 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
 import { colors } from "Frontend/themes/flickr/colors.js";
+import { login, isLoggedIn } from "../auth"
+import { useState } from "react";
+import {useNavigate} from "react-router-dom";
+import member from "Frontend/generated/com/flickr/entities/Member";
 
 export const config: ViewConfig = {
   menu: { order: 0, icon: "line-awesome/svg/file.svg" },
@@ -8,6 +12,11 @@ export const config: ViewConfig = {
 };
 
 export default function LogInView() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  console.log(isLoggedIn());
+
   return (
     <div style={style.outerDiv}>
       <h2 style={{...style.pageTitle, marginTop: 20}}>flickr</h2>
@@ -20,6 +29,8 @@ export default function LogInView() {
           type="text"
           id="email"
           name="email"
+               value={email}
+               onChange={(e) => setEmail(e.target.value)}
           placeholder="example@gmail.com"
         />
 
@@ -28,10 +39,15 @@ export default function LogInView() {
           type="password"
           id="password"
           name="password"
+               value={password}
+               onChange={(e) => setPassword(e.target.value)}
           placeholder="**********"
         />
 
-        <a style={styles.buttonDiv} href="/start_auth">
+        <a style={styles.buttonDiv} onClick={e => {
+          e.preventDefault();
+          login(email, password).then(r => console.log(isLoggedIn()));
+        }}>
           <input style={styles.signUpButton} value="Sign In" />
         </a>
 

@@ -1,9 +1,18 @@
 package com.flickr.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 
 @Entity
 public class Member {
@@ -13,23 +22,15 @@ public class Member {
 
     private String email;
 
-    private String pass;
+    private String password;
 
     private String username;
 
-    @ElementCollection
-    private List<String> watchProviders = new ArrayList<>();
-
     private int movieIndex;
 
-//    private Long sessionID;
-//
-//    @ManyToOne
-//    private Session session;
-
-    public Member(String email, String pass, String username) {
+    public Member(String email, String username, String password) {
         this.email = email;
-        this.pass = pass;
+        this.password = password;
         this.username = username;
     }
 
@@ -37,7 +38,7 @@ public class Member {
         // Used for defining an Anon user
         // Because Hilla expects all member variable to be non-null, email & pass are set to dummy values
         this.email = "anon@gmail.com";
-        this.pass = "anon";
+        this.password = "anon";
         this.username = "Anonymous";
     }
 
@@ -58,11 +59,11 @@ public class Member {
     }
 
     public String getPass() {
-        return pass;
+        return password;
     }
 
     public void setPass(String pass) {
-        this.pass = pass;
+        this.password = pass;
     }
 
     public String getUsername() {
@@ -73,12 +74,9 @@ public class Member {
         this.username = username;
     }
 
-    public List<String> getWatchProviders() {
-        return watchProviders;
-    }
-
-    public void setWatchProviders(List<String> watchProviders) {
-        this.watchProviders = watchProviders;
+    @PrePersist
+    public void encryptPassword() {
+        this.password = new BCryptPasswordEncoder().encode(this.password);
     }
 
     public int getMovieIndex() { return movieIndex; }
