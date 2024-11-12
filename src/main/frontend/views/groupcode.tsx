@@ -14,9 +14,7 @@ export const config: ViewConfig = {
 export default function GroupCodeView() {
 
   const [groupCodeInput, setGroupCodeInput] = useState("");
-
   const [groupCodeHovered, setGroupCodeHovered] = useState(false);
-
   const [joinButtonHovered, setJoinButtonHovered] = useState(false);
 
   const limitLetters = (event: React.ChangeEvent<HTMLInputElement>) => {
