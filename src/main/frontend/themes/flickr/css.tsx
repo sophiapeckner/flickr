@@ -1,23 +1,23 @@
 import { colors } from "./colors.js";
 
 export const style = {
-	outerDiv: {
-		display: 'flex',
-		flexDirection: 'column',
-		height: '100%',
-	},
-	backButton: {
-		height: '50px',
-		margin: '15px',
-		float: 'left',
-		fontSize: 20,
-		marginRight: 15,
-	},
-	topCornerButton: {
-		height: "50px",
-		margin: "15px",
-		float: "right",
-	},
+  outerDiv: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+  },
+  backButton: {
+      height: '50px',
+      margin: '15px',
+      float: 'left',
+      fontSize: 20,
+      marginRight: 15,
+  },
+  topCornerButton: {
+      height: "50px",
+      margin: "15px",
+      float: "right",
+  },
   pageTitle: {
     color: colors.main, 
     textAlign: 'center',

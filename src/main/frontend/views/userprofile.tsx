@@ -102,7 +102,7 @@ export default function UserProfileView() {
           </div>
           
           <a href="/start_auth">
-            <input style={style.button} value="Save" />
+            <input style={{...style.button, ...styles.saveButton}} value="Save" />
           </a>
         </form>
         <form style={styles.servicesForm}>
@@ -233,6 +233,9 @@ const styles = {
     fontSize: 16,
     paddingLeft: 10,
     borderRadius: 8,
+  },
+  saveButton: {
+    marginBottom: 10,
   },
 
   
