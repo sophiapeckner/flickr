@@ -20,7 +20,7 @@ export default function GroupCodeView() {
   return (
     <div style={style.outerDiv}>
       <div>
-        <a style={style.backButton} href="/start_auth">
+        <a style={style.backButton} href="/start">
           X
         </a>
         <a style={style.topCornerButton} href="/userprofile">

@@ -65,7 +65,7 @@ export default function UserProfileView() {
 
   return (
     <>
-      <a href="/start_auth">
+      <a href="/start">
         <button style={styles.backButton}>X</button>
       </a>
       <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
@@ -126,7 +126,7 @@ export default function UserProfileView() {
             />
           </div>
           <button onClick={e => logout()}>Logout</button>
-          <a href="/start_auth">
+          <a href="/start">
             <input style={style.button} value="Save"/>
           </a>
         </form>
