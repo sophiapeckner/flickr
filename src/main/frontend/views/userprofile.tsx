@@ -125,7 +125,6 @@ export default function UserProfileView() {
 
             />
           </div>
-          <button onClick={e => logout()}>Logout</button>
           <a href="/start">
             <input style={style.button} value="Save"/>
           </a>
