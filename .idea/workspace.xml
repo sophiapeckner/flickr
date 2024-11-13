@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d638a43f-c099-4548-81c9-5073ed66d277" name="Changes" comment="Merged Auth into main" />
+    <list default="true" id="d638a43f-c099-4548-81c9-5073ed66d277" name="Changes" comment="Merged Auth into main">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/groupcode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/groupcode.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/MovieEndpoint.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/SessionEndpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/SessionEndpoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Session.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +26,12 @@
       </list>
     </option>
   </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:sophiapeckner/flickr.git",
+    "accountId": "d4ce012a-e595-4d15-ac98-8c05669ab826"
+  }
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -33,6 +46,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
     "node.js.selected.package.tslint": "(autodetect)",
     "ts.external.directory.path": "/Users/sophiapeckner/IdeaProjects/flickr/node_modules/typescript/lib"
   }
@@ -71,7 +86,7 @@
       <workItem from="1730881812249" duration="3334000" />
       <workItem from="1730885196373" duration="16000" />
       <workItem from="1730885330458" duration="66238000" />
-      <workItem from="1731319100781" duration="28516000" />
+      <workItem from="1731319100781" duration="41697000" />
     </task>
     <task id="LOCAL-00001" summary="Merged Auth into main">
       <option name="closed" value="true" />

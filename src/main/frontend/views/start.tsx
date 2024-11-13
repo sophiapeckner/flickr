@@ -5,7 +5,7 @@ import {createSession, findAll, joinSession} from "Frontend/generated/SessionEnd
 
 import { style } from "../themes/flickr/css.js";
 import member from "Frontend/generated/com/flickr/entities/Member";
-import {isLoggedIn} from "Frontend/auth";
+import {getEmail, getUsername, isLoggedIn} from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
@@ -18,7 +18,6 @@ export default function StartView() {
 
   // For database visualization purposes
   useEffect(() => {
-    console.log("user: ", user);
     findAll().then(setSessions)
   }, []);
 
@@ -37,16 +36,19 @@ export default function StartView() {
     if (session && session.groupCode != null) {
       try {
         // For now, add the Group Admin as an Anon user
-        await joinSession(session.groupCode, "", "", "");
+        await joinSession(session.groupCode, getEmail() || "");
       } catch (error) {
-        console.error("Error adding Group Admin to Session: ", error);
+        console.error("Error adding Member to Session: ", error);
         return;
       }
       // If both the session creation and join succeed, update state and redirect
       setSessions([...sessions, session]);
-      console.log("redirecting..");
       window.location.href = `/preferences/${session.groupCode}`;
     }
+  }
+
+  const handleJoinGroup = () => {
+    window.location.href = `/groupcode`;
   }
 
   return (
@@ -62,8 +64,8 @@ export default function StartView() {
         <h2 style={style.pageTitle}>flickr</h2>
 
         <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
-          <a href="/groupcode">
-            <button style={style.groupChoiceButton}>Join Group</button>
+          <a>
+            <button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</button>
           </a>
           {user && (
               <a>

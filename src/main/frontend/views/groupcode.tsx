@@ -3,6 +3,7 @@ import { colors } from "../themes/flickr/colors";
 import {joinSession} from "Frontend/generated/SessionEndpoint";
 import {useState} from "react";
 import { style } from "../themes/flickr/css.js";
+import {getEmail} from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -13,7 +14,7 @@ export default function GroupCodeView() {
   const [groupCode, setGroupCode] = useState("")
 
   const submit = async () => {
-    await joinSession(groupCode, "", "", "");
+    await joinSession(groupCode, getEmail() || "");
     window.location.href = `/preferences/${groupCode}`;
   }
 
@@ -37,7 +38,7 @@ export default function GroupCodeView() {
           <input style={styles.codeInput} placeholder="XXXXXXXX" type="text" onInput={(e: React.ChangeEvent<HTMLInputElement>) => setGroupCode(e.target.value)}/>
         </div>
 
-        <a href="/landing/{groupCode}">
+        <a>
           <button style={style.button} onClick={submit}>join</button>
         </a>
       </div>

@@ -55,23 +55,27 @@ public class SessionEndpoint {
         return repository.save(new Session(groupCode));
     }
 
-    public Session joinSession(String groupCode, String email, String pass, String username) {
-        // First assume that the member is joining the session anonymously
-        Member member = new Member();
-        // If member is logged in, populate their information accordingly
-        if (!email.isEmpty())       member.setEmail(email);
-        if (!pass.isEmpty())        member.setPass(pass);
-        if (!username.isEmpty())    member.setUsername(username);
+    public Session joinSession(String groupCode, String email) {
+        Session session = repository.findByGroupCode(groupCode)
+            .orElseThrow(() -> new IllegalArgumentException("Session not found for groupCode: " + groupCode));
 
-        // First fetch the Session in the repository with corresponding groupCode
-        // then add the newest member to the Session's members list
-        return repository.findByGroupCode(groupCode)
-                .map(session -> {
-                    Member savedMember = memberRepository.save(member);
-                    session.getMembers().add(savedMember);
-                    return repository.save(session);
-                })
-                .orElseThrow(() -> new IllegalArgumentException("Session not found for groupCode: " + groupCode));
+        // Declare member variable which will be saved to the Session & Repository
+        Member member;
+        if (email.isEmpty()) {
+            // Member is joining anonymously
+            member = new Member();
+            member = memberRepository.save(member);
+        } else {
+            member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found for email: " + email));
+        }
+
+        // Add the member to the Session only if they're not already in Session
+        if (!session.getMembers().contains(member)) {
+            session.getMembers().add(member);
+        }
+
+        return repository.save(session);
     }
 
     // REST GET endpoint to fetch a session by groupCode so that it's data can be viewed
