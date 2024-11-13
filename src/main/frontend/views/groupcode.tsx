@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { colors } from "../themes/flickr/colors.js";
 import { MenuBar } from "@vaadin/react-components";
 import { items } from "../themes/flickr/ProfileMenuBar";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -95,7 +95,4 @@ const styles = {
     paddingLeft: 16,
     textTransform: 'uppercase',
   },
-  menuBarIcon:{
-
-  }
 }
