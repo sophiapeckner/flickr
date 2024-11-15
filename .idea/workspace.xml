@@ -6,14 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d638a43f-c099-4548-81c9-5073ed66d277" name="Changes" comment="Merged Auth into main">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/groupcode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/groupcode.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/landing/{groupCode}.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/landing/{memberId}.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/list/{groupCode}.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/list/{memberId}.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/preferences/{groupCode}.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/preferences/{memberId}.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/swipe/{groupCode}.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/swipe/{memberId}.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/landing/{memberId}.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/landing/{memberId}.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/list/{memberId}.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/list/{memberId}.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/swipe/{memberId}.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/swipe/{memberId}.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/SessionEndpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/SessionEndpoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Member.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +85,7 @@
       <workItem from="1730881812249" duration="3334000" />
       <workItem from="1730885196373" duration="16000" />
       <workItem from="1730885330458" duration="66238000" />
-      <workItem from="1731319100781" duration="51818000" />
+      <workItem from="1731319100781" duration="60572000" />
     </task>
     <task id="LOCAL-00001" summary="Merged Auth into main">
       <option name="closed" value="true" />

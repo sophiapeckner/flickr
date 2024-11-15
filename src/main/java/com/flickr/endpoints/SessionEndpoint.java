@@ -99,6 +99,12 @@ public class SessionEndpoint {
                 .orElseThrow(() -> new IllegalArgumentException("Session not found"));
     }
 
+    @GetMapping("/member/{memberId}")
+    public Member fetchMemberById(@PathVariable Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+    }
+
     @PutMapping("/{memberId}/genres")
     public Session updateGenres(@PathVariable Long memberId, @RequestBody List<String> genres) {
         // Insert the genre(s) each member is interested in watching

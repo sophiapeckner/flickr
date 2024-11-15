@@ -5,7 +5,7 @@ import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 
 export default function SwipeView() {
-  const { groupCode } = useParams();
+  const { memberId } = useParams();
 
   const [movies, setMovies] = useState<SessionMovie[]>([]);
   const [movieIndex, setMovieIndex] = useState(0);
@@ -13,37 +13,45 @@ export default function SwipeView() {
   const [isVotingComplete, setIsVotingComplete] = useState(false);
 
   useEffect(() => {
-    const fetchSessionData = async () => {
+    const fetchMovies = async () => {
+      // Fetch the movie recommendations associated with the Session member is in
       try {
-        const response = await fetch(`/api/session/${groupCode}`);
-        const data = await response.json();
-        setMovies(data.movies || []);
-        setMember(data.members ? data.members[0] : null); // Set as the first (and only) member for now
-        setMovieIndex(data.members[0] ? data.members[0].movieIndex : 0);
+        const response = await fetch(`/api/session/${memberId}`);
+        const sessionData = await response.json();
+        setMovies(sessionData.movies || []);
       } catch (error) {
-        console.error("Failed to fetch session data:", error);
+        console.error("Failed to fetch Session's movies:", error);
       }
     };
-    fetchSessionData();
-  }, [groupCode]);
+
+    const fetchMember = async () => {
+      // Fetch the Member with memberId
+      try {
+        const response = await fetch(`/api/session/member/${memberId}`);
+        const memberData = await response.json();
+        setMember(memberData);
+        setMovieIndex(memberData.movieIndex)
+      } catch (error) {
+        console.error("Failed to fetch Member:", error);
+      }
+    };
+
+    fetchMovies();
+    fetchMember();
+  }, [member, movieIndex, movies]);
 
   useEffect(() => {
-    if (member && movies.length > 0) {
-      setIsVotingComplete(member.movieIndex >= movies.length);
+    if (movies.length > 0) {
+      setIsVotingComplete(movieIndex >= movies.length);
     }
-  }, [member, movies]);
+  }, [member, movieIndex, movies]);
 
   const handleNextMovie = async (liked: boolean) => {
-    if (!member) {
-      console.error("Member is null");
-      return;
-    }
-
     if (movieIndex <= movies.length - 1) {
       const newMovieIndex = movieIndex + 1;
 
       // Update member's movieIndex in the backend
-      await fetch(`/api/session/member/${member.id}/updateMovieIndex`, {
+      await fetch(`/api/session/member/${memberId}/updateMovieIndex`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +61,7 @@ export default function SwipeView() {
 
       // Update voteCount if liked
       if (liked) {
-        await fetch(`/api/session/${groupCode}/movie/${movies[movieIndex].id}/incrementVote`, {
+        await fetch(`/api/session/movie/${movies[movieIndex].id}/incrementVote`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
         });
@@ -67,11 +75,12 @@ export default function SwipeView() {
   };
 
   const viewList = () => {
-    window.location.href = `/list/${groupCode}`;
+    window.location.href = `/list/${memberId}`;
   };
 
   return (
       <div style={styles.outerDiv}>
+        <h1>{member?.username}</h1>
         {isVotingComplete ? (
             <p>You're done voting!</p>
         ) : (
