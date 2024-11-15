@@ -1,8 +1,8 @@
-import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
+import {ViewConfig} from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import Session from "Frontend/generated/com/flickr/entities/Session";
 import {createSession, findAll, joinSession} from "Frontend/generated/SessionEndpoint";
-import { style } from "../themes/flickr/css.js";
+import {style} from "../themes/flickr/css.js";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import * as console from "node:console";
 
@@ -11,17 +11,20 @@ export const config: ViewConfig = {
   title: "Start Auth",
 };
 
+const checkLoginStatus = async () => {
+  return await isLoggedIn();
+}
+
 export default function StartView() {
   const [sessions, setSessions] = useState<Session[]>([]);
-  let user;
-  const [isBusy, setIsBusy] = useState(true);
+  const [allowCreateGroup, setAllowCreateGroup] = useState(false);
 
   useEffect(() => {
-    isLoggedIn().then(r => {
-      user = r;
-      alert(user);
-      setIsBusy(false);
-    })
+    const fetchCondition = async () => {
+      const result = await checkLoginStatus();
+      setAllowCreateGroup(result); // Update state based on the async result
+    };
+    fetchCondition();
   }, []);
 
 
@@ -77,16 +80,12 @@ export default function StartView() {
       <a>
         <button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</button>
       </a>
-
-      {isBusy ? (
-         <></>
-      ) : (
-          user && (
+      {
+          allowCreateGroup && (
               <a>
                 <button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</button>
               </a>
-          )
-      )}
+          )}
 
     </div>
     {/*/!*For viewing H2 Database entries*!/*/}
