@@ -1,10 +1,9 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { colors } from "../themes/flickr/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { style } from "../themes/flickr/css.js";
 import { logout } from "Frontend/auth";
-import { getUsername, getEmail } from "Frontend/auth";
-import { MemberServices } from 'Frontend/generated/endpoints';
+import { getMember } from "Frontend/auth";
 
 
 export const config: ViewConfig = {
@@ -13,24 +12,19 @@ export const config: ViewConfig = {
 };
 
 export default function UserProfileView() {
-  const og_email = getEmail();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
 
-  function getProfile() {
-    if (getUsername()) {
-      // @ts-ignore
-      setUsername(getUsername());
-    }
-    if (getEmail()) {
-      // @ts-ignore
-      setEmail(getEmail());
-    }
-  }
-
-  if (email.length == 0) {
-    getProfile();
-  }
+  useEffect(() => {
+    getMember().then(r => {
+      if (r) {
+        // @ts-ignore
+        setUsername(r.username);
+        // @ts-ignore
+        setEmail(r.email);
+      }
+    })
+  }, []);
 
   // State to track the select menus
   const [selectMenus, setSelectMenus] = useState<string[]>(['']);
@@ -38,8 +32,6 @@ export default function UserProfileView() {
   const [addButtonHovered, setAddButtonHovered] = useState<boolean>(false);
 
   const [usernameHovered, setUsernameHovered] = useState<boolean>(false);
-
-  const [passwordHovered, setPasswordHovered] = useState<boolean>(false);
 
   const [emailHovered, setEmailHovered] = useState<boolean>(false);
 
@@ -77,8 +69,8 @@ export default function UserProfileView() {
             <br/>
             <input
                 type="text"
-                id="email"
-                name="email"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
                 placeholder="example-username"
                 style={{
                   ...styles.input,
@@ -90,32 +82,13 @@ export default function UserProfileView() {
           </div>
 
           <div style={styles.profileInputs}>
-            <label style={styles.label}>Password</label>
-            <br/>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="**********"
-                style={{
-                  ...styles.input,
-                  backgroundColor: passwordHovered ? '#dbdbdb' : '#ffffff'
-                }}
-                onMouseEnter={() => setPasswordHovered(true)}
-                onMouseLeave={() => setPasswordHovered(false)}
-            />
-          </div>
-
-          <div style={styles.profileInputs}>
             <label style={styles.label}>Email</label>
             <br/>
             <input
-                type="text"
-                id="email"
-                name="email"
+                type="email"
                 placeholder="example@gmail.com"
-                value={username? username : ''}
-                onChange={e => setUsername(e.target.value)}
+                value={email ? email : ''}
+                onChange={e => setEmail(e.target.value)}
                 style={{
                   ...styles.input,
                   backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'

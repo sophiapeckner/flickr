@@ -1,12 +1,5 @@
-import Member from "Frontend/generated/com/flickr/entities/Member";
 import { MemberServices } from 'Frontend/generated/endpoints';
-
-interface Authentication {
-    user: Member;
-    timestamp: number;
-}
-
-let member: undefined | Member;
+let memberId: undefined | String;
 
 
 /**
@@ -15,45 +8,44 @@ let member: undefined | Member;
  * Uses `localStorage` for offline support.
  */
 export async function login(email: string, password: string) {
-    member = await MemberServices.login(email, password);
-    if (member !== undefined) {
+    memberId = await MemberServices.login(email, password);
+    if (memberId != "Wrong password" || memberId != "User Not found") {
         // @ts-ignore
-        localStorage.setItem('username', member.username.toString());
-        // @ts-ignore
-        localStorage.setItem('email', member.email.toString());
+        localStorage.setItem('RYT', memberId);
+        return "Success";
+    } else {
+        return memberId;
     }
-    return member;
 }
 
 /**
  * Checks if the user is logged in.
  */
-export function isLoggedIn() {
-    return localStorage.getItem('username') != null;
-}
-
-/**
- * Gets the username if the user is logged in.
- */
-export function getUsername() {
-    if (isLoggedIn()) {
-        return localStorage.getItem('username');
+export async function isLoggedIn() {
+    const token = localStorage.getItem('RYT');
+    if (token == null) {
+        return false;
     } else {
-        return null;
+        const member = await MemberServices.getMember(token);
+        if (member == null) {
+            localStorage.removeItem('RYT');
+        }
+        return true;
     }
 }
 
 /**
- * Gets the email if the user is logged in.
+ * Gets the Member if the user is logged in.
  */
-export function getEmail() {
-    if (isLoggedIn()) {
-        return localStorage.getItem('email');
-    } else {
-        return null;
+export async function getMember() {
+    if (await isLoggedIn()) {
+        const memberId = localStorage.getItem('RYT');
+        if (memberId != null) {
+            return await MemberServices.getMember(memberId);
+        }
     }
+    return null;
 }
-
 
 /**
  * Login wrapper method that retrieves user information.
@@ -61,6 +53,5 @@ export function getEmail() {
  * Uses `localStorage` for offline support.
  */
 export async function logout() {
-    localStorage.removeItem('username');
-    localStorage.removeItem('email');
+    localStorage.removeItem('RYT');
 }

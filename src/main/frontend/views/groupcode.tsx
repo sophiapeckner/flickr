@@ -3,7 +3,7 @@ import { colors } from "../themes/flickr/colors";
 import {joinSession} from "Frontend/generated/SessionEndpoint";
 import {useState} from "react";
 import { style } from "../themes/flickr/css.js";
-import {getEmail} from "Frontend/auth";
+import { getMember } from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -14,7 +14,8 @@ export default function GroupCodeView() {
   const [groupCode, setGroupCode] = useState("")
 
   const submit = async () => {
-    await joinSession(groupCode, getEmail() || "");
+    const member = await getMember()
+    await joinSession(groupCode, member?.email || "");
     window.location.href = `/preferences/${groupCode}`;
   }
 

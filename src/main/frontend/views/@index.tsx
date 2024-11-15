@@ -46,8 +46,8 @@ export default function LogInView() {
 
         <a style={styles.buttonDiv} onClick={e => {
           e.preventDefault();
-          login(email, password).then(r => {
-            if (isLoggedIn()) {
+          login(email, password).then(async r => {
+            if (await isLoggedIn()) {
               navigate("/start");
             }
           });

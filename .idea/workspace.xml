@@ -5,12 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d638a43f-c099-4548-81c9-5073ed66d277" name="Changes" comment="Merged Auth into main">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/@index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/@index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/views/groupcode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/groupcode.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/signup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/signup.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/MovieEndpoint.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/SessionEndpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/SessionEndpoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Session.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/userprofile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/userprofile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/MemberServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/MemberServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Member.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/storage/MemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/storage/MemberRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,12 +31,15 @@
       </list>
     </option>
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:sophiapeckner/flickr.git",
-    "accountId": "d4ce012a-e595-4d15-ac98-8c05669ab826"
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:sophiapeckner/flickr.git&quot;,
+    &quot;accountId&quot;: &quot;d4ce012a-e595-4d15-ac98-8c05669ab826&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -39,6 +47,10 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2opuThlnVmyoGsd6nt1ku8EaNkC" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -46,10 +58,20 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+    "Spring Boot.Application.executor": "Run",
+    "git-widget-placeholder": "idRYTokens",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "ts.external.directory.path": "/Users/sophiapeckner/IdeaProjects/flickr/node_modules/typescript/lib"
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Users/ryanschmitt/flickr/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="ReactorSettings">
@@ -73,6 +95,7 @@
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="d638a43f-c099-4548-81c9-5073ed66d277" name="Changes" comment="" />
@@ -87,6 +110,7 @@
       <workItem from="1730885196373" duration="16000" />
       <workItem from="1730885330458" duration="66238000" />
       <workItem from="1731319100781" duration="41697000" />
+      <workItem from="1731656526407" duration="485000" />
     </task>
     <task id="LOCAL-00001" summary="Merged Auth into main">
       <option name="closed" value="true" />
@@ -98,6 +122,9 @@
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

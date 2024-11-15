@@ -2,7 +2,7 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
 import { colors } from "Frontend/themes/flickr/colors.js";
 import { createUser } from "Frontend/generated/MemberServices";
-import {useEffect, useState} from "react";
+import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 
 export const config: ViewConfig = {
@@ -63,8 +63,13 @@ export default function SignUpView() {
 
           <a style={styles.signUpDiv} onClick={e => {
             e.preventDefault();
-            createUser(email, username, password);
-            navigate("/");
+            createUser(email, username, password).then(r => {
+              if (r == "Account created") {
+                navigate("/");
+              } else {
+                alert(r);
+              }
+            });
           }}>
             <input style={styles.signUp} value="Sign Up"/>
           </a>
