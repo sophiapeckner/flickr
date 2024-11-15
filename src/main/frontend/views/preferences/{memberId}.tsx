@@ -3,6 +3,7 @@ import { colors } from "../../themes/flickr/colors";
 import {useParams} from "react-router-dom";
 import {MultiSelectComboBox, Select} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
+import {fetchMembersSession, fetchSessionByGroupCode} from "Frontend/generated/SessionEndpoint";
 
 export const config: ViewConfig = {
   menu: { order: 5, icon: "line-awesome/svg/file.svg" },
@@ -10,9 +11,10 @@ export const config: ViewConfig = {
 };
 
 export default function PreferencesView() {
-  const { groupCode } = useParams();
+  const { memberId } = useParams();
 
   const [genres, setGenres] = useState([]);
+  const [groupCode, setGroupCode] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -67,37 +69,44 @@ export default function PreferencesView() {
     }
   };
 
+  const fetchGroupCode = async () => {
+    const response = await fetch(`/api/session/${memberId}`);
+    const data = await response.json();
+    setGroupCode(data.groupCode);
+  }
+
   const submit = async () => {
     // selectedGenres & selectedPlatforms are a list of objects
     // The PUT request only accepts a list of Strings as the body of the request
     // The conversion from [Object] to [String] is accomplished here:
     const selectedGenreList = selectedGenres.map((genre) => genre.value);
-    const genreResponse = await fetch(`/api/session/${groupCode}/genres`, {
+    const genreResponse = await fetch(`/api/session/${memberId}/genres`, {
       method: "PUT",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(selectedGenreList)
     });
     if (!genreResponse.ok) {
-      throw new Error(`Failed to update Session ${groupCode} genres`);
+      throw new Error(`Failed to update Session genres`);
     }
 
     const selectedPlatformList = selectedPlatforms.map((platform) => platform.value);
-    const platformResponse = await fetch(`/api/session/${groupCode}/platforms`, {
+    const platformResponse = await fetch(`/api/session/${memberId}/platforms`, {
       method: "PUT",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(selectedPlatformList)
     });
     if (!platformResponse.ok) {
-      throw new Error(`Failed to update Session ${groupCode} streaming platforms`);
+      throw new Error(`Failed to update Session streaming platforms`);
     }
 
-    window.location.href = `/landing/${groupCode}`;
+    window.location.href = `/landing/${memberId}`;
   }
 
   // Used to populate the dropdowns with every option available in The Movie DB
   useEffect(() => {
     fetchGenres().then(setGenres)
     fetchStreamingPlatforms().then(setStreamingPlatforms)
+    fetchGroupCode()
   }, []);
 
   return (

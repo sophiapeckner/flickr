@@ -14,13 +14,14 @@ export const config: ViewConfig = {
 
 export default function MovieListView() {
   // const [selectedMovies, setSelectedMovies] = useState([]);
-  const { groupCode } = useParams();
+  const { memberId } = useParams();
   const [selectedMovies, setSelectedMovies] = useState<SessionMovie[]>([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
+      // Fetch the movie recommendations associated with the Session member is in
       try {
-        const response = await fetch(`/api/session/${groupCode}`);
+        const response = await fetch(`/api/session/${memberId}`);
         const data = await response.json();
         const filteredMovies = (data.movies as SessionMovie[] || []).filter(
             (sessionMovie) => (sessionMovie.voteCount ?? 0) > 0
@@ -31,10 +32,10 @@ export default function MovieListView() {
       }
     };
     fetchMovies();
-  }, [groupCode]);
+  }, []);
 
   const swipe = () => {
-    window.location.href = `/swipe/${groupCode}`;
+    window.location.href = `/swipe/${memberId}`;
   };
 
   return (
