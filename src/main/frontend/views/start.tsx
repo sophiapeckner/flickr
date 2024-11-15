@@ -19,7 +19,6 @@ export default function StartView() {
   useEffect(() => {
     isLoggedIn().then(r => {
       user = r;
-      alert(user);
       setIsBusy(false);
     })
   }, []);

@@ -5,17 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d638a43f-c099-4548-81c9-5073ed66d277" name="Changes" comment="Merged Auth into main">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/auth.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/views/@index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/@index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/groupcode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/groupcode.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/views/signup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/signup.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/userprofile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/userprofile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/MemberServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/MemberServices.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/entities/Member.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/storage/MemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/storage/MemberRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +57,7 @@
     "RequestMappingsPanelWidth1": "75",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.Application.executor": "Run",
-    "git-widget-placeholder": "idRYTokens",
+    "git-widget-placeholder": "formValidation",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
