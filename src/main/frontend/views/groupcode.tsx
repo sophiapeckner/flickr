@@ -4,6 +4,7 @@ import {fetchSessionByGroupCode, joinSession} from "Frontend/generated/SessionEn
 import {useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {getEmail} from "Frontend/auth";
+import {Button, Icon, TextField} from "@vaadin/react-components";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -24,30 +25,47 @@ export default function GroupCodeView() {
   }
 
   return (
-    <div style={style.outerDiv}>
-      <div>
-        <a style={style.backButton} href="/start">
-          X
-        </a>
-        <a style={style.topCornerButton} href="/userprofile">
-          <img src="images/profile.png" />
-        </a>
-      </div>
-      <h2 style={style.pageTitle}>flickr</h2>
-      
-      <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
-        <div style={styles.groupCodeDiv}>
-          <label style={{fontSize: 22}}>
-            Enter Group Code:
-          </label>
-          <input style={styles.codeInput} placeholder="XXXXXXXX" type="text" onInput={(e: React.ChangeEvent<HTMLInputElement>) => setGroupCode(e.target.value)}/>
+      <div style={style.outerDiv}>
+        <div>
+          <a style={style.backButton} href="/start">
+            <Icon icon="vaadin:close" />
+          </a>
+          <a style={style.topCornerButton} href="/userprofile">
+            <img src="images/profile.png" />
+          </a>
         </div>
+        <h2 style={style.pageTitle}>flickr</h2>
 
-        <a>
-          <button style={style.button} onClick={submit}>join</button>
-        </a>
+        <div style={{ ...style.innerDiv, ...style.innerDivAddOn }}>
+          <div style={styles.groupCodeDiv}>
+            <TextField
+                minlength={6}
+                maxlength={6}
+                label="Group Code"
+                style={{
+                  ...styles.codeInput,
+                  '--vaadin-input-field-height': '68px',
+                  '--vaadin-input-field-border-radius': '40px',
+                  '--vaadin-input-field-label-font-size': '20px',
+                  '--vaadin-input-field-value-font-size': '32px'
+                } as React.CSSProperties}
+                placeholder="XXXXXX"
+                value={groupCode}
+                onValueChanged={(e) => setGroupCode(e.detail.value)}>
+            </TextField>
+
+          </div>
+
+          <div>
+            <Button
+                style={style.groupChoiceButton}
+                onClick={submit}
+            >
+              Join
+            </Button>
+          </div>
+        </div>
       </div>
-    </div>
   );
 }
 
@@ -59,13 +77,13 @@ const styles = {
     width: '80%',
   },
   codeInput: {
-    width: '50%',
+    width: '75%',
     borderRadius: 24,
-    height: 48,
-    margin: 12,
-    border: '1px solid black',
+    // height: 48,
+    // margin: 12,
+    // border: '1px solid black',
     marginBottom: '20px',
-    fontSize: 32,
+    // fontSize: 32,
     paddingLeft: 16,
   },
 }
