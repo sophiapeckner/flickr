@@ -1,5 +1,5 @@
 import { MemberServices } from 'Frontend/generated/endpoints';
-let memberId: undefined | String;
+let memberId: undefined | string;
 
 
 /**
@@ -9,12 +9,11 @@ let memberId: undefined | String;
  */
 export async function login(email: string, password: string) {
     memberId = await MemberServices.login(email, password);
-    if (memberId != "Wrong password" || memberId != "User Not found") {
-        // @ts-ignore
+    if (memberId == "Wrong password" || memberId == "User Not found") {
+        return memberId;
+    } else {
         localStorage.setItem('RYT', memberId);
         return "Success";
-    } else {
-        return memberId;
     }
 }
 

@@ -11,18 +11,21 @@ export const config: ViewConfig = {
   title: "Start Auth",
 };
 
+const checkLoginStatus = async () => {
+  return await isLoggedIn();
+}
+
 export default function StartView() {
   const [sessions, setSessions] = useState<Session[]>([]);
-  let user;
-  const [isBusy, setIsBusy] = useState(true);
+  const [allowCreateGroup, setAllowCreateGroup] = useState(false);
 
   useEffect(() => {
-    isLoggedIn().then(r => {
-      user = r;
-      setIsBusy(false);
-    })
+    const fetchLogin = async () => {
+      const result = await checkLoginStatus();
+      setAllowCreateGroup(result);
+    };
+    fetchLogin();
   }, []);
-
 
   // For database visualization purposes
   useEffect(() => {
@@ -77,15 +80,12 @@ export default function StartView() {
         <button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</button>
       </a>
 
-      {isBusy ? (
-         <></>
-      ) : (
-          user && (
+      {allowCreateGroup && (
               <a>
                 <button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</button>
               </a>
           )
-      )}
+      }
 
     </div>
     {/*/!*For viewing H2 Database entries*!/*/}

@@ -42,7 +42,7 @@ export default function SignUpView() {
     }
 
     // Password validation
-    if (password.length < 5 || password.length > 7) {
+    if (password.length < 5) {
       setPasswordError("Password must be 5-7 characters long.");
       isValid = false;
     }

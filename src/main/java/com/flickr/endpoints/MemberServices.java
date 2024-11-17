@@ -46,6 +46,7 @@ public class MemberServices {
     }
 
     public Optional<Member> getMember(String id) {
+        // Add try and except block to parse the long
         return memberRepository.findById(Long.valueOf(id));
     }
 
