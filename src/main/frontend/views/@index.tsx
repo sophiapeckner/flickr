@@ -35,24 +35,24 @@ export default function LogInView() {
         <label style={style.label}>
           <p style={style.labelTitle}>Email</p>
           <input style={style.input}
-                 type="text"
-                 id="email"
-                 name="email"
-                 value={email}
-                 onChange={(e) => setEmail(e.target.value)}
-                 placeholder="example@gmail.com"
+            type="text"
+            id="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="example@gmail.com"
           />
         </label>
 
         <label style={style.label}>
           <p style={style.labelTitle}>Password</p>
           <input style={style.input}
-                 type="password"
-                 id="password"
-                 name="password"
-                 value={password}
-                 onChange={(e) => setPassword(e.target.value)}
-                 placeholder="**********"
+            type="password"
+            id="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="**********"
           />
         </label>
 
