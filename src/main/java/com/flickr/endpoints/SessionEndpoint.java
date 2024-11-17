@@ -130,10 +130,14 @@ public class SessionEndpoint {
         // Generate suggestions for the group with Member
         Session session = fetchMembersSession(memberId);
 
+        // Get a random page number so that way movie suggestions are varied
+        Random rand = new Random();
+        String pageNum = String.valueOf(rand.nextInt(500));
+
         // Build the API URL
         String genreParam = String.join("OR", session.getGenres());
         String platformParam = String.join("AND", session.getStreamingPlatforms());
-        String URL = String.format("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=%s&with_watch_providers=%s", genreParam, platformParam);
+        String URL = String.format("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=%s&sort_by=popularity.desc&with_genres=%s&with_watch_providers=%s", pageNum, genreParam, platformParam);
 
         // Create the request
         HttpRequest request = HttpRequest.newBuilder()
@@ -174,6 +178,13 @@ public class SessionEndpoint {
         }
         session.getMovies().addAll(sessionMovies);
         // System.out.println(new ObjectMapper().writeValueAsString(session));
+        return repository.save(session);
+    }
+
+    @PutMapping("/{memberId}/startSession")
+    public Session startSession(@PathVariable Long memberId) {
+        Session session = fetchMembersSession(memberId);
+        session.setStarted(true);
         return repository.save(session);
     }
 
