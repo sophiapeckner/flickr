@@ -14,7 +14,7 @@ export default function GroupCodeView() {
   const [groupCode, setGroupCode] = useState("")
 
   const submit = async () => {
-    const member = await getMember()
+      const member = await getMember()
     await joinSession(groupCode, member?.email || "");
     window.location.href = `/preferences/${groupCode}`;
   }

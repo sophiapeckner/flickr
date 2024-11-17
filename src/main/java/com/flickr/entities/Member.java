@@ -27,6 +27,8 @@ public class Member {
 
     private String username;
 
+    private Long sessionId;
+
     private int movieIndex;
 
     public Member(String email, String username, String password) {
@@ -85,4 +87,8 @@ public class Member {
     public int getMovieIndex() { return movieIndex; }
 
     public void setMovieIndex(int movieIndex) { this.movieIndex = movieIndex; }
+
+    public Long getSessionId() { return sessionId; }
+
+    public void setSessionId(Long sessionId) { this.sessionId = sessionId; }
 }

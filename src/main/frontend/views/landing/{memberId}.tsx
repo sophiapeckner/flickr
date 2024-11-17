@@ -12,24 +12,48 @@ export const config: ViewConfig = {
 };
 
 export default function GroupLandingView() {
-  const { groupCode } = useParams();
+  const { memberId } = useParams();
   const [members, setMembers] = useState<Member[]>([]);
+  const [groupCode, setGroupCode] = useState([]);
+
+  const submit = async () => {
+    // Generate movie suggestions for the Session that member is in
+    await fetch(`/api/session/${memberId}/movies`, { method: "POST" });
+    // Start the session for everyone else
+    await fetch(`/api/session/${memberId}/startSession`, { method: "PUT" });
+    window.location.href = `/swipe/${memberId}`;
+  }
+
+  const fetchGroupCode = async () => {
+    const response = await fetch(`/api/session/${memberId}`);
+    const data = await response.json();
+    setGroupCode(data.groupCode);
+  }
 
   // Fetch the Session with groupCode and update the members currently in the Session
   useEffect(() => {
+    fetchGroupCode();
+
     const intervalId = setInterval(() => {
-      fetch(`/api/session/${groupCode}`)
+      fetch(`/api/session/${memberId}`)
           .then(response => response.json())
-          .then(data => setMembers(data.members));
-    }, 10); // Poll every 5 seconds
+          .then(data => {
+            // Update member list
+            setMembers(data.members)
+
+            // Check if someone has started the Session yet
+            if (data.started) {
+              clearInterval(intervalId); // Stop polling
+              window.location.href = `/swipe/${memberId}`;
+            }
+          })
+          .catch(error => {
+            console.error("Error fetching Session data: ", error);
+          });
+    }, 10);
 
     return () => clearInterval(intervalId);
-  }, [groupCode]);
-
-  const submit = async () => {
-    await fetch(`/api/session/${groupCode}/movies`, { method: "POST" });
-    window.location.href = `/swipe/${groupCode}`;
-  }
+  }, []);
 
   return (
       <div style={style.outerDiv}>
