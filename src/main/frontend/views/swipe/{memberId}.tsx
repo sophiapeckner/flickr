@@ -38,13 +38,13 @@ export default function SwipeView() {
 
     fetchMovies();
     fetchMember();
-  }, [member, movieIndex, movies]);
+  }, []);
 
   useEffect(() => {
     if (movies.length > 0) {
       setIsVotingComplete(movieIndex >= movies.length);
     }
-  }, [member, movieIndex, movies]);
+  }, [movies]);
 
   const handleNextMovie = async (liked: boolean) => {
     if (movieIndex <= movies.length - 1) {
