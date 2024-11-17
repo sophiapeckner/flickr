@@ -37,7 +37,7 @@ export default function GroupCodeView() {
       <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
         <div style={styles.groupCodeDiv}>
           <label style={{fontSize: 22}}>
-            Enter Group Code:
+            Enter Group Code:{' '}
           <input
             style={styles.codeInput}
             placeholder="XXXXXXXX"

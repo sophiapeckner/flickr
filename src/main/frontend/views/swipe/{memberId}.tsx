@@ -80,7 +80,6 @@ export default function SwipeView() {
 
   return (
       <div style={styles.outerDiv}>
-        <h1>{member?.username}</h1>
         {isVotingComplete ? (
             <p>You're done voting!</p>
         ) : (
@@ -102,23 +101,25 @@ export default function SwipeView() {
                     </div>
                   </div>
                   <div style={styles.choices}>
-                    <a role="button" onClick={() => handleNextMovie(false)}>
-                      <img style={{ float: "left" }} src="images/garbage.png" alt="dislike button" />
-                    </a>
-                    <a role="button" onClick={() => handleNextMovie(true)}>
-                      <img style={{ float: "right" }} src="images/like.png" alt="like button" />
-                    </a>
+                    <img
+                      style={{float: "left"}}
+                      src="images/garbage.png" alt="dislike"
+                      role="button" onClick={() => handleNextMovie(false)}
+                      tabIndex={0}
+                    />
+                    <img
+                      style={{float: "right"}}
+                      src="images/like.png" alt="like"
+                      role="button" onClick={() => handleNextMovie(true)}
+                      tabIndex={0}
+                    />
                   </div>
                 </>
             )
         )}
         <div style={styles.bottomNav}>
-          <a>
-            <img src="images/pic.png" alt="pic"/>
-          </a>
-          <a>
-            <img src="images/liked.png" alt="liked" role="button" onClick={viewList}/>
-          </a>
+          <img src="images/pic.png" alt="pic"/>
+          <img src="images/liked.png" alt="liked" role="button" tabIndex={0} onClick={viewList}/>
         </div>
       </div>
   );

@@ -61,13 +61,16 @@ export default function SignUpView() {
                  name="confirmPassword"
           />
 
-          <a style={styles.signUpDiv} role='button' onClick={e => {
-            e.preventDefault();
-            createUser(email, username, password);
-            navigate("/");
-          }}>
-            <input style={styles.signUp} value="Sign Up"/>
-          </a>
+          <input
+            style={styles.signUp}
+            type="submit" value="Sign Up"
+            onClick={e => {
+              e.preventDefault();
+              createUser(email, username, password);
+              navigate("/");
+            }}
+            tabIndex={0}
+          />
 
           <a style={{...style.redirect, display: 'flex'}} href="/">
             Already have an account

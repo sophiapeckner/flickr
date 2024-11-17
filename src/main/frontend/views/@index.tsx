@@ -35,33 +35,34 @@ export default function LogInView() {
         <label style={style.label}>
           <p style={style.labelTitle}>Email</p>
           <input style={style.input}
-            type="text"
-            id="email"
-            name="email"
+                 type="text"
+                 id="email"
+                 name="email"
                  value={email}
                  onChange={(e) => setEmail(e.target.value)}
-            placeholder="example@gmail.com"
+                 placeholder="example@gmail.com"
           />
         </label>
 
         <label style={style.label}>
           <p style={style.labelTitle}>Password</p>
           <input style={style.input}
-            type="password"
-            id="password"
-            name="password"
+                 type="password"
+                 id="password"
+                 name="password"
                  value={password}
                  onChange={(e) => setPassword(e.target.value)}
-            placeholder="**********"
+                 placeholder="**********"
           />
         </label>
 
-        <a style={styles.buttonDiv} role='button'
-           onKeyUp={handleSignIn}
-           onClick={handleSignIn}
-           tabIndex={0}>
-          <input style={styles.signUpButton} type="submit" value="Sign In" />
-        </a>
+        <input
+          style={styles.signUpButton}
+          type="submit" value="Sign In"
+          onKeyUp={handleSignIn}
+          onClick={handleSignIn}
+          tabIndex={0}
+        />
 
         <div style={style.redirect}>
           <a style={{float: 'left'}} href="/signup">Forgot Password</a>

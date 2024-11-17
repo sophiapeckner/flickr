@@ -66,12 +66,8 @@ export default function MovieListView() {
         </div>
 
         <div style={styles.bottomNav}>
-          <a onClick={swipe} role={'button'}>
-            <img src="/images/pic.png" alt="Suggestions"/>
-          </a>
-          <a>
-            <img src="/images/liked.png" alt="Liked"/>
-          </a>
+          <img onClick={swipe} tabIndex={0} role="button" src="/images/pic.png" alt="Suggestions"/>
+          <img src="/images/liked.png" alt="Liked"/>
         </div>
       </div>
   );
