@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d638a43f-c099-4548-81c9-5073ed66d277" name="Changes" comment="Merged Auth into main">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/views/start.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/SessionEndpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/flickr/endpoints/SessionEndpoint.java" afterDir="false" />
-    </list>
+    <list default="true" id="d638a43f-c099-4548-81c9-5073ed66d277" name="Changes" comment="Merged Auth into main" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
