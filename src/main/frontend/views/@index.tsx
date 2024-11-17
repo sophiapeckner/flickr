@@ -22,7 +22,7 @@ export default function LoginForm() {
   const handleLogin = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     login(email, password).then(async (r) => {
-      if (await isLoggedIn()) {
+      if (r == "Success") {
           navigate("/start");
       } else {
         // @ts-ignore

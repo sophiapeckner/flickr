@@ -1,6 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { colors } from "../themes/flickr/colors";
-import {joinSession} from "Frontend/generated/SessionEndpoint";
+import {fetchSessionByGroupCode, joinSession} from "Frontend/generated/SessionEndpoint";
 import {useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import { getMember } from "Frontend/auth";
@@ -14,9 +14,18 @@ export default function GroupCodeView() {
   const [groupCode, setGroupCode] = useState("")
 
   const submit = async () => {
-      const member = await getMember()
-    await joinSession(groupCode, member?.email || "");
-    window.location.href = `/preferences/${groupCode}`;
+    let session = await fetchSessionByGroupCode(groupCode);
+    let member = await getMember();
+    if (session.id == null) {
+      console.log("Session's ID is null");
+      return;   // Don't redirect if Session's ID is invalid
+    }
+    if (member == null) {
+      member = await joinSession(session.id, "");
+      // Save anouymous user
+    }
+    member= await joinSession(session.id, member?.email || "");
+    window.location.href = `/preferences/${member.id}`;
   }
 
   return (

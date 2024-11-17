@@ -18,6 +18,16 @@ export async function login(email: string, password: string) {
 }
 
 /**
+ * Create Anonymous user
+ *
+ * Uses `localStorage` for offline support.
+ */
+export async function anonymousUser(email: string, password: string) {
+
+}
+
+
+/**
  * Checks if the user is logged in.
  */
 export async function isLoggedIn() {
