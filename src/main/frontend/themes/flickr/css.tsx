@@ -47,7 +47,12 @@ export const style = {
     bottom: "0px",
   },
   label: {
-    marginRight: 'auto', 
+    flexDirection: 'column',
+    display: 'flex',
+    marginRight: 'auto',
+    width: '100%',
+  },
+  labelTitle: {
     marginLeft: '5%'
   },
   input: {

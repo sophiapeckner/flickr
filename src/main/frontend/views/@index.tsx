@@ -4,7 +4,6 @@ import { colors } from "Frontend/themes/flickr/colors.js";
 import { login, isLoggedIn } from "../auth"
 import { useState } from "react";
 import {useNavigate} from "react-router-dom";
-import member from "Frontend/generated/com/flickr/entities/Member";
 
 export const config: ViewConfig = {
   menu: { order: 0, icon: "line-awesome/svg/file.svg" },
@@ -17,41 +16,49 @@ export default function LogInView() {
   const navigate = useNavigate();
   console.log(isLoggedIn());
 
+  const handleSignIn = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    login(email, password).then(r => {
+      if (isLoggedIn()) {
+        navigate("/start");
+      }
+    });
+  }
+
   return (
     <div style={style.outerDiv}>
       <h2 style={{...style.pageTitle, marginTop: 20}}>flickr</h2>
-      <img style={{width: '100%'}} src="images/movie_reel.png" />
+      <img style={{width: '100%'}} src="images/movie_reel.png" alt="" />
     
     <div style={style.innerDiv}>
       <form style={{...style.authFormAddOn, ...style.form}}>
-        <label style={style.label}>Email</label>
-        <input style={style.input}
-          type="text"
-          id="email"
-          name="email"
-               value={email}
-               onChange={(e) => setEmail(e.target.value)}
-          placeholder="example@gmail.com"
-        />
+        <label style={style.label}>
+          <label style={style.labelTitle}>Email</label>
+          <input style={style.input}
+            type="text"
+            id="email"
+            name="email"
+                 value={email}
+                 onChange={(e) => setEmail(e.target.value)}
+            placeholder="example@gmail.com"
+          />
+        </label>
 
-        <label style={style.label}>Password</label>
-        <input style={style.input}
-          type="password"
-          id="password"
-          name="password"
-               value={password}
-               onChange={(e) => setPassword(e.target.value)}
-          placeholder="**********"
-        />
+        <label style={style.label}>
+          <label style={style.labelTitle}>Password</label>
+          <input style={style.input}
+            type="password"
+            id="password"
+            name="password"
+                 value={password}
+                 onChange={(e) => setPassword(e.target.value)}
+            placeholder="**********"
+          />
+        </label>
 
-        <a style={styles.buttonDiv} onClick={e => {
-          e.preventDefault();
-          login(email, password).then(r => {
-            if (isLoggedIn()) {
-              navigate("/start");
-            }
-          });
-        }}>
+        <a style={styles.buttonDiv} role='button'
+           onKeyUp={handleSignIn}
+           onClick={handleSignIn}>
           <input style={styles.signUpButton} value="Sign In" />
         </a>
 
