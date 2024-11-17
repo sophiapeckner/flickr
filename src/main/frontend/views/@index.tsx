@@ -11,64 +11,82 @@ export const config: ViewConfig = {
   title: "Log In",
 };
 
-export default function LogInView() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  console.log(isLoggedIn());
+
+
+  const handleLogin = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    login(email, password).then(async (r) => {
+      if (await isLoggedIn()) {
+          navigate("/start");
+      } else {
+        // @ts-ignore
+        setError(r)
+      }
+    });
+  };
 
   return (
-    <div style={style.outerDiv}>
-      <h2 style={{...style.pageTitle, marginTop: 20}}>flickr</h2>
-      <img style={{width: '100%'}} src="images/movie_reel.png" />
-    
-    <div style={style.innerDiv}>
-      <form style={{...style.authFormAddOn, ...style.form}}>
-        <label style={style.label}>Email</label>
-        <input style={style.input}
-          type="text"
-          id="email"
-          name="email"
-               value={email}
-               onChange={(e) => setEmail(e.target.value)}
-          placeholder="example@gmail.com"
-        />
+      <div style={style.outerDiv}>
+        <h2 style={{ ...style.pageTitle, marginTop: 20 }}>flickr</h2>
+        <img style={{ width: '100%' }} src="images/movie_reel.png" />
 
-        <label style={style.label}>Password</label>
-        <input style={style.input}
-          type="password"
-          id="password"
-          name="password"
-               value={password}
-               onChange={(e) => setPassword(e.target.value)}
-          placeholder="**********"
-        />
+        <div style={style.innerDiv}>
+          <form style={{ ...style.authFormAddOn, ...style.form }}>
+            {error && <span style={{ color: 'red' }}>{error}</span>}
+            <label style={style.label}>Email</label>
+            <input
+                style={style.input}
+                type="text"
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="example@gmail.com"
+            />
 
-        <a style={styles.buttonDiv} onClick={e => {
-          e.preventDefault();
-          login(email, password).then(async r => {
-            if (await isLoggedIn()) {
-              navigate("/start");
-            }
-          });
-        }}>
-          <input style={styles.signUpButton} value="Sign In" />
-        </a>
 
-        <div style={style.redirect}>
-          <a style={{float: 'left'}} href="/signup">Forgot Password</a>
-          <a style={{float: 'right'}} href="/signup">Sign Up</a>
+            <label style={style.label}>Password</label>
+            <input
+                style={style.input}
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="**********"
+            />
+
+            <div style={styles.buttonDiv}>
+              <button style={styles.signUpButton} onClick={handleLogin}>
+                Sign In
+              </button>
+            </div>
+
+            <div style={style.redirect}>
+              <a style={{ float: 'left' }} href="/signup">
+                Forgot Password
+              </a>
+              <a style={{ float: 'right' }} href="/signup">
+                Sign Up
+              </a>
+            </div>
+          </form>
+
+          <a style={styles.buttonDiv} href="/start">
+            <button style={styles.button}>Continue as Guest</button>
+          </a>
         </div>
-      </form>
-
-
-      <a style={styles.buttonDiv} href="/start">
-        <button style={styles.button}>Continue as Guest</button>
-      </a>
       </div>
-    </div>
   );
 }
+
+
 
 const styles = {
   buttonDiv: {
