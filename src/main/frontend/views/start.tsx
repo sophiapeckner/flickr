@@ -6,6 +6,7 @@ import {createSession, findAll, joinSession} from "Frontend/generated/SessionEnd
 import { style } from "../themes/flickr/css.js";
 import member from "Frontend/generated/com/flickr/entities/Member";
 import {getEmail, getUsername, isLoggedIn} from "Frontend/auth";
+import {Button, Icon} from "@vaadin/react-components";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
@@ -57,22 +58,17 @@ export default function StartView() {
       <div style={style.outerDiv}>
         <div>
           <a style={style.backButton} href="/">
-            X
+            <Icon icon="vaadin:close" />
           </a>
           <a style={style.topCornerButton} href="/userprofile">
             <img src="images/profile.png" />
           </a>
         </div>
         <h2 style={style.pageTitle}>flickr</h2>
-
         <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
-          <a>
-            <button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</button>
-          </a>
+          <Button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</Button>
           {user && (
-              <a>
-                <button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</button>
-              </a>
+              <Button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</Button>
           )}
         </div>
       </div>
