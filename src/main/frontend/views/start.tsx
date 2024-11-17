@@ -23,6 +23,7 @@ export default function StartView() {
 
   const handleCreateGroup = async () => {
     let session;
+    let member;
 
     // Try creating a Session and pushing to H2 DB
     try {
@@ -32,18 +33,19 @@ export default function StartView() {
       return;
     }
 
-    // Try adding the group admin as a member of the Session that was just created
-    if (session && session.groupCode != null) {
+    // Attempt to add Member to the Session
+    if (session && session.id) {
       try {
-        // For now, add the Group Admin as an Anon user
-        await joinSession(session.groupCode, getEmail() || "");
+        member = await joinSession(session.id, getEmail() || "");
       } catch (error) {
         console.error("Error adding Member to Session: ", error);
         return;
       }
-      // If both the session creation and join succeed, update state and redirect
+      // Session Creation/Join was successful; update state and redirect
       setSessions([...sessions, session]);
-      window.location.href = `/preferences/${session.groupCode}`;
+      window.location.href = `/preferences/${member.id}`;
+    } else {
+      console.log("Session's ID is invalid")
     }
   }
 
@@ -73,6 +75,7 @@ export default function StartView() {
               </a>
           )}
         </div>
+
         {/*/!*For viewing H2 Database entries*!/*/}
         {sessions.map((session) => (
             <div key={session.id}>
@@ -114,6 +117,7 @@ export default function StartView() {
               )}
             </div>
         ))}
+
       </div>
   );
 }

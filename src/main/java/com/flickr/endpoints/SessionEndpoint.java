@@ -47,6 +47,12 @@ public class SessionEndpoint {
         return repository.findAll();
     }
 
+    public Session fetchSessionByGroupCode(String groupCode) {
+        // Returns Session that the Member with memberID is in
+        return repository.findByGroupCode(groupCode)
+                .orElseThrow(() -> new IllegalArgumentException("Session not found"));
+    }
+
     public Session createSession() {
         // Create a new session associated with a unique groupCode
         // Adds this new session into H2
@@ -55,9 +61,9 @@ public class SessionEndpoint {
         return repository.save(new Session(groupCode));
     }
 
-    public Session joinSession(String groupCode, String email) {
-        Session session = repository.findByGroupCode(groupCode)
-            .orElseThrow(() -> new IllegalArgumentException("Session not found for groupCode: " + groupCode));
+    public Member joinSession(Long sessionId, String email) {
+        Session session = repository.findById(sessionId)
+            .orElseThrow(() -> new IllegalArgumentException("Session not found for groupCode: " + sessionId));
 
         // Declare member variable which will be saved to the Session & Repository
         Member member;
@@ -66,60 +72,64 @@ public class SessionEndpoint {
             member = new Member();
             member = memberRepository.save(member);
         } else {
+            // Member is signed in/authenticated
             member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found for email: " + email));
         }
+
+        // Always associate the member with the Session ID
+        member.setSessionId(sessionId);
 
         // Add the member to the Session only if they're not already in Session
         if (!session.getMembers().contains(member)) {
             session.getMembers().add(member);
         }
 
+        repository.save(session);
+
+        return member;
+    }
+
+    @GetMapping("/{memberId}")
+    public Session fetchMembersSession(@PathVariable Long memberId) {
+        // Returns Session that the Member with memberID is in
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        return repository.findById(member.getSessionId())
+                .orElseThrow(() -> new IllegalArgumentException("Session not found"));
+    }
+
+    @GetMapping("/member/{memberId}")
+    public Member fetchMemberById(@PathVariable Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+    }
+
+    @PutMapping("/{memberId}/genres")
+    public Session updateGenres(@PathVariable Long memberId, @RequestBody List<String> genres) {
+        // Insert the genre(s) each member is interested in watching
+        // into the Session that the Member is in
+        Session session = fetchMembersSession(memberId);
+        // Append all the `genres` to Session
+        session.getGenres().addAll(genres);
         return repository.save(session);
     }
 
-    // REST GET endpoint to fetch a session by groupCode so that it's data can be viewed
-    @GetMapping("/{groupCode}")
-    public Optional<Session> fetchSession(@PathVariable String groupCode) {
-        // Returns Session with corresponding groupCode
-        return repository.findByGroupCode(groupCode);
+    @PutMapping("/{memberId}/platforms")
+    public Session updateStreamingPlatforms(@PathVariable Long memberId, @RequestBody List<String> platforms) {
+        // Insert the streaming platform(s) each member has
+        // into the Session that the Member is in
+        Session session = fetchMembersSession(memberId);
+        // Append all `platforms` to Session
+        session.getStreamingPlatforms().addAll(platforms);
+        return repository.save(session);
     }
 
-    // REST PUT endpoint to insert the genre(s) each member is interested in watching
-    // into the Session associated with the groupCode
-    @PutMapping("/{groupCode}/genres")
-    public Session updateGenres(@PathVariable String groupCode, @RequestBody List<String> genres) {
-        Optional<Session> session = fetchSession(groupCode);
-        if (session.isEmpty()) {
-            throw new IllegalArgumentException("Session not found for groupCode: " + groupCode);
-        }
-        // Append all the genres to the session's genre member variable
-        session.get().getGenres().addAll(genres);
-        return repository.save(session.get());
-    }
+    @PostMapping("/{memberId}/movies")
+    public Session generateSuggestions(@PathVariable Long memberId) throws JSONException, IOException, InterruptedException {
+        // Generate suggestions for the group with Member
+        Session session = fetchMembersSession(memberId);
 
-    // REST PUT endpoint to insert the streaming platform(s) each member has
-    // into the Session associated with the groupCode
-    @PutMapping("/{groupCode}/platforms")
-    public Session updateStreamingPlatforms(@PathVariable String groupCode, @RequestBody List<String> platforms) {
-        Optional<Session> session = fetchSession(groupCode);
-        if (session.isEmpty()) {
-            throw new IllegalArgumentException("Session not found for groupCode: " + groupCode);
-        }
-        // Append all the streaming platforms to the session's streaming member variable
-        session.get().getStreamingPlatforms().addAll(platforms);
-        return repository.save(session.get());
-    }
-
-    @PostMapping("/{groupCode}/movies")
-    public Session generateSuggestions(@PathVariable String groupCode) throws JSONException, IOException, InterruptedException {
-        Optional<Session> sessionOptional = fetchSession(groupCode);
-
-        if (sessionOptional.isEmpty()) {
-            throw new IllegalArgumentException("Session not found for groupCode: " + groupCode);
-        }
-
-        Session session = sessionOptional.get();
         // Build the API URL
         String genreParam = String.join("OR", session.getGenres());
         String platformParam = String.join("AND", session.getStreamingPlatforms());
@@ -163,7 +173,7 @@ public class SessionEndpoint {
             sessionMovies.add(sessionMovie);
         }
         session.getMovies().addAll(sessionMovies);
-//        System.out.println(new ObjectMapper().writeValueAsString(session));
+        // System.out.println(new ObjectMapper().writeValueAsString(session));
         return repository.save(session);
     }
 
@@ -176,11 +186,9 @@ public class SessionEndpoint {
         return memberRepository.save(member);
     }
 
-    @PutMapping("/{groupCode}/movie/{movieId}/incrementVote")
-    public SessionMovie incrementMovieVoteCount(@PathVariable String groupCode, @PathVariable Long movieId) {
-        Session session = repository.findByGroupCode(groupCode)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
-        SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
+    @PutMapping("/movie/{movieId}/incrementVote")
+    public SessionMovie incrementMovieVoteCount(@PathVariable Long movieId) {
+       SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("SessionMovie not found"));
         sessionMovie.setVoteCount(sessionMovie.getVoteCount() + 1);
         return sessionMovieRepository.save(sessionMovie);
