@@ -23,9 +23,10 @@ export default function MovieListView() {
       try {
         const response = await fetch(`/api/session/${memberId}`);
         const data = await response.json();
-        const filteredMovies = (data.movies as SessionMovie[] || []).filter(
-            (sessionMovie) => (sessionMovie.voteCount ?? 0) > 0
-        );
+        // Sort in descending order so that movies with the most votes appear on top
+        const filteredMovies = (data.movies as SessionMovie[] || [])
+            .filter((sessionMovie) => (sessionMovie.voteCount ?? 0) > 0)
+            .sort((a, b) => (b.voteCount ?? 0) - (a.voteCount ?? 0));
         setSelectedMovies(filteredMovies);
       } catch (error) {
         console.error("Failed to fetch movies:", error);
