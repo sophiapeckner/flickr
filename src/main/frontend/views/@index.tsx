@@ -26,7 +26,7 @@ export default function LoginForm() {
           navigate("/start");
       } else {
         // @ts-ignore
-        setError(r)
+        setError(r);
       }
     });
   };

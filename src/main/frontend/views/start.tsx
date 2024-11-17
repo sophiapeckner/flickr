@@ -4,7 +4,7 @@ import Session from "Frontend/generated/com/flickr/entities/Session";
 import {createSession, findAll, joinSession} from "Frontend/generated/SessionEndpoint";
 import { style } from "../themes/flickr/css.js";
 import {getMember, isLoggedIn} from "Frontend/auth";
-import * as console from "node:console";
+import Member from "Frontend/generated/com/flickr/entities/Member";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
@@ -18,6 +18,7 @@ const checkLoginStatus = async () => {
 export default function StartView() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [allowCreateGroup, setAllowCreateGroup] = useState(false);
+  let member: Member | undefined | null;
 
   useEffect(() => {
     const fetchLogin = async () => {
@@ -47,8 +48,8 @@ export default function StartView() {
     if (session && session.groupCode != null) {
       try {
         // For now, add the Group Admin as an Anon user\
-        // @ts-ignore
-        await joinSession(session.groupCode, getMember().email || "");
+        const member = await getMember();
+        await joinSession(session.groupCode, member?.email || "");
       } catch (error) {
         console.error("Error adding Member to Session: ", error);
         return;
