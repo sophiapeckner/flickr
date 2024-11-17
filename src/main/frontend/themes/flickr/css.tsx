@@ -52,9 +52,9 @@ export const style = {
   },
   input: {
     width: '90%',
-    height: 30,
+    // height: 30,
     margin: 'auto',
-    border: '1px solid black',
+    // border: '1px solid black',
     marginBottom: 20,
     fontSize: 16,
     paddingLeft: 10,

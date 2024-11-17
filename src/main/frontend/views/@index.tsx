@@ -5,6 +5,7 @@ import { login, isLoggedIn } from "../auth"
 import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import member from "Frontend/generated/com/flickr/entities/Member";
+import {Button, EmailField, PasswordField} from "@vaadin/react-components";
 
 export const config: ViewConfig = {
   menu: { order: 0, icon: "line-awesome/svg/file.svg" },
@@ -18,55 +19,58 @@ export default function LogInView() {
   console.log(isLoggedIn());
 
   return (
-    <div style={style.outerDiv}>
-      <h2 style={{...style.pageTitle, marginTop: 20}}>flickr</h2>
-      <img style={{width: '100%'}} src="images/movie_reel.png" />
-    
-    <div style={style.innerDiv}>
-      <form style={{...style.authFormAddOn, ...style.form}}>
-        <label style={style.label}>Email</label>
-        <input style={style.input}
-          type="text"
-          id="email"
-          name="email"
-               value={email}
-               onChange={(e) => setEmail(e.target.value)}
-          placeholder="example@gmail.com"
-        />
+      <div style={style.outerDiv}>
+        <h2 style={{ ...style.pageTitle, marginTop: 20 }}>flickr</h2>
+        <img style={{ width: '100%' }} src="images/movie_reel.png" />
 
-        <label style={style.label}>Password</label>
-        <input style={style.input}
-          type="password"
-          id="password"
-          name="password"
-               value={password}
-               onChange={(e) => setPassword(e.target.value)}
-          placeholder="**********"
-        />
+        <div style={style.innerDiv}>
+          <form style={{ ...style.authFormAddOn, ...style.form }} onSubmit={(e) => e.preventDefault()}>
+            <EmailField
+                label="Email address"
+                value={email}
+                style={style.input}
+                errorMessage="Enter a valid email address"
+                onValueChanged={(e) => setEmail(e.detail.value)}
+            />
 
-        <a style={styles.buttonDiv} onClick={e => {
-          e.preventDefault();
-          login(email, password).then(r => {
-            if (isLoggedIn()) {
-              navigate("/start");
-            }
-          });
-        }}>
-          <input style={styles.signUpButton} value="Sign In" />
-        </a>
+            <PasswordField
+                label="Password"
+                value={password}
+                style={style.input}
+                onValueChanged={(e) => setPassword(e.detail.value)}
+            />
 
-        <div style={style.redirect}>
-          <a style={{float: 'left'}} href="/signup">Forgot Password</a>
-          <a style={{float: 'right'}} href="/signup">Sign Up</a>
+            <div style={styles.buttonDiv}>
+              <Button
+                  style={styles.signUpButton}
+                  onClick={() => {
+                    login(email, password).then(() => {
+                      if (isLoggedIn()) {
+                        navigate("/start");
+                      }
+                    });
+                  }}
+              >
+                Sign In
+              </Button>
+            </div>
+
+            <div style={style.redirect}>
+              <a style={{ float: 'left' }} href="/signup">Forgot Password</a>
+              <a style={{ float: 'right' }} href="/signup">Sign Up</a>
+            </div>
+          </form>
+
+          <div style={styles.buttonDiv}>
+            <Button
+                style={styles.button}
+                onClick={() => navigate("/start")}
+            >
+              Continue as Guest
+            </Button>
+          </div>
         </div>
-      </form>
-
-
-      <a style={styles.buttonDiv} href="/start">
-        <button style={styles.button}>Continue as Guest</button>
-      </a>
       </div>
-    </div>
   );
 }
 
