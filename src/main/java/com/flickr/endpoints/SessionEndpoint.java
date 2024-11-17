@@ -177,6 +177,13 @@ public class SessionEndpoint {
         return repository.save(session);
     }
 
+    @PutMapping("/{memberId}/startSession")
+    public Session startSession(@PathVariable Long memberId) {
+        Session session = fetchMembersSession(memberId);
+        session.setStarted(true);
+        return repository.save(session);
+    }
+
     @PutMapping("/member/{memberId}/updateMovieIndex")
     public Member updateMemberMovieIndex(@PathVariable Long memberId, @RequestBody Map<String, Integer> request) {
         int movieIndex = request.get("movieIndex");

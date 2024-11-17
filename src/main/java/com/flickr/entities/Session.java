@@ -27,6 +27,8 @@ public class Session {
     @ElementCollection
     private Set<String> streamingPlatforms = new HashSet<>();
 
+    private boolean started = false;
+
     public Session(String groupCode) {
         this.groupCode = groupCode;
         this.members = new ArrayList<>();
@@ -70,4 +72,8 @@ public class Session {
     public List<SessionMovie> getMovies() { return movies; }
 
     public void setMovies(List<SessionMovie> movies) { this.movies = movies; }
+
+    public boolean isStarted() { return started; }
+
+    public void setStarted(boolean started) { this.started = started; }
 }
