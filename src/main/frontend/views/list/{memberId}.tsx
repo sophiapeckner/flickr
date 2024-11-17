@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { colors } from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
-import session from "Frontend/generated/com/flickr/entities/Session";
 // import { MovieListController } from "Frontend/generated/endpoints.ts";
 // import { useState, useEffect } from "react";
 
@@ -46,7 +45,7 @@ export default function MovieListView() {
             X
           </a>
           <a style={styles.topCornerButton} href="/userprofile">
-            <img src="/images/profile.png"/>
+            <img src="/images/profile.png" alt={"Profile"}/>
           </a>
         </div>
 
@@ -67,11 +66,11 @@ export default function MovieListView() {
         </div>
 
         <div style={styles.bottomNav}>
-          <a onClick={swipe}>
-            <img src="/images/pic.png" alt="pic"/>
+          <a onClick={swipe} role={'button'}>
+            <img src="/images/pic.png" alt="Suggestions"/>
           </a>
           <a>
-            <img src="/images/liked.png" alt="liked"/>
+            <img src="/images/liked.png" alt="Liked"/>
           </a>
         </div>
       </div>

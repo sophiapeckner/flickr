@@ -1,9 +1,8 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { colors } from "../../themes/flickr/colors";
 import {useParams} from "react-router-dom";
-import {MultiSelectComboBox, Select} from "@vaadin/react-components";
+import {MultiSelectComboBox} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
-import {fetchMembersSession, fetchSessionByGroupCode} from "Frontend/generated/SessionEndpoint";
 
 export const config: ViewConfig = {
   menu: { order: 5, icon: "line-awesome/svg/file.svg" },
@@ -116,7 +115,7 @@ export default function PreferencesView() {
           X
         </a>
         <a style={styles.topCornerButton} href="/userprofile">
-          <img src="images/profile.png" />
+          <img src="images/profile.png" alt={"Profile"} />
         </a>
       </div>
 

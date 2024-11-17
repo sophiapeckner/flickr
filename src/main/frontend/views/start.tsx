@@ -4,8 +4,7 @@ import Session from "Frontend/generated/com/flickr/entities/Session";
 import {createSession, findAll, joinSession} from "Frontend/generated/SessionEndpoint";
 
 import { style } from "../themes/flickr/css.js";
-import member from "Frontend/generated/com/flickr/entities/Member";
-import {getEmail, getUsername, isLoggedIn} from "Frontend/auth";
+import {getEmail, isLoggedIn} from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
@@ -34,7 +33,7 @@ export default function StartView() {
     }
 
     // Attempt to add Member to the Session
-    if (session && session.id) {
+    if (session?.id) {
       try {
         member = await joinSession(session.id, getEmail() || "");
       } catch (error) {
@@ -60,7 +59,7 @@ export default function StartView() {
             X
           </a>
           <a style={style.topCornerButton} href="/userprofile">
-            <img src="images/profile.png" />
+            <img src="images/profile.png" alt={"Profile"}/>
           </a>
         </div>
         <h2 style={style.pageTitle}>flickr</h2>

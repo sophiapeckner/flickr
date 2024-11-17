@@ -33,7 +33,7 @@ export default function LogInView() {
     <div style={style.innerDiv}>
       <form style={{...style.authFormAddOn, ...style.form}}>
         <label style={style.label}>
-          <label style={style.labelTitle}>Email</label>
+          <p style={style.labelTitle}>Email</p>
           <input style={style.input}
             type="text"
             id="email"
@@ -45,7 +45,7 @@ export default function LogInView() {
         </label>
 
         <label style={style.label}>
-          <label style={style.labelTitle}>Password</label>
+          <p style={style.labelTitle}>Password</p>
           <input style={style.input}
             type="password"
             id="password"
@@ -58,8 +58,9 @@ export default function LogInView() {
 
         <a style={styles.buttonDiv} role='button'
            onKeyUp={handleSignIn}
-           onClick={handleSignIn}>
-          <input style={styles.signUpButton} value="Sign In" />
+           onClick={handleSignIn}
+           tabIndex={0}>
+          <input style={styles.signUpButton} type="submit" value="Sign In" />
         </a>
 
         <div style={style.redirect}>

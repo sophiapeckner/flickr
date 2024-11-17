@@ -62,7 +62,7 @@ export default function GroupLandingView() {
             X
           </a>
           <a style={style.topCornerButton} href="/userprofile">
-            <img src="images/profile.png"/>
+            <img src="images/profile.png" alt={"Profile"}/>
           </a>
         </div>
 

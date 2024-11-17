@@ -102,10 +102,10 @@ export default function SwipeView() {
                     </div>
                   </div>
                   <div style={styles.choices}>
-                    <a onClick={() => handleNextMovie(false)}>
+                    <a role="button" onClick={() => handleNextMovie(false)}>
                       <img style={{ float: "left" }} src="images/garbage.png" alt="dislike button" />
                     </a>
-                    <a onClick={() => handleNextMovie(true)}>
+                    <a role="button" onClick={() => handleNextMovie(true)}>
                       <img style={{ float: "right" }} src="images/like.png" alt="like button" />
                     </a>
                   </div>
@@ -117,7 +117,7 @@ export default function SwipeView() {
             <img src="images/pic.png" alt="pic"/>
           </a>
           <a>
-            <img src="images/liked.png" alt="liked" onClick={viewList}/>
+            <img src="images/liked.png" alt="liked" role="button" onClick={viewList}/>
           </a>
         </div>
       </div>

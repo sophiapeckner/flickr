@@ -1,11 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { colors } from "../themes/flickr/colors";
 import { useState } from "react";
 import { style } from "../themes/flickr/css.js";
-import { logout } from "Frontend/auth";
-import { getUsername, getEmail } from "Frontend/auth";
-import { MemberServices } from 'Frontend/generated/endpoints';
-
+import { logout, getEmail, getUsername } from "Frontend/auth"
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -13,7 +9,6 @@ export const config: ViewConfig = {
 };
 
 export default function UserProfileView() {
-  const og_email = getEmail();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
 
@@ -73,67 +68,69 @@ export default function UserProfileView() {
         <h3 style={styles.username}>ExampleUser Profile</h3>
         <form style={styles.form}>
           <div style={styles.profileInputs}>
-            <label style={styles.label}>Username</label>
-            <br/>
-            <input
-                type="text"
-                id="email"
-                name="email"
-                placeholder="example-username"
-                style={{
-                  ...styles.input,
-                  backgroundColor: usernameHovered ? '#dbdbdb' : '#ffffff'
-                }}
-                onMouseEnter={() => setUsernameHovered(true)}
-                onMouseLeave={() => setUsernameHovered(false)}
-            />
+            <label style={styles.label}>Username
+              <br/>
+              <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  placeholder="example-username"
+                  style={{
+                    ...styles.input,
+                    backgroundColor: usernameHovered ? '#dbdbdb' : '#ffffff'
+                  }}
+                  onMouseEnter={() => setUsernameHovered(true)}
+                  onMouseLeave={() => setUsernameHovered(false)}
+              />
+            </label>
           </div>
 
           <div style={styles.profileInputs}>
-            <label style={styles.label}>Password</label>
-            <br/>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="**********"
-                style={{
-                  ...styles.input,
-                  backgroundColor: passwordHovered ? '#dbdbdb' : '#ffffff'
-                }}
-                onMouseEnter={() => setPasswordHovered(true)}
-                onMouseLeave={() => setPasswordHovered(false)}
-            />
+            <label style={styles.label}>Password
+              <br/>
+              <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="**********"
+                  style={{
+                    ...styles.input,
+                    backgroundColor: passwordHovered ? '#dbdbdb' : '#ffffff'
+                  }}
+                  onMouseEnter={() => setPasswordHovered(true)}
+                  onMouseLeave={() => setPasswordHovered(false)}
+              />
+            </label>
           </div>
 
           <div style={styles.profileInputs}>
-            <label style={styles.label}>Email</label>
-            <br/>
-            <input
-                type="text"
-                id="email"
-                name="email"
-                placeholder="example@gmail.com"
-                value={username? username : ''}
-                onChange={e => setUsername(e.target.value)}
-                style={{
-                  ...styles.input,
-                  backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'
-                }}
-                onMouseEnter={() => setEmailHovered(true)}
-                onMouseLeave={() => setEmailHovered(false)}
-
-            />
+            <label style={styles.label}>Email
+              <br/>
+              <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  placeholder="example@gmail.com"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  style={{
+                    ...styles.input,
+                    backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'
+                  }}
+                  onMouseEnter={() => setEmailHovered(true)}
+                  onMouseLeave={() => setEmailHovered(false)}
+              />
+            </label>
           </div>
           <a href="/start">
             <input style={style.button} value="Save"/>
           </a>
         </form>
         <form style={styles.servicesForm}>
-        <label style={styles.label}>Available Streaming Services: </label>
+        <label style={styles.label}>Available Streaming Services:
           <div style={styles.servicesDiv}>
             {selectMenus.map((value, index) => (
-              <div key={index}>
+              <div key={value}>
                 <select
                   style={styles.serviceSelect}
                   value={value}
@@ -150,6 +147,7 @@ export default function UserProfileView() {
 
             ))}
           </div>
+
           <button
             type="button"
             style={{
@@ -163,6 +161,7 @@ export default function UserProfileView() {
               + Streaming Service
             </button>
             <button style={style.button} onClick={e => logout()}>Logout</button>
+        </label>
         </form>
       </div>
       </>

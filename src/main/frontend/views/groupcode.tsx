@@ -1,5 +1,4 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { colors } from "../themes/flickr/colors";
 import {fetchSessionByGroupCode, joinSession} from "Frontend/generated/SessionEndpoint";
 import {useState} from "react";
 import { style } from "../themes/flickr/css.js";
@@ -19,7 +18,7 @@ export default function GroupCodeView() {
       console.log("Session's ID is null");
       return;   // Don't redirect if Session's ID is invalid
     }
-    let member = await joinSession(session.id, getEmail() || "");
+    let member = await joinSession(session.id, getEmail() ?? "");
     window.location.href = `/preferences/${member.id}`;
   }
 
@@ -30,7 +29,7 @@ export default function GroupCodeView() {
           X
         </a>
         <a style={style.topCornerButton} href="/userprofile">
-          <img src="images/profile.png" />
+          <img src="images/profile.png" alt={"Profile"} />
         </a>
       </div>
       <h2 style={style.pageTitle}>flickr</h2>
@@ -39,8 +38,13 @@ export default function GroupCodeView() {
         <div style={styles.groupCodeDiv}>
           <label style={{fontSize: 22}}>
             Enter Group Code:
+          <input
+            style={styles.codeInput}
+            placeholder="XXXXXXXX"
+            type="text"
+            onInput={(e: React.ChangeEvent<HTMLInputElement>) => setGroupCode(e.target.value)}
+          />
           </label>
-          <input style={styles.codeInput} placeholder="XXXXXXXX" type="text" onInput={(e: React.ChangeEvent<HTMLInputElement>) => setGroupCode(e.target.value)}/>
         </div>
 
         <a>
