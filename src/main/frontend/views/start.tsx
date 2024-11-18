@@ -5,9 +5,7 @@ import {createSession, findAll, joinSession} from "Frontend/generated/SessionEnd
 import { style } from "../themes/flickr/css.js";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import Member from "Frontend/generated/com/flickr/entities/Member";
-import {Button, Icon, MenuBar} from "@vaadin/react-components";
-import { items } from "../themes/flickr/ProfileMenuBar";
-import { useNavigate } from "react-router-dom";
+import {Button} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
@@ -50,7 +48,7 @@ export default function StartView() {
     }
 
     // Attempt to add Member to the Session
-    if (session && session.id) {
+    if (session?.id) {
       try {
         member = await joinSession(session.id, member?.email || "");
       } catch (error) {

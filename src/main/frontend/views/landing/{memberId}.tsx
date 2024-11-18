@@ -4,9 +4,8 @@ import { colors } from "Frontend/themes/flickr/colors.js";
 
 import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
-import {useNavigate, useParams} from "react-router-dom";
-import {Avatar, Button, Icon, Scroller, MenuBar} from "@vaadin/react-components";
-import { items } from "../../themes/flickr/ProfileMenuBar";
+import {useParams} from "react-router-dom";
+import {Avatar, Button, Scroller} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {

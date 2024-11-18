@@ -1,8 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
-import { colors } from "Frontend/themes/flickr/colors.js";
 import { createUser } from "Frontend/generated/MemberServices";
-import {useEffect, useState} from "react";
+import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import {Button, EmailField, PasswordField, TextField} from "@vaadin/react-components";
 
@@ -16,7 +15,6 @@ export default function SignUpView() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
@@ -65,7 +63,7 @@ export default function SignUpView() {
   return (
       <div style={style.outerDiv}>
         <h2 style={{ ...style.pageTitle, marginTop: 20 }}>flickr</h2>
-        <img style={{ width: "100%" }} src="images/movie_reel.png" />
+        <img style={{ width: "100%" }} src="images/movie_reel.png" alt={""}/>
 
         <div style={style.innerDiv}>
           <form style={{ ...style.form, ...style.formAddOn }} onSubmit={(e) => e.preventDefault()}>

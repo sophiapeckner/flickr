@@ -1,7 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
-import {Button, FormLayout, Icon, MenuBar, MultiSelectComboBox, Select} from "@vaadin/react-components";
+import {Button, FormLayout, MultiSelectComboBox} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
 import { CustomHeader } from "../../themes/flickr/elements";
 

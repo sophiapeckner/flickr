@@ -2,10 +2,8 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {Button, EmailField, MultiSelectComboBox, TextField, Icon} from "@vaadin/react-components";
-import {colors} from "Frontend/themes/flickr/colors";
 import {useNavigate, useParams} from "react-router-dom";
 import { getMember, logout } from "Frontend/auth";
-import {updateUser} from "Frontend/generated/MemberServices";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -95,7 +93,7 @@ export default function UserProfileView() {
 
           <EmailField
             label="Email address"
-            value={email ? email : ''}
+            value={email}
             style={style.input}
             errorMessage="Enter a valid email address"
             onValueChanged={(e) => setEmail(e.target.value)}

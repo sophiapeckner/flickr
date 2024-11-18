@@ -1,9 +1,8 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { colors } from "../themes/flickr/colors";
 import {fetchSessionByGroupCode, joinSession} from "Frontend/generated/SessionEndpoint";
 import {useState} from "react";
 import { style } from "../themes/flickr/css.js";
-import {Button, Icon, TextField} from "@vaadin/react-components";
+import {Button, TextField} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import { getMember } from "Frontend/auth";
 
