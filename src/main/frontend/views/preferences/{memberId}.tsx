@@ -11,7 +11,14 @@ export const config: ViewConfig = {
 };
 
 export default function PreferencesView() {
-  const memberId = localStorage.getItem("RYT");
+  let memberId = localStorage.getItem("RYT");
+
+  if (!memberId) {
+    const params = useParams();
+    memberId = params["memberId"] || '';
+  }
+
+  console.log(memberId);
 
   const [genres, setGenres] = useState([]);
   const [groupCode, setGroupCode] = useState([]);
