@@ -1,9 +1,6 @@
 package com.flickr.entities;
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.List;
-
 @Entity
 public class Movie {
     @Id
@@ -13,7 +10,6 @@ public class Movie {
     private String title;
 
 //    @ElementCollection
-//    private List<String> genres;
 
     @Column(length = 2048)
     private String overview;
@@ -47,14 +43,6 @@ public class Movie {
     public void setTitle(String title) {
         this.title = title;
     }
-
-//    public List<String> getGenres() {
-//        return genres;
-//    }
-//
-//    public void setGenres(List<String> genres) {
-//        this.genres = genres;
-//    }
 
     public String getOverview() {
         return overview;

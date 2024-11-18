@@ -93,11 +93,13 @@ public class SessionEndpoint {
         return member;
     }
 
+    String memberNotFoundException = "Member not found";
+
     @GetMapping("/{memberId}")
     public Session fetchMembersSession(@PathVariable Long memberId) {
         // Returns Session that the Member with memberID is in
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+                .orElseThrow(() -> new IllegalArgumentException(memberNotFoundException));
         return repository.findById(member.getSessionId())
                 .orElseThrow(() -> new IllegalArgumentException("Session not found"));
     }
@@ -105,7 +107,7 @@ public class SessionEndpoint {
     @GetMapping("/member/{memberId}")
     public Member fetchMemberById(@PathVariable Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+                .orElseThrow(() -> new IllegalArgumentException(memberNotFoundException));
     }
 
     @PutMapping("/{memberId}/genres")
@@ -140,11 +142,11 @@ public class SessionEndpoint {
         // Build the API URL
         String genreParam = String.join("OR", session.getGenres());
         String platformParam = String.join("AND", session.getStreamingPlatforms());
-        String URL = String.format("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=%s&sort_by=popularity.desc&with_genres=%s&with_watch_providers=%s", pageNum, genreParam, platformParam);
+        String url = String.format("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=%s&sort_by=popularity.desc&with_genres=%s&with_watch_providers=%s", pageNum, genreParam, platformParam);
 
         // Create the request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL))
+                .uri(URI.create(url))
                 .header("accept", "application/json")
                 .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNDY1MTE3ZTA3NDY3NGJiMjZkNTE4NTNkMTU5YzllMyIsIm5iZiI6MTczMDExMjc5Ni4xOTc1ODYsInN1YiI6IjVkNGY3YmM0MDc5YTk3MGI5ZWFkMTEzMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.egTJfOX1iiqPAjjbNF07G92XzbZQ5HwThmAMC3wv_3A")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
@@ -180,7 +182,6 @@ public class SessionEndpoint {
             sessionMovies.add(sessionMovie);
         }
         session.getMovies().addAll(sessionMovies);
-        // System.out.println(new ObjectMapper().writeValueAsString(session));
         return repository.save(session);
     }
 
@@ -195,7 +196,7 @@ public class SessionEndpoint {
     public Member updateMemberMovieIndex(@PathVariable Long memberId, @RequestBody Map<String, Integer> request) {
         int movieIndex = request.get("movieIndex");
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new RuntimeException(memberNotFoundException));
         member.setMovieIndex(movieIndex);
         return memberRepository.save(member);
     }
