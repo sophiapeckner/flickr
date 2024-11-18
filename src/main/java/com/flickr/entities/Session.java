@@ -63,11 +63,11 @@ public class Session {
 
     public Set<String> getGenres() { return genres; }
 
-    public void setGenres(HashSet<String> genres) { this.genres = genres; }
+    public void setGenres(Set<String> genres) { this.genres = genres; }
 
     public Set<String> getStreamingPlatforms() { return streamingPlatforms; }
 
-    public void setStreamingPlatforms(HashSet<String> streaming_platforms) { this.streamingPlatforms = streaming_platforms; }
+    public void setStreamingPlatforms(Set<String> streamingPlatforms) { this.streamingPlatforms = this.streamingPlatforms; }
 
     public List<SessionMovie> getMovies() { return movies; }
 
