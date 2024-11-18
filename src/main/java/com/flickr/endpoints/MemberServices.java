@@ -17,29 +17,37 @@ public class MemberServices {
         this.memberRepository = memberRepository;
     }
 
-    public void createUser(String email, String username, String password) {
-        Member member = new Member(email, username, password);
-        memberRepository.save(member);
+    public String createUser(String email, String username, String password) {
+        if (memberRepository.findByEmail(email).isPresent()) {
+            return "Email already in use";
+        } else if (memberRepository.findByUsername(username).isPresent()) {
+            return "Username already in use";
+        } else {
+            Member member = new Member(email, username, password);
+            memberRepository.save(member);
+            return "Account created";
+        }
     }
 
-    public Optional<Member> login(String email, String password) {
+    public String login(String email, String password) {
         Optional<Member> memberOptional = memberRepository.findByEmail(email);
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
-            System.out.println("User found");
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             if (encoder.matches(password, member.getPass())) {
-                System.out.println("Login successful");
-                return Optional.of(member);
+                return member.getId().toString();
             }
             else {
-                System.out.println("Wrong password");
-                return Optional.empty();
+                return "Wrong password";
             }
         } else {
-            System.out.println("User Not found");
+            return "User Not found";
         }
-        return Optional.empty();
+    }
+
+    public Optional<Member> getMember(String id) {
+        // Add try and except block to parse the long
+        return memberRepository.findById(Long.valueOf(id));
     }
 
     public void updateUser(String og_email, String new_email, String new_username) {

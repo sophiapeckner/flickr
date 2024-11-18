@@ -3,7 +3,7 @@ import { colors } from "../themes/flickr/colors";
 import {fetchSessionByGroupCode, joinSession} from "Frontend/generated/SessionEndpoint";
 import {useState} from "react";
 import { style } from "../themes/flickr/css.js";
-import {getEmail} from "Frontend/auth";
+import { getMember } from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -15,11 +15,16 @@ export default function GroupCodeView() {
 
   const submit = async () => {
     let session = await fetchSessionByGroupCode(groupCode);
+    let member = await getMember();
     if (session.id == null) {
       console.log("Session's ID is null");
       return;   // Don't redirect if Session's ID is invalid
     }
-    let member = await joinSession(session.id, getEmail() || "");
+    if (member == null) {
+      member = await joinSession(session.id, "");
+      // Save anouymous user
+    }
+    member= await joinSession(session.id, member?.email || "");
     window.location.href = `/preferences/${member.id}`;
   }
 
