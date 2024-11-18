@@ -5,7 +5,7 @@ import { colors } from "Frontend/themes/flickr/colors.js";
 import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {useNavigate, useParams} from "react-router-dom";
-import {Avatar, Button, Icon, MenuBar} from "@vaadin/react-components";
+import {Avatar, Button, Icon, Scroller, MenuBar} from "@vaadin/react-components";
 import { items } from "../../themes/flickr/ProfileMenuBar";
 
 export const config: ViewConfig = {
@@ -83,14 +83,14 @@ export default function GroupLandingView() {
         <h6 style={style.groupTitle}>Group Code: </h6>
         <h3 style={style.groupCode}>{groupCode}</h3>
 
-        <div style={styles.membersDiv}>
+        <Scroller style={styles.membersDiv} scrollDirection="vertical">
           {members.map((member) => (
               <div style={styles.personDiv} key={member.id}>
                 <Avatar theme="xlarge" />
                 <h4 style={styles.personLabel}>{member?.username || 'Unknown'}</h4>
               </div>
           ))}
-        </div>
+        </Scroller>
 
         <Button style={style.button} onClick={submit}>Start Voting</Button>
       </div>
