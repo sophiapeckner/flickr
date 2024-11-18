@@ -50,8 +50,8 @@ public class MemberServices {
         return memberRepository.findById(Long.valueOf(id));
     }
 
-    public void updateUser(String og_email, String new_email, String new_username) {
-        Optional<Member> memberOptional = memberRepository.findByEmail(og_email);
+    public void updateUser(String id, String new_email, String new_username) {
+        Optional<Member> memberOptional = memberRepository.findById(Long.valueOf(id));
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
             member.setEmail(new_email);
