@@ -4,7 +4,6 @@ import { colors } from "Frontend/themes/flickr/colors.js";
 import { login, isLoggedIn } from "../auth"
 import { useState } from "react";
 import {useNavigate} from "react-router-dom";
-import member from "Frontend/generated/com/flickr/entities/Member";
 import {Button, EmailField, PasswordField} from "@vaadin/react-components";
 
 export const config: ViewConfig = {

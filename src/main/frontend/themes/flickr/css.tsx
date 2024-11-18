@@ -7,8 +7,8 @@ export const style = {
 		height: '100%',
 	},
 	backButton: {
-		height: '50px',
-		margin: '15px',
+		height: '25px',
+		margin: '20px',
 		float: 'left',
 		fontSize: 20,
 		marginRight: 15,
@@ -62,7 +62,7 @@ export const style = {
   },
   button: {
     width: 180,
-    // height: 36,
+    height: 36,
     marginRight: 'auto',
     marginLeft: 'auto',
     borderWidth: 0,
@@ -74,7 +74,7 @@ export const style = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    // borderRadius: '8px',
+    borderRadius: '8px',
   },
   form: {
     display: 'flex',

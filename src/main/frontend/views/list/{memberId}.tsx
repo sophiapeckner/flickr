@@ -4,8 +4,14 @@ import { colors } from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
 import session from "Frontend/generated/com/flickr/entities/Session";
+import {Icon} from "@vaadin/react-components";
+import {style} from "Frontend/themes/flickr/css";
 // import { MovieListController } from "Frontend/generated/endpoints.ts";
 // import { useState, useEffect } from "react";
+
+import { MenuBar } from "@vaadin/react-components";
+import { items } from "../../themes/flickr/ProfileMenuBar";
+import { useNavigate } from "react-router-dom";
 
 export const config: ViewConfig = {
   menu: { order: 7, icon: "line-awesome/svg/file.svg" },
@@ -16,6 +22,15 @@ export default function MovieListView() {
   // const [selectedMovies, setSelectedMovies] = useState([]);
   const { memberId } = useParams();
   const [selectedMovies, setSelectedMovies] = useState<SessionMovie[]>([]);
+
+  const navigate = useNavigate()
+
+  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
+    const selectedItem = e.detail.value;
+    if(selectedItem && selectedItem.path){
+      navigate(selectedItem.path);
+    }
+  }
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -42,12 +57,15 @@ export default function MovieListView() {
   return (
       <div style={styles.outerDiv}>
         <div style={{backgroundColor: "white"}}>
-          <a style={styles.backButton} href="/">
-            X
+          <a href="/">
+            <Icon icon="vaadin:close" style={style.backButton}/>
           </a>
-          <a style={styles.topCornerButton} href="/userprofile">
-            <img src="/images/profile.png"/>
-          </a>
+          <MenuBar
+            items={items}
+            theme="tertiary"
+            style={{...style.topCornerButton, }}
+            onItemSelected={handleProfileMenuSelection}
+          />
         </div>
 
         <div style={styles.moviesSelected}>

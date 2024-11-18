@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { colors } from "../../themes/flickr/colors";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
+import {Icon, MenuBar} from "@vaadin/react-components";
+import { items } from "../../themes/flickr/ProfileMenuBar";
+import {style} from "Frontend/themes/flickr/css";
 
 export default function SwipeView() {
   const { memberId } = useParams();
@@ -11,6 +14,15 @@ export default function SwipeView() {
   const [movieIndex, setMovieIndex] = useState(0);
   const [member, setMember] = useState<Member>();
   const [isVotingComplete, setIsVotingComplete] = useState(false);
+
+  const navigate = useNavigate()
+
+  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
+    const selectedItem = e.detail.value;
+    if(selectedItem && selectedItem.path){
+      navigate(selectedItem.path);
+    }
+  }
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -79,48 +91,58 @@ export default function SwipeView() {
   };
 
   return (
-      <div style={styles.outerDiv}>
-        <h1>{member?.username}</h1>
-        {isVotingComplete ? (
-            <p>You're done voting!</p>
-        ) : (
-            movies.length > 0 && movies[movieIndex] && (
-                <>
-                  <div style={styles.movieProfile}>
-                    <img
-                        style={styles.movieThumbnail}
-                        src={movies[movieIndex].movie?.imgURL}
-                        alt="movie poster"
-                    />
-                    <div style={styles.movieInfo}>
-                      <label style={styles.movieLabel}>
-                        Title: {movies[movieIndex].movie?.title}
-                      </label>
-                      <label style={styles.movieLabel}>
-                        Release date: {movies[movieIndex].movie?.release}
-                      </label>
-                    </div>
-                  </div>
-                  <div style={styles.choices}>
-                    <a onClick={() => handleNextMovie(false)}>
-                      <img style={{ float: "left" }} src="images/garbage.png" alt="dislike button" />
-                    </a>
-                    <a onClick={() => handleNextMovie(true)}>
-                      <img style={{ float: "right" }} src="images/like.png" alt="like button" />
-                    </a>
-                  </div>
-                </>
-            )
-        )}
-        <div style={styles.bottomNav}>
-          <a>
-            <img src="images/pic.png" alt="pic"/>
-          </a>
-          <a>
-            <img src="images/liked.png" alt="liked" onClick={viewList}/>
-          </a>
-        </div>
+    <div style={styles.outerDiv}>
+      <div>
+        <a href="/">
+          <Icon icon="vaadin:close" style={style.backButton}/>
+        </a>
+        <MenuBar
+          items={items}
+          theme="tertiary"
+          style={{...style.topCornerButton,}}
+          onItemSelected={handleProfileMenuSelection}
+        />
       </div>
+      {isVotingComplete ? (
+        <p>You're done voting!</p>
+      ) : (
+        movies.length > 0 && movies[movieIndex] && (
+          <>
+            <div style={styles.movieProfile}>
+              <img
+                style={styles.movieThumbnail}
+                src={movies[movieIndex].movie?.imgURL}
+                alt="movie poster"
+              />
+              <div style={styles.movieInfo}>
+                <label style={styles.movieLabel}>
+                  Title: {movies[movieIndex].movie?.title}
+                </label>
+                <label style={styles.movieLabel}>
+                  Release date: {movies[movieIndex].movie?.release}
+                </label>
+              </div>
+            </div>
+            <div style={styles.choices}>
+              <a onClick={() => handleNextMovie(false)}>
+                <img style={{float: "left"}} src="images/garbage.png" alt="dislike button"/>
+              </a>
+              <a onClick={() => handleNextMovie(true)}>
+                <img style={{float: "right"}} src="images/like.png" alt="like button"/>
+              </a>
+            </div>
+          </>
+        )
+      )}
+      <div style={styles.bottomNav}>
+        <a>
+          <img src="images/pic.png" alt="pic"/>
+        </a>
+        <a>
+          <img src="images/liked.png" alt="liked" onClick={viewList}/>
+        </a>
+      </div>
+    </div>
   );
 }
 

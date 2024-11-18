@@ -4,8 +4,9 @@ import { colors } from "Frontend/themes/flickr/colors.js";
 
 import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
-import {useParams} from "react-router-dom";
-import {Avatar, Button, Icon} from "@vaadin/react-components";
+import {useNavigate, useParams} from "react-router-dom";
+import {Avatar, Button, Icon, MenuBar} from "@vaadin/react-components";
+import { items } from "../../themes/flickr/ProfileMenuBar";
 
 export const config: ViewConfig = {
   menu: { order: 4, icon: "line-awesome/svg/file.svg" },
@@ -16,6 +17,15 @@ export default function GroupLandingView() {
   const { memberId } = useParams();
   const [members, setMembers] = useState<Member[]>([]);
   const [groupCode, setGroupCode] = useState([]);
+
+  const navigate = useNavigate()
+
+  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
+    const selectedItem = e.detail.value;
+    if(selectedItem && selectedItem.path){
+      navigate(selectedItem.path);
+    }
+  }
 
   const submit = async () => {
     // Generate movie suggestions for the Session that member is in
@@ -59,12 +69,15 @@ export default function GroupLandingView() {
   return (
       <div style={style.outerDiv}>
         <div>
-          <a style={style.backButton} href="/">
-            <Icon icon="vaadin:close" />
+          <a href="/">
+            <Icon icon="vaadin:close" style={style.backButton} />
           </a>
-          <a style={style.topCornerButton} href="/userprofile">
-            <img src="images/profile.png"/>
-          </a>
+          <MenuBar
+            items={items}
+            theme="tertiary"
+            style={{...style.topCornerButton, }}
+            onItemSelected={handleProfileMenuSelection}
+          />
         </div>
 
         <h6 style={style.groupTitle}>Group Code: </h6>
