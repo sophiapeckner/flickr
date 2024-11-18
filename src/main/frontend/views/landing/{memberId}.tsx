@@ -7,6 +7,7 @@ import Member from "Frontend/generated/com/flickr/entities/Member";
 import {useNavigate, useParams} from "react-router-dom";
 import {Avatar, Button, Icon, Scroller, MenuBar} from "@vaadin/react-components";
 import { items } from "../../themes/flickr/ProfileMenuBar";
+import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
   menu: { order: 4, icon: "line-awesome/svg/file.svg" },
@@ -17,15 +18,6 @@ export default function GroupLandingView() {
   const { memberId } = useParams();
   const [members, setMembers] = useState<Member[]>([]);
   const [groupCode, setGroupCode] = useState([]);
-
-  const navigate = useNavigate()
-
-  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
-    const selectedItem = e.detail.value;
-    if(selectedItem && selectedItem.path){
-      navigate(selectedItem.path);
-    }
-  }
 
   const submit = async () => {
     // Generate movie suggestions for the Session that member is in
@@ -68,17 +60,7 @@ export default function GroupLandingView() {
 
   return (
       <div style={style.outerDiv}>
-        <div>
-          <a href="/">
-            <Icon icon="vaadin:close" style={style.backButton} />
-          </a>
-          <MenuBar
-            items={items}
-            theme="tertiary"
-            style={{...style.topCornerButton, }}
-            onItemSelected={handleProfileMenuSelection}
-          />
-        </div>
+        <CustomHeader />
 
         <h6 style={style.groupTitle}>Group Code: </h6>
         <h3 style={style.groupCode}>{groupCode}</h3>

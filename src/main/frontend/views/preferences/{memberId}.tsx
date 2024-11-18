@@ -3,10 +3,7 @@ import { colors } from "../../themes/flickr/colors";
 import {useParams} from "react-router-dom";
 import {Button, FormLayout, Icon, MenuBar, MultiSelectComboBox, Select} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
-import {fetchMembersSession, fetchSessionByGroupCode} from "Frontend/generated/SessionEndpoint";
-import {style} from "Frontend/themes/flickr/css";
-import { items } from "../../themes/flickr/ProfileMenuBar";
-import { useNavigate } from "react-router-dom";
+import { CustomHeader } from "../../themes/flickr/elements";
 
 
 export const config: ViewConfig = {
@@ -22,15 +19,6 @@ export default function PreferencesView() {
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
-
-  const navigate = useNavigate()
-
-  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
-    const selectedItem = e.detail.value;
-    if(selectedItem && selectedItem.path){
-      navigate(selectedItem.path);
-    }
-  }
 
   // Retrieve every genre option available on The Movie Database
   const fetchGenres = async () => {
@@ -124,18 +112,7 @@ export default function PreferencesView() {
 
   return (
     <div style={styles.outerDiv}>
-      <div>
-        <a href="/">
-          <Icon icon="vaadin:close" style={style.backButton}/>
-        </a>
-        <MenuBar
-          items={items}
-          theme="tertiary"
-          style={{...style.topCornerButton,}}
-          onItemSelected={handleProfileMenuSelection}
-        />
-      </div>
-
+      <CustomHeader />
       <h6 style={styles.groupTitle}>Group Code: </h6>
       <h3 style={styles.groupCode}>{groupCode}</h3>
 
