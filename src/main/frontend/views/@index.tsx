@@ -37,7 +37,7 @@ export default function LoginForm() {
           <img style={{width: '100%'}} src="images/movie_reel.png"/>
 
           <div style={style.innerDiv}>
-              <form style={{...style.authFormAddOn, ...style.form}} onSubmit={(e) => e.preventDefault()}>
+              <form style={{...style.form, ...style.formAddOn}} onSubmit={(e) => e.preventDefault()}>
                   {error && <span style={{color: 'red'}}>{error}</span>}
                   <EmailField
                       label="Email address"
@@ -54,11 +54,11 @@ export default function LoginForm() {
                       onValueChanged={(e) => setPassword(e.target.value)}
                   />
 
-                  <div style={styles.buttonDiv}>
-                      <Button style={styles.signUpButton} onClick={handleLogin}>
-                          Sign In
-                      </Button>
-                  </div>
+
+                  <Button style={style.button} onClick={handleLogin}>
+                      Sign In
+                  </Button>
+
 
                   <div style={style.redirect}>
                       <a style={{float: 'left'}} href="/signup">Forgot Password</a>
@@ -66,48 +66,13 @@ export default function LoginForm() {
                   </div>
               </form>
 
-              <div style={styles.buttonDiv}>
-                  <Button
-                      style={styles.button}
-                      onClick={() => navigate("/start")}
-                  >
-                      Continue as Guest
-                  </Button>
-              </div>
-          </div>
+          <Button
+              style={style.secondaryButton}
+              onClick={() => navigate("/start")}
+          >
+            Continue as Guest
+          </Button>
+        </div>
       </div>
   );
-}
-
-const styles = {
-    buttonDiv: {
-        justifyContent: 'center',
-        display: 'flex',
-        width: '100%'
-    },
-    signUpButton: {
-        // borderRadius: 8,
-        width: '90%',
-        // height: 30,
-        backgroundColor: colors.main,
-    color: 'white',
-    marginTop: 20,
-    marginBottom: 20,
-    borderWidth: 0,
-    textAlign: 'center',
-    fontSize: 16,
-    cursor: 'pointer',
-  },
-  button: {
-    borderRadius: 8,
-    width: '60%',
-    height: 30,
-    backgroundColor: colors.secondary,
-    color: 'white',
-    margin: 20,
-    borderWidth: 0,
-    textAlign: 'center',
-    fontSize: 16,
-    cursor: 'pointer',
-  },
 }

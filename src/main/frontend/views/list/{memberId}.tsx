@@ -1,5 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { useState, useEffect } from "react";
+import { style } from "../../themes/flickr/css.js";
 import { colors } from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
@@ -38,7 +39,7 @@ export default function MovieListView() {
   };
 
   return (
-      <div style={styles.outerDiv}>
+      <div style={style.outerDiv}>
         <CustomHeader />
 
         <div style={styles.moviesSelected}>
@@ -57,12 +58,12 @@ export default function MovieListView() {
           )}
         </div>
 
-        <div style={styles.bottomNav}>
+        <div style={style.bottomNav}>
           <a onClick={swipe}>
-            <img src="/images/pic.png" alt="pic"/>
+            <img src="/images/pic.png" alt="Suggestions"/>
           </a>
           <a>
-            <img src="/images/liked.png" alt="liked"/>
+            <img src="/images/liked.png" alt="Liked"/>
           </a>
         </div>
       </div>
@@ -70,28 +71,12 @@ export default function MovieListView() {
 }
 
 const styles = {
-  outerDiv: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100%",
-    backgroundColor: colors.light,
-  },
-  backButton: {
-    height: "50px",
-    margin: "15px",
-    float: "left",
-    fontSize: 20,
-    marginRight: 15,
-  },
-  topCornerButton: {
-    height: "50px",
-    margin: "15px",
-    float: "right",
-  },
   moviesSelected: {
     backgroundColor: colors.light,
     display: "flex",
     flexDirection: "column",
+    overflowY: 'auto',
+    flex: 1,
   },
   movie: {
     display: "flex",
@@ -102,16 +87,5 @@ const styles = {
     width: 55,
     backgroundColor: colors.main,
     marginRight: 20,
-  },
-  bottomNav: {
-    width: "100%",
-    backgroundColor: colors.main,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    marginTop: "25px",
-    position: "absolute",
-    bottom: "0px",
-  },
+  }
 };

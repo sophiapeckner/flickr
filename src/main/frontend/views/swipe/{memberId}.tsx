@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { style } from "../../themes/flickr/css.js";
 import { colors } from "../../themes/flickr/colors";
 import {useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
@@ -85,7 +86,7 @@ export default function SwipeView() {
   };
 
   return (
-      <div style={styles.outerDiv}>
+      <div style={style.outerDiv}>
         <CustomHeader />
 
         {isVotingComplete ? (
@@ -122,7 +123,7 @@ export default function SwipeView() {
                 </>
             )
         )}
-        <div style={styles.bottomNav}>
+        <div style={style.bottomNav}>
           <img src="images/pic.png" alt="pic"/>
           <img src="images/liked.png" alt="liked" onClick={viewList}/>
         </div>
@@ -131,23 +132,6 @@ export default function SwipeView() {
 }
 
 const styles = {
-  outerDiv: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-  backButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'left',
-    fontSize: 20,
-    marginRight: 15,
-  },
-  topCornerButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'right',
-  },
   movieProfile: {
     // width: '40%',
     // height: '50%',
@@ -192,16 +176,5 @@ const styles = {
     width: '90%',
     maxWidth: '500px', // Prevents the container from growing too wide
     padding: '0 20px',
-  },
-  bottomNav: {
-    width: '100%',
-    backgroundColor: colors.main,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    marginTop: '25px',
-    position: 'absolute',
-    bottom: '0px',
   }
 }

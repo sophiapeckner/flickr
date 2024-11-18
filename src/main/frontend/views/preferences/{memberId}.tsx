@@ -1,5 +1,5 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { colors } from "../../themes/flickr/colors";
+import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
 import {Button, FormLayout, Icon, MenuBar, MultiSelectComboBox, Select} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
@@ -72,7 +72,7 @@ export default function PreferencesView() {
             }));
       }
     } catch (error) {
-      console.error("Error fetching genres: ", error);
+      console.error("Error fetching platforms: ", error);
     }
   };
 
@@ -117,12 +117,12 @@ export default function PreferencesView() {
   }, []);
 
   return (
-    <div style={styles.outerDiv}>
+    <div style={style.outerDiv}>
       <CustomHeader />
-      <h6 style={styles.groupTitle}>Group Code: </h6>
-      <h3 style={styles.groupCode}>{groupCode}</h3>
+      <h6 style={style.groupTitle}>Group Code: </h6>
+      <h3 style={style.groupCode}>{groupCode}</h3>
 
-      <FormLayout style={styles.form} responsiveSteps={ [{ minWidth: '0', columns: 1 }] }>
+      <FormLayout style={style.form} responsiveSteps={ [{ minWidth: '0', columns: 1 }] }>
         <MultiSelectComboBox
             label="Select Genre(s):"
             itemLabelPath="label"
@@ -145,70 +145,8 @@ export default function PreferencesView() {
             onChange={e => setSelectedPlatforms(e.target.selectedItems)}
         />
 
-        <Button onClick={submit} style={styles.button}>Ready</Button>
+        <Button onClick={submit} style={style.button}>Ready</Button>
       </FormLayout>
     </div>
   );
-}
-
-const styles = {
-  outerDiv: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-  backButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'left',
-    fontSize: 20,
-    marginRight: 15,
-  },
-  topCornerButton: {
-    height: '50px',
-    margin: '15px',
-    float: 'right',
-  },
-  groupTitle: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  groupCode: {
-    textAlign: 'center',
-    fontSize: 40,
-  },
-  form: {
-    margin: 'auto',
-    width: '70%',
-    padding: 15,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  label: {
-    marginRight: 'auto', 
-    marginLeft: '5%'
-  },
-  input: {
-    width: '90%',
-    height: 30,
-    margin: 'auto',
-    border: '1px solid black',
-    marginBottom: 20,
-    fontSize: 16,
-    paddingLeft: 10,
-    borderRadius: 8,
-  },
-  button: {
-    // borderRadius: 8,
-    width: '90%',
-    // height: 30,
-    backgroundColor: colors.main,
-    color: 'white',
-    marginTop: 20,
-    marginBottom: 20,
-    borderWidth: 0,
-    textAlign: 'center',
-    fontSize: 16,
-    cursor: 'pointer',
-  },
 }
