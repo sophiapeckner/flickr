@@ -81,9 +81,9 @@ const styles = {
     width: '100%'
   },
   signUpButton: {
-    borderRadius: 8,
+    // borderRadius: 8,
     width: '90%',
-    height: 30,
+    // height: 30,
     backgroundColor: colors.main,
     color: 'white',
     marginTop: 20,

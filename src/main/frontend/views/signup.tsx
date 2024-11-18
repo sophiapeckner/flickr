@@ -85,7 +85,7 @@ const styles = {
     // height: 30,
     backgroundColor: colors.main,
     color: 'white',
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 20,
     borderWidth: 0,
     textAlign: 'center',
