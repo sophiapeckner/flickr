@@ -39,8 +39,6 @@ export default function GroupCodeView() {
         <div style={{ ...style.innerDiv, ...style.innerDivAddOn }}>
           <div style={styles.groupCodeDiv}>
             <TextField
-                minlength={6}
-                maxlength={6}
                 label="Group Code"
                 style={{
                   ...styles.codeInput,

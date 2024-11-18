@@ -5,6 +5,7 @@ import { colors } from "Frontend/themes/flickr/colors.js";
 import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {useParams} from "react-router-dom";
+import {Avatar, Button, Icon} from "@vaadin/react-components";
 
 export const config: ViewConfig = {
   menu: { order: 4, icon: "line-awesome/svg/file.svg" },
@@ -59,7 +60,7 @@ export default function GroupLandingView() {
       <div style={style.outerDiv}>
         <div>
           <a style={style.backButton} href="/">
-            X
+            <Icon icon="vaadin:close" />
           </a>
           <a style={style.topCornerButton} href="/userprofile">
             <img src="images/profile.png"/>
@@ -72,15 +73,13 @@ export default function GroupLandingView() {
         <div style={styles.membersDiv}>
           {members.map((member) => (
               <div style={styles.personDiv} key={member.id}>
-                <img style={styles.personImage} src="images/person.png" alt=""/>
+                <Avatar theme="xlarge" />
                 <h4 style={styles.personLabel}>{member?.username || 'Unknown'}</h4>
               </div>
           ))}
         </div>
 
-          <a>
-            <button style={style.button} onClick={submit}>Start Session</button>
-          </a>
+        <Button style={style.button} onClick={submit}>Start Voting</Button>
       </div>
   );
 }
@@ -99,10 +98,10 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  personImage: {
-    width: '20%',
-    height: '30%',
-  },
+  // personImage: {
+  //   width: '20%',
+  //   height: '30%',
+  // },
   personLabel: {
     padding: 20,
     fontSize: 20,
