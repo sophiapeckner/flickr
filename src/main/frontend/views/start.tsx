@@ -8,6 +8,7 @@ import Member from "Frontend/generated/com/flickr/entities/Member";
 import {Button, Icon, MenuBar} from "@vaadin/react-components";
 import { items } from "../themes/flickr/ProfileMenuBar";
 import { useNavigate } from "react-router-dom";
+import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
@@ -35,15 +36,6 @@ export default function StartView() {
   useEffect(() => {
     findAll().then(setSessions)
   }, []);
-
-  const navigate = useNavigate()
-
-  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
-    const selectedItem = e.detail.value;
-    if(selectedItem && selectedItem.path){
-      navigate(selectedItem.path);
-    }
-  }
 
   const handleCreateGroup = async () => {
     let session;
@@ -79,17 +71,8 @@ export default function StartView() {
 
   return (
       <div style={style.outerDiv}>
-        <div>
-          <a href="/">
-            <Icon icon="vaadin:close" style={style.backButton} />
-          </a>
-          <MenuBar
-            items={items}
-            theme="tertiary"
-            style={{...style.topCornerButton, }}
-            onItemSelected={handleProfileMenuSelection}
-          />
-        </div>
+        <CustomHeader />
+
         <h2 style={style.pageTitle}>flickr</h2>
         <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
           <Button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</Button>

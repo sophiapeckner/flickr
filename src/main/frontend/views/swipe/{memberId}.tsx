@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { colors } from "../../themes/flickr/colors";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
-import {Dialog, Icon, MenuBar} from "@vaadin/react-components";
-import {style} from "Frontend/themes/flickr/css";
-import { items } from "../../themes/flickr/ProfileMenuBar";
+import {Icon} from "@vaadin/react-components";
+import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export default function SwipeView() {
   const { memberId } = useParams();
@@ -14,15 +13,6 @@ export default function SwipeView() {
   const [movieIndex, setMovieIndex] = useState(0);
   const [member, setMember] = useState<Member>();
   const [isVotingComplete, setIsVotingComplete] = useState(false);
-
-  const navigate = useNavigate()
-
-  const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
-    const selectedItem = e.detail.value;
-    if(selectedItem && selectedItem.path){
-      navigate(selectedItem.path);
-    }
-  }
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -96,17 +86,8 @@ export default function SwipeView() {
 
   return (
       <div style={styles.outerDiv}>
-        <div>
-          <a href="/">
-            <Icon icon="vaadin:close" style={style.backButton}/>
-          </a>
-          <MenuBar
-            items={items}
-            theme="tertiary"
-            style={{...style.topCornerButton,}}
-            onItemSelected={handleProfileMenuSelection}
-          />
-        </div>
+        <CustomHeader />
+
         {isVotingComplete ? (
             <p>You're done voting!</p>
         ) : (
