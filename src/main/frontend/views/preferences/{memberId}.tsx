@@ -5,14 +5,13 @@ import {Button, FormLayout, Icon, MenuBar, MultiSelectComboBox, Select} from "@v
 import {useEffect, useState} from "react";
 import { CustomHeader } from "../../themes/flickr/elements";
 
-
 export const config: ViewConfig = {
   menu: { order: 5, icon: "line-awesome/svg/file.svg" },
   title: "Pick Genre",
 };
 
 export default function PreferencesView() {
-  const { memberId } = useParams();
+  const memberId = localStorage.getItem("RYT");
 
   const [genres, setGenres] = useState([]);
   const [groupCode, setGroupCode] = useState([]);

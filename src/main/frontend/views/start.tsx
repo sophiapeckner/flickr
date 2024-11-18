@@ -2,12 +2,10 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import Session from "Frontend/generated/com/flickr/entities/Session";
 import {createSession, findAll, joinSession} from "Frontend/generated/SessionEndpoint";
-
 import { style } from "../themes/flickr/css.js";
-import {getEmail, getUsername, isLoggedIn} from "Frontend/auth";
-import {Button, Icon} from "@vaadin/react-components";
-
-import { MenuBar } from "@vaadin/react-components";
+import {getMember, isLoggedIn} from "Frontend/auth";
+import Member from "Frontend/generated/com/flickr/entities/Member";
+import {Button, Icon, MenuBar} from "@vaadin/react-components";
 import { items } from "../themes/flickr/ProfileMenuBar";
 import { useNavigate } from "react-router-dom";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
@@ -17,9 +15,22 @@ export const config: ViewConfig = {
   title: "Start Auth",
 };
 
+const checkLoginStatus = async () => {
+  return await isLoggedIn();
+}
+
 export default function StartView() {
   const [sessions, setSessions] = useState<Session[]>([]);
-  const user = isLoggedIn();
+  const [allowCreateGroup, setAllowCreateGroup] = useState(false);
+  let member: Member | undefined | null;
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      const result = await checkLoginStatus();
+      setAllowCreateGroup(result);
+    };
+    fetchLogin();
+  }, []);
 
   // For database visualization purposes
   useEffect(() => {
@@ -28,7 +39,7 @@ export default function StartView() {
 
   const handleCreateGroup = async () => {
     let session;
-    let member;
+    let member = await getMember();
 
     // Try creating a Session and pushing to H2 DB
     try {
@@ -41,7 +52,7 @@ export default function StartView() {
     // Attempt to add Member to the Session
     if (session && session.id) {
       try {
-        member = await joinSession(session.id, getEmail() || "");
+        member = await joinSession(session.id, member?.email || "");
       } catch (error) {
         console.error("Error adding Member to Session: ", error);
         return;
@@ -65,9 +76,9 @@ export default function StartView() {
         <h2 style={style.pageTitle}>flickr</h2>
         <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
           <Button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</Button>
-          {/*{user && (*/}
+          {allowCreateGroup && (
               <Button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</Button>
-          {/*)}*/}
+          )}
         </div>
       </div>
   );
