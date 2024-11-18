@@ -1,10 +1,11 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
-import { logout } from "Frontend/auth";
-import { getMember } from "Frontend/auth";
+import {Button, EmailField, MultiSelectComboBox, TextField, Icon} from "@vaadin/react-components";
+import {colors} from "Frontend/themes/flickr/colors";
+import {useNavigate, useParams} from "react-router-dom";
+import { getMember, logout } from "Frontend/auth";
 import {updateUser} from "Frontend/generated/MemberServices";
-
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -14,6 +15,10 @@ export const config: ViewConfig = {
 export default function UserProfileView() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [streamingPlatforms, setStreamingPlatforms] = useState([]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  const { memberId } = useParams();
 
   useEffect(() => {
     getMember().then(r => {
@@ -26,217 +31,125 @@ export default function UserProfileView() {
     })
   }, []);
 
-  // State to track the select menus
-  const [selectMenus, setSelectMenus] = useState<string[]>(['']);
+  const save = async () => {
+    // selectedGenres & selectedPlatforms are a list of objects
+    // The PUT request only accepts a list of Strings as the body of the request
+    // The conversion from [Object] to [String] is accomplished here:
 
-  const [addButtonHovered, setAddButtonHovered] = useState<boolean>(false);
-
-  const [usernameHovered, setUsernameHovered] = useState<boolean>(false);
-
-  const [emailHovered, setEmailHovered] = useState<boolean>(false);
-
-
-
-  // Options for the select menus (can be customized)
-  const options = ['Netflix', 'Hulu', 'Paramount+', 'Disney+'];
-
-  // Handler to add a new select menu
-  const addSelectMenu = () => {
-    setSelectMenus((prev) => [...prev, '']);
-  };
-
-  // Handler to handle changes in select menus
-  const handleSelectChange = (index: number, value: string) => {
-    setSelectMenus((prev) =>{
-      const updatedMenus = [...prev];
-      updatedMenus[index] = value;
-      return updatedMenus;
+    const selectedPlatformList = selectedPlatforms.map((platform) => platform.value);
+    const platformResponse = await fetch(`/api/session/${memberId}/platforms`, {
+      method: "PUT",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(selectedPlatformList)
     });
+    if (!platformResponse.ok) {
+      throw new Error(`Failed to update Session streaming platforms`);
+    }
 
+    window.location.href = `/landing/${memberId}`;
+  }
+
+  const fetchStreamingPlatforms = async () => {
+    try {
+      const response = await fetch(
+        "https://api.themoviedb.org/3/watch/providers/movie?language=en-US",
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_MOVIE_DB_TOKEN}`,
+            accept: "application/json",
+          },
+        }
+      )
+      const data = await response.json();
+      if (data.results) {
+        return data.results.map((platform) => (
+          {
+            label: platform.provider_name,
+            value: platform.provider_id,
+          }));
+      }
+    } catch (error) {
+      console.error("Error fetching genres: ", error);
+    }
   };
+
+  useEffect(() => {
+    fetchStreamingPlatforms().then(setStreamingPlatforms)
+  }, []);
 
   return (
-    <>
+    <div style={style.outerDiv}>
       <a href="/start">
-        <button style={styles.backButton}>X</button>
+        <Icon icon="vaadin:close" style={style.backButton} />
       </a>
-      <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-        <h2 style={styles.header2}>flickr</h2>
-        <h3 style={styles.username}>ExampleUser Profile</h3>
-        <form style={styles.form}>
-          <div style={styles.profileInputs}>
-            <label style={styles.label}>Username</label>
-            <br/>
-            <input
-                type="text"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                placeholder="example-username"
-                style={{
-                  ...styles.input,
-                  backgroundColor: usernameHovered ? '#dbdbdb' : '#ffffff'
-                }}
-                onMouseEnter={() => setUsernameHovered(true)}
-                onMouseLeave={() => setUsernameHovered(false)}
-            />
-          </div>
+      <h2 style={style.pageTitle}>flickr</h2>
 
-          <div style={styles.profileInputs}>
-            <label style={styles.label}>Email</label>
-            <br/>
-            <input
-                type="email"
-                placeholder="example@gmail.com"
-                value={email ? email : ''}
-                onChange={e => setEmail(e.target.value)}
-                style={{
-                  ...styles.input,
-                  backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'
-                }}
-                onMouseEnter={() => setEmailHovered(true)}
-                onMouseLeave={() => setEmailHovered(false)}
+        <form style={{ ...style.form, ...styles.formAddOn  }}>
+          <TextField
+            label="Username"
+            value={username}
+            style={style.input}
+            onValueChanged={(e) => setUsername(e.target.value)}
+          />
+          <EmailField
+            label="Email address"
+            value={email ? email : ''}
+            style={style.input}
+            errorMessage="Enter a valid email address"
+            onValueChanged={(e) => setEmail(e.target.value)}
+          />
 
-            />
-          </div>
-        </form>
-        <form style={styles.servicesForm}>
-          <label style={styles.label}>Available Streaming Services: </label>
-          <div style={styles.servicesDiv}>
-            {selectMenus.map((value, index) => (
-                <div key={index}>
-                  <select
-                      style={styles.serviceSelect}
-                      value={value}
-                      onChange={(e) => handleSelectChange(index, e.target.value)}
-                  >
-                    <option value="" style={styles.firstSelect}>Select an option</option>
-                    {options.map((option) => (
-                        <option key={option} value={option} style={styles.option}>
-                          {option}
-                        </option>
-                    ))}
-                  </select>
-                </div>
+          <MultiSelectComboBox
+            label="Select Streaming Platform(s):"
+            itemLabelPath="label"
+            itemIdPath="value"
+            items={streamingPlatforms}
+            style={{width: '90%', marginLeft: '5%'}}
+            autoExpandVertically
+            onChange={e => setSelectedPlatforms(e.target.selectedItems)}
+          />
 
-            ))}
-          </div>
-          <button
-              type="button"
-              style={{
-                ...styles.moreServicesButton,
-                backgroundColor: addButtonHovered ? '#dbdbdb' : '#ffffff'
-              }}
-              onClick={addSelectMenu}
-              onMouseEnter={() => setAddButtonHovered(true)}
-              onMouseLeave={() => setAddButtonHovered(false)}
+          <Button
+            style={styles.saveButton}
+            onClick={() => {
+              navigate("/start");
+            }}
           >
-            + Streaming Service
-          </button>
-          <input style={style.button} onClick={e => {
-            const id = localStorage.getItem('RYT');
-            if (id) {
-              updateUser(id, email, username);
-            }
-          }} value="Save"/>
-          <button style={style.button} onClick={e => logout()}>Logout</button>
+            Save
+          </Button>
         </form>
-      </div>
-    </>
+
+        <Button
+          style={{...styles.saveButton,
+            backgroundColor: colors.secondary,
+            width: '60%', marginLeft: '20%',
+            marginBottom: 'auto'
+        }}
+          onClick={e => logout()}
+        >
+          Logout
+        </Button>
+    </div>
   );
 }
 
 const styles = {
-  header2: {
-    color: '#62598b',
-    textAlign: 'center',
-    fontSize: '37px',
-    marginTop: '15px',
-  },
-  label: {
-    fontSize: '25px'
-  },
-  form: {
-    margin: 'auto',
-    width: '80%',
+  formAddOn: {
     border: '1px solid grey',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    height: 'auto',
-  },
-  servicesForm: {
-    margin: 'auto',
-    width: '80%',
-    border: '1px solid grey',
-    height:'30%',
-  },
-  servicesDiv:{
-    overflowY:'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    unicodeBidi: 'isolate',
-    width: 'auto',
-    margin:'0 350px',
-    maxHeight: '60%',
-  },
-  serviceSelect: {
-    margin:'auto',
-    marginBottom: '5px',
-    marginTop: '5px',
-    height: '50px',
-    borderRadius:'3px',
-    textAlign:'center',
-    fontSize: '20px',
-    fontFamily:'Times New Roman, Times, serif',
-    display: 'flex',
-  },
-  firstSelect: {
-    color: 'gainsboro',
-    fontSize: 16,
-  },
-  option:{
-    fontSize: 16,
-  },
-  moreServicesButton:{
-    width: '200px',
-    height: '35px',
-    alignSelf: 'center',
-    borderColor: '#ffffff',
-    marginTop: '10px',
-    marginBottom: '10px',
-  },
-  select:{
-    borderRadius: '3px',
-    height: '50px',
-    display: 'flex',
-    textAlign: 'center',
-    margin: 'auto',
-    fontFamily:'Times New Roman, Times, serif',
-    fontSize: '20px',
-  },
-  backButton:{
-    border: '0px',
-    fontSize: '20px',
-    float: 'right',
-  },
-  username: {
-    marginBottom: '12px',
-  },
-  profileInputs:{
-    marginBottom:'10px',
-  },
-  input: {
-    width: '90%',
-    height: 30,
-    margin: 'auto',
-    border: '1px solid black',
-    marginBottom: 20,
-    fontSize: 16,
-    paddingLeft: 10,
     borderRadius: 8,
+    marginTop: 20,
+    marginBottom: 'auto'
   },
-
-
+  saveButton: {
+    width: '90%',
+    marginLeft: '5%',
+    backgroundColor: colors.main,
+    color: 'white',
+    marginTop: 20,
+    marginBottom: 20,
+    borderWidth: 0,
+    textAlign: 'center',
+    fontSize: 16,
+    cursor: 'pointer',
+  },
 }
-
-

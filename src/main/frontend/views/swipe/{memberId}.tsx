@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { colors } from "../../themes/flickr/colors";
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
+import {Icon} from "@vaadin/react-components";
+import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export default function SwipeView() {
   const { memberId } = useParams();
@@ -74,51 +76,55 @@ export default function SwipeView() {
     }
   };
 
+  const exitSession = async () => {
+    // Reset index
+  }
+
   const viewList = () => {
     window.location.href = `/list/${memberId}`;
   };
 
   return (
       <div style={styles.outerDiv}>
-        <h1>{member?.username}</h1>
+        <CustomHeader />
+
         {isVotingComplete ? (
             <p>You're done voting!</p>
         ) : (
             movies.length > 0 && movies[movieIndex] && (
                 <>
                   <div style={styles.movieProfile}>
-                    <img
-                        style={styles.movieThumbnail}
-                        src={movies[movieIndex].movie?.imgURL}
-                        alt="movie poster"
-                    />
+                    <div style={{...styles.movieThumbnail}}>
+                      <img style={{width: '100%', height: 'auto'}}
+                          src={movies[movieIndex].movie?.imgURL}
+                          alt="movie poster"
+                      />
+                    </div>
                     <div style={styles.movieInfo}>
-                      <label style={styles.movieLabel}>
-                        Title: {movies[movieIndex].movie?.title}
-                      </label>
-                      <label style={styles.movieLabel}>
-                        Release date: {movies[movieIndex].movie?.release}
-                      </label>
+                      <h2 style={styles.movieLabel}>
+                        {movies[movieIndex].movie?.title}
+                      </h2>
+                      <h3 style={styles.movieLabel}>
+                        {movies[movieIndex].movie?.release}
+                      </h3>
                     </div>
                   </div>
                   <div style={styles.choices}>
-                    <a onClick={() => handleNextMovie(false)}>
-                      <img style={{ float: "left" }} src="images/garbage.png" alt="dislike button" />
-                    </a>
-                    <a onClick={() => handleNextMovie(true)}>
-                      <img style={{ float: "right" }} src="images/like.png" alt="like button" />
-                    </a>
+                    <Icon
+                        style={{float: "left", height: '38px', width: '38px', color: colors.main}}
+                        icon="vaadin:thumbs-down"
+                        onClick={() => handleNextMovie(false)}/>
+                    <Icon
+                          style={{float: "right", height: '38px', width: '38px', color: colors.main}}
+                          icon="vaadin:thumbs-up"
+                          onClick={() => handleNextMovie(true)}/>
                   </div>
                 </>
             )
         )}
         <div style={styles.bottomNav}>
-          <a>
-            <img src="images/pic.png" alt="pic"/>
-          </a>
-          <a>
-            <img src="images/liked.png" alt="liked" onClick={viewList}/>
-          </a>
+          <img src="images/pic.png" alt="pic"/>
+          <img src="images/liked.png" alt="liked" onClick={viewList}/>
         </div>
       </div>
   );
@@ -143,20 +149,23 @@ const styles = {
     float: 'right',
   },
   movieProfile: {
-    width: '40%',
-    height: '50%',
+    // width: '40%',
+    // height: '50%',
     marginTop: 60,
     marginRight: 'auto',
     marginLeft: 'auto',
+    border: '1px solid rgba(0, 0, 0, 0.125)',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     borderRadius: 12,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.light,
   },
   movieThumbnail: {
-    height: '60%',
-    width: 'auto'
+    height: 'auto',
+    width: '70%'
   },
   movieInfo: {
     backgroundColor: colors.main,
@@ -166,8 +175,8 @@ const styles = {
     width: '70%',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'left',
+    // justifyContent: 'left',
     marginRight: 'auto',
     marginLeft: 'auto',
   },
@@ -176,7 +185,13 @@ const styles = {
     color: 'white'
   },
   choices: {
-    margin: '0px 150px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: '30px auto',
+    width: '90%',
+    maxWidth: '500px', // Prevents the container from growing too wide
+    padding: '0 20px',
   },
   bottomNav: {
     width: '100%',

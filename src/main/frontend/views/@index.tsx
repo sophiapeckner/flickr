@@ -4,6 +4,7 @@ import { colors } from "Frontend/themes/flickr/colors.js";
 import { login, isLoggedIn } from "../auth"
 import { useState } from "react";
 import {useNavigate} from "react-router-dom";
+import {Button, EmailField, PasswordField} from "@vaadin/react-components";
 import member from "Frontend/generated/com/flickr/entities/Member";
 
 export const config: ViewConfig = {
@@ -17,7 +18,6 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
 
   const handleLogin = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -33,72 +33,63 @@ export default function LoginForm() {
 
   return (
       <div style={style.outerDiv}>
-        <h2 style={{ ...style.pageTitle, marginTop: 20 }}>flickr</h2>
-        <img style={{ width: '100%' }} src="images/movie_reel.png" />
+          <h2 style={{...style.pageTitle, marginTop: 20}}>flickr</h2>
+          <img style={{width: '100%'}} src="images/movie_reel.png"/>
 
-        <div style={style.innerDiv}>
-          <form style={{ ...style.authFormAddOn, ...style.form }}>
-            {error && <span style={{ color: 'red' }}>{error}</span>}
-            <label style={style.label}>Email</label>
-            <input
-                style={style.input}
-                type="text"
-                id="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="example@gmail.com"
-            />
+          <div style={style.innerDiv}>
+              <form style={{...style.authFormAddOn, ...style.form}} onSubmit={(e) => e.preventDefault()}>
+                  {error && <span style={{color: 'red'}}>{error}</span>}
+                  <EmailField
+                      label="Email address"
+                      value={email}
+                      style={style.input}
+                      errorMessage="Enter a valid email address"
+                      onValueChanged={(e) => setEmail(e.detail.value)}
+                  />
 
+                  <PasswordField
+                      label="Password"
+                      value={password}
+                      style={style.input}
+                      onValueChanged={(e) => setPassword(e.target.value)}
+                  />
 
-            <label style={style.label}>Password</label>
-            <input
-                style={style.input}
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="**********"
-            />
+                  <div style={styles.buttonDiv}>
+                      <Button style={styles.signUpButton} onClick={handleLogin}>
+                          Sign In
+                      </Button>
+                  </div>
 
-            <div style={styles.buttonDiv}>
-              <button style={styles.signUpButton} onClick={handleLogin}>
-                Sign In
-              </button>
-            </div>
+                  <div style={style.redirect}>
+                      <a style={{float: 'left'}} href="/signup">Forgot Password</a>
+                      <a style={{float: 'right'}} href="/signup">Sign Up</a>
+                  </div>
+              </form>
 
-            <div style={style.redirect}>
-              <a style={{ float: 'left' }} href="/signup">
-                Forgot Password
-              </a>
-              <a style={{ float: 'right' }} href="/signup">
-                Sign Up
-              </a>
-            </div>
-          </form>
-
-          <a style={styles.buttonDiv} href="/start">
-            <button style={styles.button}>Continue as Guest</button>
-          </a>
-        </div>
+              <div style={styles.buttonDiv}>
+                  <Button
+                      style={styles.button}
+                      onClick={() => navigate("/start")}
+                  >
+                      Continue as Guest
+                  </Button>
+              </div>
+          </div>
       </div>
   );
 }
 
-
-
 const styles = {
-  buttonDiv: {
-    justifyContent: 'center', 
-    display: 'flex',
-    width: '100%'
-  },
-  signUpButton: {
-    borderRadius: 8,
-    width: '90%',
-    height: 30,
-    backgroundColor: colors.main,
+    buttonDiv: {
+        justifyContent: 'center',
+        display: 'flex',
+        width: '100%'
+    },
+    signUpButton: {
+        // borderRadius: 8,
+        width: '90%',
+        // height: 30,
+        backgroundColor: colors.main,
     color: 'white',
     marginTop: 20,
     marginBottom: 20,

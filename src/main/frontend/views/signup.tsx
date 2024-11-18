@@ -2,8 +2,9 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
 import { colors } from "Frontend/themes/flickr/colors.js";
 import { createUser } from "Frontend/generated/MemberServices";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {Button, EmailField, PasswordField, TextField} from "@vaadin/react-components";
 
 export const config: ViewConfig = {
   menu: { order: 1, icon: "line-awesome/svg/file.svg" },
@@ -23,17 +24,9 @@ export default function SignUpView() {
 
   const validateForm = () => {
     let isValid = true;
-    setEmailError("");
     setUsernameError("");
     setPasswordError("");
     setConfirmPasswordError("");
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setEmailError("Please enter a valid email address.");
-      isValid = false;
-    }
 
     // Username validation
     if (username.trim() === "") {
@@ -75,69 +68,52 @@ export default function SignUpView() {
         <img style={{ width: "100%" }} src="images/movie_reel.png" />
 
         <div style={style.innerDiv}>
-          <form style={{ ...style.authFormAddOn, ...style.form }}>
-            {/* Email Input */}
-            <label style={style.label} htmlFor="email">Email</label>
-            <input
-                style={style.input}
-                type="text"
-                onChange={(e) => setEmail(e.target.value)}
+          <form style={{ ...style.authFormAddOn, ...style.form }} onSubmit={(e) => e.preventDefault()}>
+            <EmailField
+                label="Email address"
                 value={email}
-                id="email"
-                name="email"
-                placeholder="example@gmail.com"
-            />
-            {emailError && <span style={{ color: "red" }}>{emailError}</span>}
-
-            {/* Username Input */}
-            <label style={style.label} htmlFor="username">Username</label>
-            <input
                 style={style.input}
-                type="text"
-                onChange={(e) => setUsername(e.target.value)}
+                errorMessage="Enter a valid email address"
+                onValueChanged={(e) => setEmail(e.detail.value)}
+            />
+
+            <TextField
+                label="Username"
                 value={username}
-                id="username"
-                name="username"
-                placeholder="user123"
-            />
-            {usernameError && <span style={{ color: "red" }}>{usernameError}</span>}
-
-            {/* Password Input */}
-            <label style={style.label} htmlFor="password">Set Password</label>
-            <input
                 style={style.input}
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onValueChanged={(e) => setUsername(e.target.value)}
+            />
+              {usernameError && <span style={{ color: "red" }}>{usernameError}</span>}
+
+            <PasswordField
+                label="Set Password"
                 value={password}
-                id="password"
-                name="password"
+                style={style.input}
+                onValueChanged={(e) => setPassword(e.target.value)}
                 placeholder="5-7 characters long"
             />
-            {passwordError && <span style={{ color: "red" }}>{passwordError}</span>}
+              {passwordError && <span style={{ color: "red" }}>{passwordError}</span>}
 
-            {/* Confirm Password Input */}
-            <label style={style.label} htmlFor="confirmPassword">Confirm Password</label>
-            <input
+            <PasswordField
+                label="Confirm Password"
                 style={style.input}
-                type="password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
-                id="confirmPassword"
-                name="confirmPassword"
             />
-            {confirmPasswordError && (
-                <span style={{ color: "red" }}>{confirmPasswordError}</span>
-            )}
+              {confirmPasswordError && (
+                  <span style={{ color: "red" }}>{confirmPasswordError}</span>
+              )}
 
-            {/* Sign Up Button */}
             <div style={styles.signUpDiv}>
-              <button style={styles.signUp} onClick={handleSignUp}>
+              <Button
+                  style={styles.signUp}
+                  onClick={handleSignUp}
+              >
                 Sign Up
-              </button>
+              </Button>
             </div>
 
-            {/* Redirect Link */}
-            <a style={{ ...style.redirect, display: "flex" }} href="/">
+            <a style={{ ...style.redirect, display: 'flex' }} href="/">
               Already have an account
             </a>
           </form>
@@ -146,7 +122,6 @@ export default function SignUpView() {
   );
 }
 
-
 const styles = {
   signUpDiv: {
     justifyContent: 'center',
@@ -154,12 +129,12 @@ const styles = {
     width: '100%'
   },
   signUp: {
-    borderRadius: 8,
+    // borderRadius: 8,
     width: '90%',
-    height: 30,
+    // height: 30,
     backgroundColor: colors.main,
     color: 'white',
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 20,
     borderWidth: 0,
     textAlign: 'center',

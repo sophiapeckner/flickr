@@ -5,6 +5,10 @@ import {createSession, findAll, joinSession} from "Frontend/generated/SessionEnd
 import { style } from "../themes/flickr/css.js";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import Member from "Frontend/generated/com/flickr/entities/Member";
+import {Button, Icon, MenuBar} from "@vaadin/react-components";
+import { items } from "../themes/flickr/ProfileMenuBar";
+import { useNavigate } from "react-router-dom";
+import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },
@@ -66,71 +70,16 @@ export default function StartView() {
   }
 
   return (
-  <div style={style.outerDiv}>
-    <div>
-      <a style={style.backButton} href="/">
-        X
-      </a>
-      <a style={style.topCornerButton} href="/userprofile">
-        <img src="images/profile.png"/>
-      </a>
-    </div>
-    <h2 style={style.pageTitle}>flickr</h2>
+      <div style={style.outerDiv}>
+        <CustomHeader />
 
-    <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
-      <a>
-        <button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</button>
-      </a>
-
-      {allowCreateGroup && (
-              <a>
-                <button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</button>
-              </a>
-          )
-      }
-
-    </div>
-    {/*/!*For viewing H2 Database entries*!/*/}
-    {sessions.map((session) => (
-        <div key={session.id}>
-          <span>Group Code: {session.groupCode}</span>
-          <br/>
-          {session.members && session.members.length > 0 ? (
-              session.members.map((member, idx) => (
-                  <span key={idx}>Member: {member?.username || 'Unknown'} {member?.movieIndex}</span>
-              ))
-          ) : (
-              <span>No members yet.</span>
-          )}
-          <br/>
-          <span>Genre(s): </span>
-          {session.genres && session.genres.length > 0 ? (
-              session.genres.map((genre, idx) => (
-                  <span key={idx}>{genre || 'Unknown'}, </span>
-              ))
-          ) : (
-              <span>No genres yet.</span>
-          )}
-          <br/>
-          <span>Platform(s): </span>
-          {session.streamingPlatforms && session.streamingPlatforms.length > 0 ? (
-              session.streamingPlatforms.map((platform, idx) => (
-                  <span key={idx}>{platform || 'Unknown'}, </span>
-              ))
-          ) : (
-              <span>No streaming platforms yet.</span>
-          )}
-          <br/>
-          <span>Movie List: </span>
-          {session.movies && session.movies.length > 0 ? (
-              session.movies.map((sessionMovie, idx) => (
-                  <span key={idx}>{sessionMovie?.movie?.title || 'Unknown'} = {sessionMovie?.voteCount}</span>
-              ))
-          ) : (
-              <span>No movies yet.</span>
+        <h2 style={style.pageTitle}>flickr</h2>
+        <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
+          <Button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</Button>
+          {allowCreateGroup && (
+              <Button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</Button>
           )}
         </div>
-    ))}
-  </div>
+      </div>
   );
 }

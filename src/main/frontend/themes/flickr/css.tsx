@@ -7,8 +7,8 @@ export const style = {
 		height: '100%',
 	},
 	backButton: {
-		height: '50px',
-		margin: '15px',
+		height: '25px',
+		margin: '20px',
 		float: 'left',
 		fontSize: 20,
 		marginRight: 15,
@@ -52,9 +52,9 @@ export const style = {
   },
   input: {
     width: '90%',
-    height: 30,
+    // height: 30,
     margin: 'auto',
-    border: '1px solid black',
+    // border: '1px solid black',
     marginBottom: 20,
     fontSize: 16,
     paddingLeft: 10,

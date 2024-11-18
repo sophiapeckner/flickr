@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import { colors } from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
-import session from "Frontend/generated/com/flickr/entities/Session";
-// import { MovieListController } from "Frontend/generated/endpoints.ts";
-// import { useState, useEffect } from "react";
+import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
   menu: { order: 7, icon: "line-awesome/svg/file.svg" },
@@ -41,14 +39,7 @@ export default function MovieListView() {
 
   return (
       <div style={styles.outerDiv}>
-        <div style={{backgroundColor: "white"}}>
-          <a style={styles.backButton} href="/">
-            X
-          </a>
-          <a style={styles.topCornerButton} href="/userprofile">
-            <img src="/images/profile.png"/>
-          </a>
-        </div>
+        <CustomHeader />
 
         <div style={styles.moviesSelected}>
           {selectedMovies.length > 0 ? (

@@ -4,7 +4,10 @@ import { colors } from "Frontend/themes/flickr/colors.js";
 
 import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {Avatar, Button, Icon, Scroller, MenuBar} from "@vaadin/react-components";
+import { items } from "../../themes/flickr/ProfileMenuBar";
+import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
   menu: { order: 4, icon: "line-awesome/svg/file.svg" },
@@ -57,30 +60,21 @@ export default function GroupLandingView() {
 
   return (
       <div style={style.outerDiv}>
-        <div>
-          <a style={style.backButton} href="/">
-            X
-          </a>
-          <a style={style.topCornerButton} href="/userprofile">
-            <img src="images/profile.png"/>
-          </a>
-        </div>
+        <CustomHeader />
 
         <h6 style={style.groupTitle}>Group Code: </h6>
         <h3 style={style.groupCode}>{groupCode}</h3>
 
-        <div style={styles.membersDiv}>
+        <Scroller style={styles.membersDiv} scrollDirection="vertical">
           {members.map((member) => (
               <div style={styles.personDiv} key={member.id}>
-                <img style={styles.personImage} src="images/person.png" alt=""/>
+                <Avatar theme="xlarge" />
                 <h4 style={styles.personLabel}>{member?.username || 'Unknown'}</h4>
               </div>
           ))}
-        </div>
+        </Scroller>
 
-          <a>
-            <button style={style.button} onClick={submit}>Start Session</button>
-          </a>
+        <Button style={style.button} onClick={submit}>Start Voting</Button>
       </div>
   );
 }
@@ -99,10 +93,10 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  personImage: {
-    width: '20%',
-    height: '30%',
-  },
+  // personImage: {
+  //   width: '20%',
+  //   height: '30%',
+  // },
   personLabel: {
     padding: 20,
     fontSize: 20,
