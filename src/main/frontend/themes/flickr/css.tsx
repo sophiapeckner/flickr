@@ -42,8 +42,7 @@ export const style = {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
-    marginTop: "25px",
-    position: "absolute",
+    marginTop: "auto",
     bottom: "0px",
   },
   label: {
@@ -90,10 +89,10 @@ export const style = {
     margin: 'auto',
     width: '80%',
     padding: 15,
-  },
-  formAddOn: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  formAddOn: {
     border: '1px solid grey',
     borderRadius: 8,
     marginBottom: 20

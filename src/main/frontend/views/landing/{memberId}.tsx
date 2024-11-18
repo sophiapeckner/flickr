@@ -74,7 +74,9 @@ export default function GroupLandingView() {
           ))}
         </Scroller>
 
-        <Button style={style.button} onClick={submit}>Start Voting</Button>
+        <div style={style.form}>
+          <Button style={style.button} onClick={submit}>Start Voting</Button>
+        </div>
       </div>
   );
 }

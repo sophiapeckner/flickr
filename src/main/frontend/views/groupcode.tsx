@@ -5,6 +5,7 @@ import {useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {getEmail} from "Frontend/auth";
 import {Button, Icon, TextField} from "@vaadin/react-components";
+import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -26,14 +27,7 @@ export default function GroupCodeView() {
 
   return (
       <div style={style.outerDiv}>
-        <div>
-          <a style={style.backButton} href="/start">
-            <Icon icon="vaadin:close" />
-          </a>
-          <a style={style.topCornerButton} href="/userprofile">
-            <img src="images/profile.png" />
-          </a>
-        </div>
+        <CustomHeader />
         <h2 style={style.pageTitle}>flickr</h2>
 
         <div style={{ ...style.innerDiv, ...style.innerDivAddOn }}>

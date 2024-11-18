@@ -75,6 +75,8 @@ const styles = {
     backgroundColor: colors.light,
     display: "flex",
     flexDirection: "column",
+    overflowY: 'auto',
+    flex: 1,
   },
   movie: {
     display: "flex",
