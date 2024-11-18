@@ -13,11 +13,12 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Random;
+import java.util.UUID;
 
 @Entity
 public class Member {
     @Id
-    @GeneratedValue
     private Long id;
 
     private String email;
@@ -31,6 +32,7 @@ public class Member {
     private int movieIndex;
 
     public Member(String email, String username, String password) {
+        this.id = Math.abs(new Random().nextLong());
         this.email = email;
         this.password = password;
         this.username = username;
@@ -39,6 +41,7 @@ public class Member {
     public Member() {
         // Used for defining an Anon user
         // Because Hilla expects all member variable to be non-null, email & pass are set to dummy values
+        this.id = Math.abs(new Random().nextLong());
         this.email = "anon@gmail.com";
         this.password = "anon";
         this.username = "Anonymous";

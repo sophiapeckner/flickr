@@ -1,7 +1,9 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { style } from "../themes/flickr/css.js";
-import { logout, getEmail, getUsername } from "Frontend/auth"
+import { logout } from "Frontend/auth";
+import { getMember } from "Frontend/auth";
+
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -12,20 +14,16 @@ export default function UserProfileView() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
 
-  function getProfile() {
-    if (getUsername()) {
-      // @ts-ignore
-      setUsername(getUsername());
-    }
-    if (getEmail()) {
-      // @ts-ignore
-      setEmail(getEmail());
-    }
-  }
-
-  if (email.length == 0) {
-    getProfile();
-  }
+  useEffect(() => {
+    getMember().then(r => {
+      if (r) {
+        // @ts-ignore
+        setUsername(r.username);
+        // @ts-ignore
+        setEmail(r.email);
+      }
+    })
+  }, []);
 
   // State to track the select menus
   const [selectMenus, setSelectMenus] = useState<string[]>(['']);
@@ -33,8 +31,6 @@ export default function UserProfileView() {
   const [addButtonHovered, setAddButtonHovered] = useState<boolean>(false);
 
   const [usernameHovered, setUsernameHovered] = useState<boolean>(false);
-
-  const [passwordHovered, setPasswordHovered] = useState<boolean>(false);
 
   const [emailHovered, setEmailHovered] = useState<boolean>(false);
 
@@ -71,9 +67,9 @@ export default function UserProfileView() {
             <label style={styles.label}>Username
               <br/>
               <input
-                  type="text"
-                  id="email"
-                  name="email"
+                  type="text" id="username"
+                  name="username" value={username}
+                  onChange={e => setUsername(e.target.value)}
                   placeholder="example-username"
                   style={{
                     ...styles.input,
@@ -86,24 +82,6 @@ export default function UserProfileView() {
           </div>
 
           <div style={styles.profileInputs}>
-            <label style={styles.label}>Password
-              <br/>
-              <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="**********"
-                  style={{
-                    ...styles.input,
-                    backgroundColor: passwordHovered ? '#dbdbdb' : '#ffffff'
-                  }}
-                  onMouseEnter={() => setPasswordHovered(true)}
-                  onMouseLeave={() => setPasswordHovered(false)}
-              />
-            </label>
-          </div>
-
-          <div style={styles.profileInputs}>
             <label style={styles.label}>Email
               <br/>
               <input
@@ -111,8 +89,8 @@ export default function UserProfileView() {
                   id="email"
                   name="email"
                   placeholder="example@gmail.com"
-                  value={username}
-                  onChange={e => setUsername(e.target.value)}
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   style={{
                     ...styles.input,
                     backgroundColor: emailHovered ? '#dbdbdb' : '#ffffff'
@@ -122,9 +100,6 @@ export default function UserProfileView() {
               />
             </label>
           </div>
-          <a href="/start">
-            <input style={style.button} value="Save"/>
-          </a>
         </form>
         <form style={styles.servicesForm}>
         <label style={styles.label}>Available Streaming Services:
@@ -160,23 +135,24 @@ export default function UserProfileView() {
             >
               + Streaming Service
             </button>
+            <button style={style.button} value="Save"/>
             <button style={style.button} onClick={e => logout()}>Logout</button>
         </label>
         </form>
       </div>
-      </>
+    </>
   );
 }
 
 const styles = {
-  header2:{
+  header2: {
     color: '#62598b',
     textAlign: 'center',
     fontSize: '37px',
     marginTop: '15px',
   },
-  label:{
-    fontSize:'25px'
+  label: {
+    fontSize: '25px'
   },
   form: {
     margin: 'auto',
@@ -185,7 +161,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '10px',
-    height:'auto',
+    height: 'auto',
   },
   servicesForm: {
     margin: 'auto',

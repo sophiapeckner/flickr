@@ -1,6 +1,5 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { colors } from "../../themes/flickr/colors";
-import {useParams} from "react-router-dom";
 import {MultiSelectComboBox} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
 
@@ -10,7 +9,7 @@ export const config: ViewConfig = {
 };
 
 export default function PreferencesView() {
-  const { memberId } = useParams();
+  const memberId = localStorage.getItem("RYT");
 
   const [genres, setGenres] = useState([]);
   const [groupCode, setGroupCode] = useState([]);

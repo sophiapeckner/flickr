@@ -15,6 +15,7 @@ import org.atmosphere.config.service.Post;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -33,12 +34,14 @@ public class SessionEndpoint {
     private final SessionMovieRepository sessionMovieRepository;
     private final MemberRepository memberRepository;
     private final SessionRepository repository;
+    private final Environment environment;
 
-    SessionEndpoint(SessionRepository repository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository) {
+    SessionEndpoint(SessionRepository repository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, Environment environment) {
         this.repository = repository;
         this.movieRepository = movieRepository;
         this.sessionMovieRepository = sessionMovieRepository;
         this.memberRepository = memberRepository;
+        this.environment = environment;
     }
 
     // Hilla Endpoint

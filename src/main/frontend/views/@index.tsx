@@ -10,20 +10,25 @@ export const config: ViewConfig = {
   title: "Log In",
 };
 
-export default function LogInView() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  console.log(isLoggedIn());
 
-  const handleSignIn = (e: { preventDefault: () => void; }) => {
+export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+
+  const handleLogin = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    login(email, password).then(r => {
-      if (isLoggedIn()) {
-        navigate("/start");
+    login(email, password).then(async (r) => {
+      if (r == "Success") {
+          navigate("/start");
+      } else {
+        // @ts-ignore
+        setError(r);
       }
     });
-  }
+  };
 
   return (
     <div style={style.outerDiv}>
@@ -32,6 +37,7 @@ export default function LogInView() {
     
     <div style={style.innerDiv}>
       <form style={{...style.authFormAddOn, ...style.form}}>
+       {error && <span style={{ color: 'red' }}>{error}</span>}
         <label style={style.label}>
           <p style={style.labelTitle}>Email</p>
           <input style={style.input}
@@ -59,25 +65,30 @@ export default function LogInView() {
         <input
           style={styles.signUpButton}
           type="submit" value="Sign In"
-          onKeyUp={handleSignIn}
-          onClick={handleSignIn}
+          onKeyUp={handleLogin}
+          onClick={handleLogin}
           tabIndex={0}
         />
 
-        <div style={style.redirect}>
-          <a style={{float: 'left'}} href="/signup">Forgot Password</a>
-          <a style={{float: 'right'}} href="/signup">Sign Up</a>
+            <div style={style.redirect}>
+              <a style={{ float: 'left' }} href="/signup">
+                Forgot Password
+              </a>
+              <a style={{ float: 'right' }} href="/signup">
+                Sign Up
+              </a>
+            </div>
+          </form>
+
+          <a style={styles.buttonDiv} href="/start">
+            <button style={styles.button}>Continue as Guest</button>
+          </a>
         </div>
-      </form>
-
-
-      <a style={styles.buttonDiv} href="/start">
-        <button style={styles.button}>Continue as Guest</button>
-      </a>
       </div>
-    </div>
   );
 }
+
+
 
 const styles = {
   buttonDiv: {
