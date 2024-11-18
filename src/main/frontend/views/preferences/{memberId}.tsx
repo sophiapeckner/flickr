@@ -1,7 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { colors } from "../../themes/flickr/colors";
 import {useParams} from "react-router-dom";
-import {MultiSelectComboBox, Select} from "@vaadin/react-components";
+import {Button, FormLayout, Icon, MultiSelectComboBox, Select} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
 import {fetchMembersSession, fetchSessionByGroupCode} from "Frontend/generated/SessionEndpoint";
 
@@ -113,7 +113,7 @@ export default function PreferencesView() {
     <div style={styles.outerDiv}>
       <div>
         <a style={styles.backButton} href="/">
-          X
+          <Icon icon="vaadin:close" />
         </a>
         <a style={styles.topCornerButton} href="/userprofile">
           <img src="images/profile.png" />
@@ -123,7 +123,7 @@ export default function PreferencesView() {
       <h6 style={styles.groupTitle}>Group Code: </h6>
       <h3 style={styles.groupCode}>{groupCode}</h3>
 
-      <form style={styles.form}>
+      <FormLayout style={styles.form} responsiveSteps={ [{ minWidth: '0', columns: 1 }] }>
         <MultiSelectComboBox
             label="Select Genre(s):"
             itemLabelPath="label"
@@ -146,11 +146,8 @@ export default function PreferencesView() {
             onChange={e => setSelectedPlatforms(e.target.selectedItems)}
         />
 
-        {/*<a href="/swipe">*/}
-        <a>
-          <input style={styles.button} onClick={submit} value="Ready"/>
-        </a>
-      </form>
+        <Button onClick={submit} style={styles.button}>Ready</Button>
+      </FormLayout>
     </div>
   );
 }
@@ -183,7 +180,7 @@ const styles = {
   },
   form: {
     margin: 'auto',
-    width: '80%',
+    width: '70%',
     padding: 15,
     display: 'flex',
     flexDirection: 'column',
@@ -203,19 +200,16 @@ const styles = {
     borderRadius: 8,
   },
   button: {
-    width: 180,
-    height: 36,
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    borderWidth: 0,
+    // borderRadius: 8,
+    width: '90%',
+    // height: 30,
     backgroundColor: colors.main,
     color: 'white',
+    marginTop: 20,
+    marginBottom: 20,
+    borderWidth: 0,
     textAlign: 'center',
-    marginTop: 36,
-    fontSize: '17px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '8px',
-  }
+    fontSize: 16,
+    cursor: 'pointer',
+  },
 }
