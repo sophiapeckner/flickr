@@ -6,7 +6,6 @@ import { style } from "../themes/flickr/css.js";
 import {Button, Icon, TextField} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import { getMember } from "Frontend/auth";
-import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
