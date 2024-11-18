@@ -8,14 +8,13 @@ import {style} from "Frontend/themes/flickr/css";
 import { items } from "../../themes/flickr/ProfileMenuBar";
 import { useNavigate } from "react-router-dom";
 
-
 export const config: ViewConfig = {
   menu: { order: 5, icon: "line-awesome/svg/file.svg" },
   title: "Pick Genre",
 };
 
 export default function PreferencesView() {
-  const { memberId } = useParams();
+  const memberId = localStorage.getItem("RYT");
 
   const [genres, setGenres] = useState([]);
   const [groupCode, setGroupCode] = useState([]);

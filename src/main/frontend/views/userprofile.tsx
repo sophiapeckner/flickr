@@ -1,11 +1,11 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
-import { logout } from "Frontend/auth";
-import { getUsername, getEmail } from "Frontend/auth";
 import {Button, EmailField, MultiSelectComboBox, TextField, Icon} from "@vaadin/react-components";
 import {colors} from "Frontend/themes/flickr/colors";
 import {useNavigate, useParams} from "react-router-dom";
+import { getMember, logout } from "Frontend/auth";
+import {updateUser} from "Frontend/generated/MemberServices";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -20,20 +20,16 @@ export default function UserProfileView() {
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const { memberId } = useParams();
 
-  function getProfile() {
-    if (getUsername()) {
-      // @ts-ignore
-      setUsername(getUsername());
-    }
-    if (getEmail()) {
-      // @ts-ignore
-      setEmail(getEmail());
-    }
-  }
-
-  if (email.length == 0) {
-    getProfile();
-  }
+  useEffect(() => {
+    getMember().then(r => {
+      if (r) {
+        // @ts-ignore
+        setUsername(r.username);
+        // @ts-ignore
+        setEmail(r.email);
+      }
+    })
+  }, []);
 
   const save = async () => {
     // selectedGenres & selectedPlatforms are a list of objects
@@ -93,14 +89,14 @@ export default function UserProfileView() {
             label="Username"
             value={username}
             style={style.input}
-            onValueChanged={(e) => setUsername(e.detail.value)}
+            onValueChanged={(e) => setUsername(e.target.value)}
           />
           <EmailField
             label="Email address"
-            value={email}
+            value={email ? email : ''}
             style={style.input}
             errorMessage="Enter a valid email address"
-            onValueChanged={(e) => setEmail(e.detail.value)}
+            onValueChanged={(e) => setEmail(e.target.value)}
           />
 
           <MultiSelectComboBox
