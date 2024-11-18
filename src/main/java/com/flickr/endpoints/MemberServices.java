@@ -5,7 +5,7 @@ import com.flickr.storage.MemberRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+import java.util.logging.Logger;
 import java.util.Optional;
 
 @AnonymousAllowed
@@ -22,22 +22,24 @@ public class MemberServices {
         memberRepository.save(member);
     }
 
+    Logger logger = Logger.getLogger(getClass().getName());
+
     public Optional<Member> login(String email, String password) {
         Optional<Member> memberOptional = memberRepository.findByEmail(email);
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
-            System.out.println("User found");
+            logger.info("User found");
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             if (encoder.matches(password, member.getPass())) {
-                System.out.println("Login successful");
+                logger.info("Login successful");
                 return Optional.of(member);
             }
             else {
-                System.out.println("Wrong password");
+                logger.info("Wrong password");
                 return Optional.empty();
             }
         } else {
-            System.out.println("User Not found");
+            logger.info("User not found");
         }
         return Optional.empty();
     }

@@ -9,7 +9,7 @@ export default function SwipeView() {
 
   const [movies, setMovies] = useState<SessionMovie[]>([]);
   const [movieIndex, setMovieIndex] = useState(0);
-  const [member, setMember] = useState<Member>();
+  const [_, setMember] = useState<Member>();
   const [isVotingComplete, setIsVotingComplete] = useState(false);
 
   useEffect(() => {

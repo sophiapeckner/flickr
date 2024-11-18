@@ -67,7 +67,7 @@ public class Session {
 
     public Set<String> getStreamingPlatforms() { return streamingPlatforms; }
 
-    public void setStreamingPlatforms(Set<String> streamingPlatforms) { this.streamingPlatforms = this.streamingPlatforms; }
+    public void setStreamingPlatforms(Set<String> streamingPlatforms) { this.streamingPlatforms = streamingPlatforms; }
 
     public List<SessionMovie> getMovies() { return movies; }
 
