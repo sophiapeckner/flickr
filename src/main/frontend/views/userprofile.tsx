@@ -88,13 +88,15 @@ export default function UserProfileView() {
       </a>
       <h2 style={style.pageTitle}>flickr</h2>
 
-        <form style={{ ...style.form, ...styles.formAddOn  }}>
+      <div style={style.innerDiv}>
+        <form style={{ ...style.form, ...style.formAddOn  }}>
           <TextField
             label="Username"
             value={username}
             style={style.input}
             onValueChanged={(e) => setUsername(e.detail.value)}
           />
+
           <EmailField
             label="Email address"
             value={email}
@@ -108,14 +110,15 @@ export default function UserProfileView() {
             itemLabelPath="label"
             itemIdPath="value"
             items={streamingPlatforms}
-            style={{width: '90%', marginLeft: '5%'}}
+            style={style.input}
             autoExpandVertically
             onChange={e => setSelectedPlatforms(e.target.selectedItems)}
           />
 
           <Button
-            style={styles.saveButton}
+            style={style.button}
             onClick={() => {
+              save()
               navigate("/start");
             }}
           >
@@ -124,36 +127,12 @@ export default function UserProfileView() {
         </form>
 
         <Button
-          style={{...styles.saveButton,
-            backgroundColor: colors.secondary,
-            width: '60%', marginLeft: '20%',
-            marginBottom: 'auto'
-        }}
+          style={style.secondaryButton}
           onClick={e => logout()}
         >
           Logout
         </Button>
+      </div>
     </div>
   );
-}
-
-const styles = {
-  formAddOn: {
-    border: '1px solid grey',
-    borderRadius: 8,
-    marginTop: 20,
-    marginBottom: 'auto'
-  },
-  saveButton: {
-    width: '90%',
-    marginLeft: '5%',
-    backgroundColor: colors.main,
-    color: 'white',
-    marginTop: 20,
-    marginBottom: 20,
-    borderWidth: 0,
-    textAlign: 'center',
-    fontSize: 16,
-    cursor: 'pointer',
-  },
 }

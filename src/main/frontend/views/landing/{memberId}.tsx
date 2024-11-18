@@ -93,10 +93,6 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  // personImage: {
-  //   width: '20%',
-  //   height: '30%',
-  // },
   personLabel: {
     padding: 20,
     fontSize: 20,

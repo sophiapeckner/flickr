@@ -77,11 +77,7 @@ const styles = {
   codeInput: {
     width: '75%',
     borderRadius: 24,
-    // height: 48,
-    // margin: 12,
-    // border: '1px solid black',
     marginBottom: '20px',
-    // fontSize: 32,
     paddingLeft: 16,
   },
 }

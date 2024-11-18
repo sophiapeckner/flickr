@@ -24,7 +24,7 @@ export default function SignUpView() {
         <img style={{ width: '100%' }} src="images/movie_reel.png" />
 
         <div style={style.innerDiv}>
-          <form style={{ ...style.authFormAddOn, ...style.form }} onSubmit={(e) => e.preventDefault()}>
+          <form style={{ ...style.form, ...style.formAddOn }} onSubmit={(e) => e.preventDefault()}>
             <EmailField
                 label="Email address"
                 value={email}
@@ -52,17 +52,15 @@ export default function SignUpView() {
                 style={style.input}
             />
 
-            <div style={styles.signUpDiv}>
-              <Button
-                  style={styles.signUp}
-                  onClick={() => {
-                    createUser(email, username, password);
-                    navigate("/");
-                  }}
-              >
-                Sign Up
-              </Button>
-            </div>
+            <Button
+                style={style.button}
+                onClick={() => {
+                  createUser(email, username, password);
+                  navigate("/");
+                }}
+            >
+              Sign Up
+            </Button>
 
             <a style={{ ...style.redirect, display: 'flex' }} href="/">
               Already have an account
@@ -72,25 +70,3 @@ export default function SignUpView() {
       </div>
   );
 }
-
-const styles = {
-  signUpDiv: {
-    justifyContent: 'center',
-    display: 'flex',
-    width: '100%'
-  },
-  signUp: {
-    // borderRadius: 8,
-    width: '90%',
-    // height: 30,
-    backgroundColor: colors.main,
-    color: 'white',
-    marginTop: 20,
-    marginBottom: 20,
-    borderWidth: 0,
-    textAlign: 'center',
-    fontSize: 16,
-    cursor: 'pointer',
-  },
-}
-
