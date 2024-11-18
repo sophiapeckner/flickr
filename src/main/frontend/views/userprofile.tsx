@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { style } from "../themes/flickr/css.js";
 import { logout } from "Frontend/auth";
 import { getMember } from "Frontend/auth";
+import {updateUser} from "Frontend/generated/MemberServices";
 
 
 export const config: ViewConfig = {
@@ -135,7 +136,12 @@ export default function UserProfileView() {
             >
               + Streaming Service
             </button>
-            <button style={style.button} value="Save"/>
+            <button style={style.button} onClick={e => {
+            const id = localStorage.getItem('RYT');
+            if (id) {
+              updateUser(id, email, username);
+            }
+          }} value="Save"/>
             <button style={style.button} onClick={e => logout()}>Logout</button>
         </label>
         </form>
