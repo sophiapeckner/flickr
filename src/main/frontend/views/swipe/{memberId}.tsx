@@ -188,7 +188,7 @@ const styles = {
         color: '#555',
     },
     movieTextDiv: {
-        maxHeight: '200px', // Restrict maximum height
+        maxHeight: '84px', // Restrict maximum height
         overflowY: 'auto',  // Enable vertical scrolling for overflow
     },
     choices: {
