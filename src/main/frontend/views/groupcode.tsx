@@ -5,6 +5,7 @@ import { style } from "../themes/flickr/css.js";
 import {Button, TextField} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import { getMember } from "Frontend/auth";
+import Member from "Frontend/generated/com/flickr/entities/Member";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -15,23 +16,17 @@ export default function GroupCodeView() {
   const [groupCode, setGroupCode] = useState("")
 
   const submit = async () => {
-    let session = await fetchSessionByGroupCode(groupCode);
-    let member = await getMember();
-    if (session.id == null) {
-      console.log("Session's ID is null");
-      return;   // Don't redirect if Session's ID is invalid
-    }
+      let session = await fetchSessionByGroupCode(groupCode);
 
-    member = await joinSession(session.id, member?.email || "");
-    // if (member == null) {
-    //     // Save anon user
-    //     console.log("here")
-    //     member = await joinSession(session.id, "");
-    // } else {
-    //     member= await joinSession(session.id, member?.email || "");
-    // }
-      console.log(member);
-    // window.location.href = `/preferences/${member.id}`;
+      if (session.id == null) {
+          console.log("Session's ID is null");
+          return;   // Don't redirect if Session's ID is invalid
+      }
+
+      let member = await getMember();
+      const memberId = await joinSession(session.id, member?.email || "");
+
+    window.location.href = `/preferences/${memberId}`;
   }
 
   return (
