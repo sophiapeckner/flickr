@@ -8,8 +8,8 @@ import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";
 
 export const config: ViewConfig = {
-  menu: {order: 7, icon: "line-awesome/svg/file.svg"},
-  title: "Movie List",
+    menu: { order: 7, icon: "line-awesome/svg/file.svg" },
+    title: "Movie List",
 };
 
 export default function MovieListView() {
@@ -26,23 +26,23 @@ export default function MovieListView() {
     fetchLogin();
   }, []);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      // Fetch the movie recommendations associated with the Session member is in
-      try {
-        const response = await fetch(`/api/session/${memberId}`);
-        const data = await response.json();
-        // Sort in descending order so that movies with the most votes appear on top
-        const filteredMovies = (data.movies as SessionMovie[] || [])
-          .filter((sessionMovie) => (sessionMovie.voteCount ?? 0) > 0)
-          .sort((a, b) => (b.voteCount ?? 0) - (a.voteCount ?? 0));
-        setSelectedMovies(filteredMovies);
-      } catch (error) {
-        console.error("Failed to fetch movies:", error);
-      }
-    };
-    fetchMovies();
-  }, []);
+    useEffect(() => {
+        const fetchMovies = async () => {
+            // Fetch the movie recommendations associated with the Session member is in
+            try {
+                const response = await fetch(`/api/session/${memberId}`);
+                const session = await response.json();
+                // Sort in descending order so that movies with the most votes appear on top
+                const filteredMovies = (session.movies as SessionMovie[] || [])
+                    .filter((sessionMovie) => (sessionMovie.voteCount ?? 0) > 0)
+                    .sort((a, b) => (b.voteCount ?? 0) - (a.voteCount ?? 0));
+                setSelectedMovies(filteredMovies);
+            } catch (error) {
+                console.error("Failed to fetch movies:", error);
+            }
+        };
+        fetchMovies();
+    }, []);
 
   const swipe = () => {
     window.location.href = `/swipe/${memberId}`;
@@ -58,21 +58,21 @@ export default function MovieListView() {
       <div style={style.outerDiv}>
         <CustomHeader loggedIn={loggedIn}/>
 
-        <div style={styles.moviesSelected}>
-          {selectedMovies.length > 0 ? (
-              selectedMovies.map((sessionMovie) => (
-                  <div key={sessionMovie.id} style={styles.movie}>
-                    <img style={styles.movieImage} src={sessionMovie.movie?.imgURL} alt=""/>
-                    <div>
-                      <h4>{sessionMovie.movie?.title}</h4>
-                      <h5>Votes: {sessionMovie.voteCount}</h5>
-                    </div>
-                  </div>
-              ))
-          ) : (
-              <p>No movies have been voted on :(</p>
-          )}
-        </div>
+            <div style={styles.moviesSelected}>
+                {selectedMovies.length > 0 ? (
+                    selectedMovies.map((sessionMovie) => (
+                        <div key={sessionMovie.id} style={styles.movie}>
+                            <img style={styles.movieImage} src={sessionMovie.movie?.imgURL} alt=""/>
+                            <div>
+                                <h4>{sessionMovie.movie?.title}</h4>
+                                <h5>Votes: {sessionMovie.voteCount}</h5>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>No movies have been voted on :(</p>
+                )}
+            </div>
 
         <div style={style.bottomNav}>
           <img src="/images/pic.png" alt="Suggestions"
@@ -85,21 +85,21 @@ export default function MovieListView() {
 }
 
 const styles = {
-  moviesSelected: {
-    backgroundColor: colors.light,
-    display: "flex",
-    flexDirection: "column",
-    overflowY: 'auto',
-    flex: 1,
-  },
-  movie: {
-    display: "flex",
-    flexDirection: "row",
-    margin: 20,
-  },
-  movieImage: {
-    width: 55,
-    backgroundColor: colors.main,
-    marginRight: 20,
-  }
+    moviesSelected: {
+        backgroundColor: colors.light,
+        display: "flex",
+        flexDirection: "column",
+        overflowY: 'auto',
+        flex: 1,
+    },
+    movie: {
+        display: "flex",
+        flexDirection: "row",
+        margin: 20,
+    },
+    movieImage: {
+        width: 55,
+        backgroundColor: colors.main,
+        marginRight: 20,
+    }
 };

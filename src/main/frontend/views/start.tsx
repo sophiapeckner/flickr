@@ -18,9 +18,7 @@ const checkLoginStatus = async () => {
 }
 
 export default function StartView() {
-  const [sessions, setSessions] = useState<Session[]>([]);
   const [allowCreateGroup, setAllowCreateGroup] = useState(false);
-  let member: Member | undefined | null;
 
   useEffect(() => {
     const fetchLogin = async () => {
@@ -30,13 +28,9 @@ export default function StartView() {
     fetchLogin();
   }, []);
 
-  // For database visualization purposes
-  useEffect(() => {
-    findAll().then(setSessions)
-  }, []);
-
   const handleCreateGroup = async () => {
     let session;
+    let memberId;
     let member = await getMember();
 
     // Try creating a Session and pushing to H2 DB
@@ -50,14 +44,13 @@ export default function StartView() {
     // Attempt to add Member to the Session
     if (session?.id) {
       try {
-        member = await joinSession(session.id, member?.email || "");
+        memberId = await joinSession(session.id, member?.email || "");
       } catch (error) {
         console.error("Error adding Member to Session: ", error);
         return;
       }
       // Session Creation/Join was successful; update state and redirect
-      setSessions([...sessions, session]);
-      window.location.href = `/preferences/${member.id}`;
+      window.location.href = `/preferences/${memberId}`;
     } else {
       console.log("Session's ID is invalid")
     }

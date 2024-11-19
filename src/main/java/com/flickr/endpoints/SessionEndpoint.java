@@ -33,7 +33,7 @@ public class SessionEndpoint {
     private final MovieRepository movieRepository;
     private final SessionMovieRepository sessionMovieRepository;
     private final MemberRepository memberRepository;
-    private final SessionRepository repository;
+    private final SessionRepository repository; // sessionRepository
     private final Environment environment;
 
     SessionEndpoint(SessionRepository repository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, Environment environment) {
@@ -51,7 +51,7 @@ public class SessionEndpoint {
     }
 
     public Session fetchSessionByGroupCode(String groupCode) {
-        // Returns Session that the Member with memberID is in
+        // Returns Session with groupCode
         return repository.findByGroupCode(groupCode)
                 .orElseThrow(() -> new IllegalArgumentException("Session not found"));
     }
@@ -64,7 +64,7 @@ public class SessionEndpoint {
         return repository.save(new Session(groupCode));
     }
 
-    public Member joinSession(Long sessionId, String email) {
+    public String joinSession(Long sessionId, String email) {
         Session session = repository.findById(sessionId)
             .orElseThrow(() -> new IllegalArgumentException("Session not found for groupCode: " + sessionId));
 
@@ -90,28 +90,25 @@ public class SessionEndpoint {
 
         repository.save(session);
 
-        return member;
+        return member.getId().toString();
     }
 
-    String memberNotFoundException = "Member not found";
+    @GetMapping("/member/{memberId}")
+    public Member fetchMemberById(@PathVariable String memberId) {
+        return memberRepository.findById(Long.valueOf(memberId))
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+    }
 
     @GetMapping("/{memberId}")
-    public Session fetchMembersSession(@PathVariable Long memberId) {
+    public Session fetchMembersSession(@PathVariable String memberId) {
         // Returns Session that the Member with memberID is in
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException(memberNotFoundException));
+        Member member = fetchMemberById(memberId);
         return repository.findById(member.getSessionId())
                 .orElseThrow(() -> new IllegalArgumentException("Session not found"));
     }
 
-    @GetMapping("/member/{memberId}")
-    public Member fetchMemberById(@PathVariable Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException(memberNotFoundException));
-    }
-
     @PutMapping("/{memberId}/genres")
-    public Session updateGenres(@PathVariable Long memberId, @RequestBody List<String> genres) {
+    public Session updateGenres(@PathVariable String memberId, @RequestBody List<String> genres) {
         // Insert the genre(s) each member is interested in watching
         // into the Session that the Member is in
         Session session = fetchMembersSession(memberId);
@@ -121,7 +118,7 @@ public class SessionEndpoint {
     }
 
     @PutMapping("/{memberId}/platforms")
-    public Session updateStreamingPlatforms(@PathVariable Long memberId, @RequestBody List<String> platforms) {
+    public Session updateStreamingPlatforms(@PathVariable String memberId, @RequestBody List<String> platforms) {
         // Insert the streaming platform(s) each member has
         // into the Session that the Member is in
         Session session = fetchMembersSession(memberId);
@@ -131,7 +128,7 @@ public class SessionEndpoint {
     }
 
     @PostMapping("/{memberId}/movies")
-    public Session generateSuggestions(@PathVariable Long memberId) throws JSONException, IOException, InterruptedException {
+    public Session generateSuggestions(@PathVariable String memberId) throws JSONException, IOException, InterruptedException {
         // Generate suggestions for the group with Member
         Session session = fetchMembersSession(memberId);
 
@@ -185,17 +182,16 @@ public class SessionEndpoint {
     }
 
     @PutMapping("/{memberId}/startSession")
-    public Session startSession(@PathVariable Long memberId) {
+    public Session startSession(@PathVariable String memberId) {
         Session session = fetchMembersSession(memberId);
         session.setStarted(true);
         return repository.save(session);
     }
 
     @PutMapping("/member/{memberId}/updateMovieIndex")
-    public Member updateMemberMovieIndex(@PathVariable Long memberId, @RequestBody Map<String, Integer> request) {
+    public Member updateMemberMovieIndex(@PathVariable String memberId, @RequestBody Map<String, Integer> request) {
         int movieIndex = request.get("movieIndex");
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException(memberNotFoundException));
+        Member member = fetchMemberById(memberId);
         member.setMovieIndex(movieIndex);
         return memberRepository.save(member);
     }
