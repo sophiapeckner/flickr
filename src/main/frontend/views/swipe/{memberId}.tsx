@@ -4,7 +4,7 @@ import { colors } from "../../themes/flickr/colors";
 import {useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
-import {Icon} from "@vaadin/react-components";
+import {Icon, Scroller} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export default function SwipeView() {
@@ -77,8 +77,18 @@ export default function SwipeView() {
         }
     };
 
-    const exitSession = async () => {
-        // Reset index
+    function parseDate(dateString: string | undefined): string {
+        if (!dateString) return "Unknown Release Date";
+
+        const date = new Date(dateString);
+
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',    // Outputs the year in 4 digits
+            month: 'short',      // Use the full month name (e.g., "October")
+            day: 'numeric',     // Include the day of the month (e.g., 24)
+        };
+
+        return new Intl.DateTimeFormat('en-US', options).format(date);
     }
 
     const viewList = () => {
@@ -95,29 +105,29 @@ export default function SwipeView() {
                 movies.length > 0 && movies[movieIndex] && (
                     <>
                         <div style={styles.movieProfile}>
-                            <div style={{...styles.movieThumbnail}}>
-                                <img style={{width: '100%', height: 'auto'}}
-                                     src={movies[movieIndex].movie?.imgURL}
-                                     alt="movie poster"
+                            <div style={styles.movieThumbnail}>
+                                <img
+                                    style={{width: '100%', height: 'auto'}}
+                                    src={movies[movieIndex].movie?.imgURL}
+                                    alt="movie poster"
                                 />
                             </div>
                             <div style={styles.movieInfo}>
-                                <h2 style={styles.movieLabel}>
-                                    {movies[movieIndex].movie?.title}
-                                </h2>
-                                <h3 style={styles.movieLabel}>
-                                    {movies[movieIndex].movie?.release}
-                                </h3>
+                                <h2 style={styles.movieTitle}>{movies[movieIndex].movie?.title}</h2>
+                                <h3 style={styles.movieSubtitle}>{parseDate(movies[movieIndex].movie?.release)}</h3>
+                                <Scroller style={styles.movieTextDiv}>
+                                    <p style={styles.movieText}>{movies[movieIndex].movie?.overview}</p>
+                                </Scroller>
                             </div>
                         </div>
                         <div style={styles.choices}>
                             <Icon
-                                style={{float: "left", height: '38px', width: '38px', color: colors.main}}
-                                icon="vaadin:thumbs-down"
+                                style={{ ...styles.choiceButton, color: "#f54251" }}
+                                icon="vaadin:close"
                                 onClick={() => handleNextMovie(false)}/>
                             <Icon
-                                style={{float: "right", height: '38px', width: '38px', color: colors.main}}
-                                icon="vaadin:thumbs-up"
+                                style={{ ...styles.choiceButton, color: "#13c236" }}
+                                icon="vaadin:heart"
                                 onClick={() => handleNextMovie(true)}/>
                         </div>
                     </>
@@ -133,48 +143,73 @@ export default function SwipeView() {
 
 const styles = {
     movieProfile: {
-        // width: '40%',
-        // height: '50%',
-        marginTop: 60,
-        marginRight: 'auto',
-        marginLeft: 'auto',
-        border: '1px solid rgba(0, 0, 0, 0.125)',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        borderRadius: 12,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: colors.light,
+        width: '70%',
+        maxWidth: '600px', // Limit the width for larger screens
+        margin: '0px auto', // Center horizontally and add vertical spacing
+        padding: '15px',
+        border: '1px solid rgba(0, 0, 0, 0.125)',
+        borderRadius: '12px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        backgroundColor: '#fff',
     },
     movieThumbnail: {
-        height: 'auto',
-        width: '70%'
+        width: '100%',
+        maxHeight: '300px',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        marginBottom: '0.3rem', // Add spacing between the image and text content
     },
     movieInfo: {
-        backgroundColor: colors.main,
-        margin: 20,
-        padding: '5px 40px',
-        borderRadius: 12,
-        width: '70%',
         display: 'flex',
         flexDirection: 'column',
-        // alignItems: 'left',
-        // justifyContent: 'left',
-        marginRight: 'auto',
-        marginLeft: 'auto',
+        alignItems: 'flex-start',
+        width: '100%', // Ensure text takes up the full width of the profile
+        textAlign: 'left',
     },
-    movieLabel: {
-        fontSize: '15px',
-        color: 'white'
+    movieTitle: {
+        fontSize: '1.5rem', // Adjust size for phones
+        fontWeight: 'bold',
+        marginBottom: '10px',
+        color: '#333',
+    },
+    movieSubtitle: {
+        fontSize: '1rem',
+        fontWeight: 'normal',
+        // marginBottom: '15px',
+        color: '#888',
+    },
+    movieText: {
+        fontSize: '1rem',
+        fontWeight: 'normal',
+        color: '#555',
+    },
+    movieTextDiv: {
+        maxHeight: '200px', // Restrict maximum height
+        overflowY: 'auto',  // Enable vertical scrolling for overflow
     },
     choices: {
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
-        margin: '30px auto',
-        width: '90%',
-        maxWidth: '500px', // Prevents the container from growing too wide
-        padding: '0 20px',
-    }
+        marginTop: '20px',
+        marginBottom: '20px', // Ensures spacing from bottomNav
+    },
+    choiceButton: {
+        height: '50px',
+        width: '50px',
+        cursor: 'pointer',
+        transition: 'transform 0.5s ease',
+        border: `2px solid #00000020`, // Circular border
+        borderRadius: '50%', // Makes it a perfect circle
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '10px', // Adds space between the icon and the border
+        boxSizing: 'border-box', // Ensures padding doesn't affect dimensions
+    },
 }
