@@ -1,19 +1,19 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { useState, useEffect } from "react";
-import { style } from "../../themes/flickr/css.js";
-import { colors } from "../../themes/flickr/colors";
+import { useState, useEffect, KeyboardEvent} from "react";
+import {style} from "../../themes/flickr/css.js";
+import {colors} from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
-  menu: { order: 7, icon: "line-awesome/svg/file.svg" },
+  menu: {order: 7, icon: "line-awesome/svg/file.svg"},
   title: "Movie List",
 };
 
 export default function MovieListView() {
   // const [selectedMovies, setSelectedMovies] = useState([]);
-  const { memberId } = useParams();
+  const {memberId} = useParams();
   const [selectedMovies, setSelectedMovies] = useState<SessionMovie[]>([]);
 
   useEffect(() => {
@@ -24,8 +24,8 @@ export default function MovieListView() {
         const data = await response.json();
         // Sort in descending order so that movies with the most votes appear on top
         const filteredMovies = (data.movies as SessionMovie[] || [])
-            .filter((sessionMovie) => (sessionMovie.voteCount ?? 0) > 0)
-            .sort((a, b) => (b.voteCount ?? 0) - (a.voteCount ?? 0));
+          .filter((sessionMovie) => (sessionMovie.voteCount ?? 0) > 0)
+          .sort((a, b) => (b.voteCount ?? 0) - (a.voteCount ?? 0));
         setSelectedMovies(filteredMovies);
       } catch (error) {
         console.error("Failed to fetch movies:", error);
@@ -36,6 +36,12 @@ export default function MovieListView() {
 
   const swipe = () => {
     window.location.href = `/swipe/${memberId}`;
+  };
+
+  const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
+    if (event.key === "Enter") {
+      swipe();
+    }
   };
 
   return (
@@ -59,12 +65,10 @@ export default function MovieListView() {
         </div>
 
         <div style={style.bottomNav}>
-          <a onClick={swipe}>
-            <img src="/images/pic.png" alt="Suggestions"/>
-          </a>
-          <a>
-            <img src="/images/liked.png" alt="Liked"/>
-          </a>
+          <img src="/images/pic.png" alt="Suggestions"
+               onClick={swipe} tabIndex={0}
+               onKeyUp={(e) => handleKeyPress(e)}/>
+          <img src="/images/liked.png" alt="Liked"/>
         </div>
       </div>
   );

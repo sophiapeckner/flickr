@@ -136,8 +136,7 @@ public class SessionEndpoint {
         Session session = fetchMembersSession(memberId);
 
         // Get a random page number so that way movie suggestions are varied
-        Random rand = new Random();
-        String pageNum = String.valueOf(rand.nextInt(500));
+        String pageNum = String.valueOf(new Random().nextInt(500));
 
         // Build the API URL
         String genreParam = String.join("OR", session.getGenres());

@@ -12,9 +12,9 @@ export const config: ViewConfig = {
 
 export default function PreferencesView() {
   let memberId = localStorage.getItem("RYT");
+  const params = useParams();
 
   if (!memberId) {
-    const params = useParams();
     memberId = params["memberId"] || '';
   }
 

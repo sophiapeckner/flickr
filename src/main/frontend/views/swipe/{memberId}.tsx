@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect, KeyboardEvent} from "react";
 import { style } from "../../themes/flickr/css.js";
 import { colors } from "../../themes/flickr/colors";
 import {useParams} from "react-router-dom";
@@ -85,6 +85,12 @@ export default function SwipeView() {
     window.location.href = `/list/${memberId}`;
   };
 
+  const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
+    if (event.key === "Enter") {
+      viewList();
+    }
+  };
+
   return (
       <div style={style.outerDiv}>
         <CustomHeader />
@@ -125,7 +131,9 @@ export default function SwipeView() {
         )}
         <div style={style.bottomNav}>
           <img src="images/pic.png" alt="pic"/>
-          <img src="images/liked.png" alt="liked" onClick={viewList}/>
+          <img src="images/liked.png" alt="liked"
+               onClick={viewList} tabIndex={0}
+               onKeyUp={(e) => handleKeyPress(e)}/>
         </div>
       </div>
   );

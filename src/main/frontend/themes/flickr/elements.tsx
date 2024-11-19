@@ -9,7 +9,7 @@ export const CustomHeader: ReactNode = () => {
 
   const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
     const selectedItem = e.detail.value;
-    if(selectedItem && selectedItem.path){
+    if(selectedItem?.path){
       navigate(selectedItem.path);
     }
   }
