@@ -122,11 +122,11 @@ export default function SwipeView() {
                         </div>
                         <div style={styles.choices}>
                             <Icon
-                                style={{ ...styles.choiceButton, color: "#f54251" }}
+                                style={styles.choiceButton}
                                 icon="vaadin:close"
                                 onClick={() => handleNextMovie(false)}/>
                             <Icon
-                                style={{ ...styles.choiceButton, color: "#13c236" }}
+                                style={styles.choiceButton}
                                 icon="vaadin:heart"
                                 onClick={() => handleNextMovie(true)}/>
                         </div>
@@ -199,6 +199,7 @@ const styles = {
         marginBottom: '20px', // Ensures spacing from bottomNav
     },
     choiceButton: {
+        color: "#f54251",
         height: '50px',
         width: '50px',
         cursor: 'pointer',
