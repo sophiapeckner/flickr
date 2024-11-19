@@ -32,7 +32,7 @@ public class Member {
     private int movieIndex;
 
     public Member(String email, String username, String password) {
-        this.id = Math.abs(new Random().nextLong());
+        this.id = new Random().nextLong() >>> 1;
         this.email = email;
         this.password = password;
         this.username = username;
@@ -41,7 +41,7 @@ public class Member {
     public Member() {
         // Used for defining an Anon user
         // Because Hilla expects all member variable to be non-null, email & pass are set to dummy values
-        this.id = Math.abs(new Random().nextLong());
+        this.id = new Random().nextLong() >>> 1;
         this.email = "anon@gmail.com";
         this.password = "anon";
         this.username = "Anonymous";

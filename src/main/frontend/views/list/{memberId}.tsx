@@ -1,10 +1,11 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { useState, useEffect } from "react";
-import { style } from "../../themes/flickr/css.js";
-import { colors } from "../../themes/flickr/colors";
+import { useState, useEffect, KeyboardEvent} from "react";
+import {style} from "../../themes/flickr/css.js";
+import {colors} from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
+import {isLoggedIn} from "Frontend/auth";
 
 export const config: ViewConfig = {
     menu: { order: 7, icon: "line-awesome/svg/file.svg" },
@@ -12,9 +13,18 @@ export const config: ViewConfig = {
 };
 
 export default function MovieListView() {
-    // const [selectedMovies, setSelectedMovies] = useState([]);
-    const { memberId } = useParams();
-    const [selectedMovies, setSelectedMovies] = useState<SessionMovie[]>([]);
+  // const [selectedMovies, setSelectedMovies] = useState([]);
+  const {memberId} = useParams();
+  const [selectedMovies, setSelectedMovies] = useState<SessionMovie[]>([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      const result = await isLoggedIn();
+      setLoggedIn(result);
+    };
+    fetchLogin();
+  }, []);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -34,13 +44,19 @@ export default function MovieListView() {
         fetchMovies();
     }, []);
 
-    const swipe = () => {
-        window.location.href = `/swipe/${memberId}`;
-    };
+  const swipe = () => {
+    window.location.href = `/swipe/${memberId}`;
+  };
 
-    return (
-        <div style={style.outerDiv}>
-            <CustomHeader />
+  const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
+    if (event.key === "Enter") {
+      swipe();
+    }
+  };
+
+  return (
+      <div style={style.outerDiv}>
+        <CustomHeader loggedIn={loggedIn}/>
 
             <div style={styles.moviesSelected}>
                 {selectedMovies.length > 0 ? (
@@ -58,16 +74,14 @@ export default function MovieListView() {
                 )}
             </div>
 
-            <div style={style.bottomNav}>
-                <a onClick={swipe}>
-                    <img src="/images/pic.png" alt="Suggestions"/>
-                </a>
-                <a>
-                    <img src="/images/liked.png" alt="Liked"/>
-                </a>
-            </div>
+        <div style={style.bottomNav}>
+          <img src="/images/pic.png" alt="Suggestions"
+               onClick={swipe} tabIndex={0}
+               onKeyUp={(e) => handleKeyPress(e)}/>
+          <img src="/images/liked.png" alt="Liked"/>
         </div>
-    );
+      </div>
+  );
 }
 
 const styles = {

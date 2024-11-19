@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect, KeyboardEvent} from "react";
 import { style } from "../../themes/flickr/css.js";
 import { colors } from "../../themes/flickr/colors";
 import {useParams} from "react-router-dom";
@@ -6,14 +6,23 @@ import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {Icon} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
+import {isLoggedIn} from "Frontend/auth";
 
 export default function SwipeView() {
     const { memberId } = useParams();
-
     const [movies, setMovies] = useState<SessionMovie[]>([]);
     const [movieIndex, setMovieIndex] = useState(0);
-    const [_, setMember] = useState<Member>();
+    const [member, setMember] = useState<Member>();
     const [isVotingComplete, setIsVotingComplete] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      const result = await isLoggedIn();
+      setLoggedIn(result);
+    };
+    fetchLogin();
+  }, []);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -85,9 +94,15 @@ export default function SwipeView() {
         window.location.href = `/list/${memberId}`;
     };
 
+  const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
+    if (event.key === "Enter") {
+      viewList();
+    }
+  };
+
     return (
         <div style={style.outerDiv}>
-            <CustomHeader />
+            <CustomHeader loggedIn={loggedIn}/>
 
             {isVotingComplete ? (
                 <p>You're done voting!</p>
@@ -125,7 +140,9 @@ export default function SwipeView() {
             )}
             <div style={style.bottomNav}>
                 <img src="images/pic.png" alt="pic"/>
-                <img src="images/liked.png" alt="liked" onClick={viewList}/>
+                <img src="images/liked.png" alt="liked"
+               onClick={viewList} tabIndex={0}
+               onKeyUp={(e) => handleKeyPress(e)}/>
             </div>
         </div>
     );

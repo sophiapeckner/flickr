@@ -28,7 +28,7 @@ export const items = [
   { component: createItem('user', ''),
     children: [
       { text: 'Profile', path: '/userprofile' },
-      { text: 'Log Out', path: '/' },
+      { text: 'Log Out', path: '/'},
     ],
   },
 ];

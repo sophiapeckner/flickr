@@ -62,7 +62,7 @@ export default function StartView() {
 
   return (
       <div style={style.outerDiv}>
-        <CustomHeader />
+        <CustomHeader hideBackButton={true} loggedIn={allowCreateGroup}/>
 
         <h2 style={style.pageTitle}>flickr</h2>
         <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
