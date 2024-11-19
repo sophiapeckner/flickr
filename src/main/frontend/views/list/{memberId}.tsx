@@ -5,6 +5,7 @@ import {colors} from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
+import {isLoggedIn} from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: {order: 7, icon: "line-awesome/svg/file.svg"},
@@ -15,6 +16,15 @@ export default function MovieListView() {
   // const [selectedMovies, setSelectedMovies] = useState([]);
   const {memberId} = useParams();
   const [selectedMovies, setSelectedMovies] = useState<SessionMovie[]>([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      const result = await isLoggedIn();
+      setLoggedIn(result);
+    };
+    fetchLogin();
+  }, []);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -46,7 +56,7 @@ export default function MovieListView() {
 
   return (
       <div style={style.outerDiv}>
-        <CustomHeader />
+        <CustomHeader loggedIn={loggedIn}/>
 
         <div style={styles.moviesSelected}>
           {selectedMovies.length > 0 ? (

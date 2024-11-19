@@ -1,10 +1,10 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {fetchSessionByGroupCode, joinSession} from "Frontend/generated/SessionEndpoint";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {Button, TextField} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
-import { getMember } from "Frontend/auth";
+import {getMember, isLoggedIn} from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -13,6 +13,15 @@ export const config: ViewConfig = {
 
 export default function GroupCodeView() {
   const [groupCode, setGroupCode] = useState("")
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      const result = await isLoggedIn();
+      setLoggedIn(result);
+    };
+    fetchLogin();
+  }, []);
 
   const submit = async () => {
     let session = await fetchSessionByGroupCode(groupCode);
@@ -36,7 +45,7 @@ export default function GroupCodeView() {
 
   return (
       <div style={style.outerDiv}>
-        <CustomHeader />
+        <CustomHeader backPath={"/start"} loggedIn={loggedIn}/>
         <h2 style={style.pageTitle}>flickr</h2>
 
         <div style={{ ...style.innerDiv, ...style.innerDivAddOn }}>
@@ -48,21 +57,20 @@ export default function GroupCodeView() {
                   '--vaadin-input-field-height': '68px',
                   '--vaadin-input-field-border-radius': '40px',
                   '--vaadin-input-field-label-font-size': '20px',
-                  '--vaadin-input-field-value-font-size': '32px'
+                  '--vaadin-input-field-value-font-size': '32px',
                 } as React.CSSProperties}
                 placeholder="XXXXXX"
                 value={groupCode}
                 onValueChanged={(e) => setGroupCode(e.detail.value)}>
             </TextField>
-
           </div>
 
-            <Button
-                style={style.groupChoiceButton}
-                onClick={submit}
-            >
-              Join
-            </Button>
+          <Button
+              style={style.groupChoiceButton}
+              onClick={submit}
+          >
+            Join
+          </Button>
         </div>
       </div>
   );
@@ -79,6 +87,5 @@ const styles = {
     width: '75%',
     borderRadius: 24,
     marginBottom: '20px',
-    paddingLeft: 16,
   },
 }

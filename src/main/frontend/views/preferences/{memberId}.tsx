@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import {Button, FormLayout, MultiSelectComboBox} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
 import { CustomHeader } from "../../themes/flickr/elements";
+import {isLoggedIn} from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 5, icon: "line-awesome/svg/file.svg" },
@@ -13,6 +14,15 @@ export const config: ViewConfig = {
 export default function PreferencesView() {
   let memberId = localStorage.getItem("RYT");
   const params = useParams();
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      const result = await isLoggedIn();
+      setLoggedIn(result);
+    };
+    fetchLogin();
+  }, []);
 
   if (!memberId) {
     memberId = params["memberId"] || '';
@@ -118,7 +128,7 @@ export default function PreferencesView() {
 
   return (
     <div style={style.outerDiv}>
-      <CustomHeader />
+      <CustomHeader loggedIn={loggedIn}/>
       <h6 style={style.groupTitle}>Group Code: </h6>
       <h3 style={style.groupCode}>{groupCode}</h3>
 

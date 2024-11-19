@@ -5,12 +5,14 @@ import {useNavigate} from "react-router-dom";
 import {logout} from "Frontend/auth";
 
 interface CustomHeaderProps {
+  hideBackButton?: boolean,
   backPath?: string;
   loggedIn?: boolean;
 }
 
 // @ts-ignore
-export const CustomHeader: React.FC<CustomHeaderProps> = ({backPath = "/", loggedIn = true}) => {
+export const CustomHeader: React.FC<CustomHeaderProps> = (
+  {hideBackButton = false, backPath = "/start", loggedIn = true}) => {
   const navigate = useNavigate()
 
   const handleProfileMenuSelection = (e: { detail: { value: any; }; }) =>{
@@ -27,9 +29,13 @@ export const CustomHeader: React.FC<CustomHeaderProps> = ({backPath = "/", logge
 
   return (
     <div>
-      <a href={backPath}>
-        <Icon icon="vaadin:close" style={style.backButton}/>
-      </a>
+      {hideBackButton ? (
+        <></>
+      ) : (
+        <a href={backPath}>
+          <Icon icon="vaadin:close" style={style.backButton}/>
+        </a>
+      )}
       {loggedIn ? (
         <MenuBar
           items={items}

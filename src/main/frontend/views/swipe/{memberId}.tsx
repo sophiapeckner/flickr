@@ -6,14 +6,23 @@ import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {Icon} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
+import {isLoggedIn} from "Frontend/auth";
 
 export default function SwipeView() {
   const { memberId } = useParams();
-
   const [movies, setMovies] = useState<SessionMovie[]>([]);
   const [movieIndex, setMovieIndex] = useState(0);
   const [member, setMember] = useState<Member>();
   const [isVotingComplete, setIsVotingComplete] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      const result = await isLoggedIn();
+      setLoggedIn(result);
+    };
+    fetchLogin();
+  }, []);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -93,7 +102,7 @@ export default function SwipeView() {
 
   return (
       <div style={style.outerDiv}>
-        <CustomHeader />
+        <CustomHeader loggedIn={loggedIn}/>
 
         {isVotingComplete ? (
             <p>You're done voting!</p>

@@ -7,6 +7,7 @@ import Member from "Frontend/generated/com/flickr/entities/Member";
 import {useParams} from "react-router-dom";
 import {Avatar, Button, Scroller} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
+import {isLoggedIn} from "Frontend/auth";
 
 export const config: ViewConfig = {
   menu: { order: 4, icon: "line-awesome/svg/file.svg" },
@@ -17,6 +18,15 @@ export default function GroupLandingView() {
   const { memberId } = useParams();
   const [members, setMembers] = useState<Member[]>([]);
   const [groupCode, setGroupCode] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      const result = await isLoggedIn();
+      setLoggedIn(result);
+    };
+    fetchLogin();
+  }, []);
 
   const submit = async () => {
     // Generate movie suggestions for the Session that member is in
@@ -59,7 +69,7 @@ export default function GroupLandingView() {
 
   return (
       <div style={style.outerDiv}>
-        <CustomHeader />
+        <CustomHeader loggedIn={loggedIn}/>
 
         <h6 style={style.groupTitle}>Group Code: </h6>
         <h3 style={style.groupCode}>{groupCode}</h3>
