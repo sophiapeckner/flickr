@@ -82,6 +82,7 @@ public class SessionEndpoint {
 
         // Always associate the member with the Session ID
         member.setSessionId(sessionId);
+        member.setMovieIndex(0);
 
         // Add the member to the Session only if they're not already in Session
         if (!session.getMembers().contains(member)) {
