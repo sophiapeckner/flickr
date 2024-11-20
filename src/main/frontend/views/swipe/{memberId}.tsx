@@ -1,8 +1,7 @@
-import {useState, useEffect, KeyboardEvent} from "react";
+import {useState, useEffect} from "react";
 import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
-import Member from "Frontend/generated/com/flickr/entities/Member";
 import {Icon, Scroller} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";

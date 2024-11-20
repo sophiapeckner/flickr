@@ -1,5 +1,5 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { useState, useEffect, KeyboardEvent} from "react";
+import { useState, useEffect} from "react";
 import {style} from "../../themes/flickr/css.js";
 import {colors} from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
