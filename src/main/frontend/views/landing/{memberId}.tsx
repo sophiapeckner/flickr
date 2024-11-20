@@ -1,7 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../../themes/flickr/css.js";
 import { colors } from "Frontend/themes/flickr/colors.js";
-
 import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {useParams} from "react-router-dom";
@@ -18,15 +17,12 @@ export default function GroupLandingView() {
     const { memberId } = useParams();
     const [members, setMembers] = useState<Member[]>([]);
     const [groupCode, setGroupCode] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
 
-  useEffect(() => {
     const fetchLogin = async () => {
-      const result = await isLoggedIn();
-      setLoggedIn(result);
+        const result = await isLoggedIn();
+        setLoggedIn(result);
     };
-    fetchLogin();
-  }, []);
 
     const fetchGroupCode = async () => {
         const response = await fetch(`/api/session/${memberId}`);
@@ -36,15 +32,17 @@ export default function GroupLandingView() {
 
     const submit = async () => {
         // Generate movie suggestions for the Session that member is in
-        await fetch(`/api/session/${memberId}/movies`, { method: "POST" });
+        await fetch(`/api/vote/${memberId}/movies`, { method: "POST" });
         // Start the session for everyone else
         await fetch(`/api/session/${memberId}/startSession`, { method: "PUT" });
         window.location.href = `/swipe/${memberId}`;
     }
 
+
     // Fetch the Session with groupCode and update the members currently in the Session
     useEffect(() => {
         fetchGroupCode();
+        fetchLogin();
 
         const intervalId = setInterval(() => {
             fetch(`/api/session/${memberId}`)

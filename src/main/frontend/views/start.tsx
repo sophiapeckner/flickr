@@ -1,13 +1,12 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
+import {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {colors} from "Frontend/themes/flickr/colors";
-import {useEffect, useState} from "react";
-import {createSession, joinSession} from "Frontend/generated/SessionEndpoint";
-
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {Button} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
-
+import {createSession} from "Frontend/generated/ManageSessionEndpoint";
+import {joinSession} from "Frontend/generated/JoinSessionEndpoint";
 
 export const config: ViewConfig = {
   menu: { order: 2, icon: "line-awesome/svg/file.svg" },

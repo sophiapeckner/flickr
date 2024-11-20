@@ -12,17 +12,8 @@ export const config: ViewConfig = {
 };
 
 export default function PreferencesView() {
-    let { memberId } = useParams(); 
+    let { memberId } = useParams();
     const [loggedIn, setLoggedIn] = useState(false);
-
-    useEffect(() => {
-        const fetchLogin = async () => {
-        const result = await isLoggedIn();
-        setLoggedIn(result);
-        };
-        fetchLogin();
-    }, []);
-
     const [genres, setGenres] = useState([]);
     const [groupCode, setGroupCode] = useState([]);
     const [streamingPlatforms, setStreamingPlatforms] = useState([]);
@@ -79,12 +70,6 @@ export default function PreferencesView() {
         }
     };
 
-    const fetchGroupCode = async () => {
-        const response = await fetch(`/api/session/${memberId}`);
-        const session = await response.json();
-        setGroupCode(session.groupCode);
-    }
-
     const submit = async () => {
         // selectedGenres & selectedPlatforms are a list of objects
         // The PUT request only accepts a list of Strings as the body of the request
@@ -112,11 +97,22 @@ export default function PreferencesView() {
         window.location.href = `/landing/${memberId}`;
     }
 
-    // Used to populate the dropdowns with every option available in The Movie DB
+    const fetchGroupCode = async () => {
+        const response = await fetch(`/api/session/${memberId}`);
+        const session = await response.json();
+        setGroupCode(session.groupCode);
+    }
+
+    const fetchLogin = async () => {
+        const result = await isLoggedIn();
+        setLoggedIn(result);
+    };
+
     useEffect(() => {
+        fetchLogin();
+        fetchGroupCode()
         fetchGenres().then(setGenres)
         fetchStreamingPlatforms().then(setStreamingPlatforms)
-        fetchGroupCode()
     }, []);
 
     return (

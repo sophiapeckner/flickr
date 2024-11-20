@@ -4,9 +4,7 @@ import { style } from "../themes/flickr/css.js";
 import {Button, EmailField, MultiSelectComboBox, TextField, Icon} from "@vaadin/react-components";
 import {useNavigate} from "react-router-dom";
 import { getMember, logout } from "Frontend/auth";
-import {updateUser} from "Frontend/generated/MemberServices";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import {updateUser} from "Frontend/generated/ManageProfileEndpoint";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
@@ -35,7 +33,7 @@ export default function UserProfileView() {
   const save = async () => {
     const id = localStorage.getItem('RYT');
     if (id) {
-      updateUser(id, email, username);
+      await updateUser(id, email, username);
     }
 
     window.history.back();
