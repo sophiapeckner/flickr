@@ -1,4 +1,4 @@
-import com.flickr.endpoints.MemberServices;
+import com.flickr.controllers.LogInEndpoint;
 import com.flickr.entities.Member;
 import com.flickr.storage.MemberRepository;
 
@@ -6,30 +6,34 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
+
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@ExtendWith(MockitoExtension.class)
 public class TestLogin {
 
     @Mock
     private MemberRepository mockMemberRepository;
 
     @InjectMocks
-    private MemberServices memberServicesTestObj = new MemberServices(mockMemberRepository);
+    private LogInEndpoint memberServicesTestObj = new LogInEndpoint(mockMemberRepository);
 
-    private final Member MEMBER = new Member("thisemail@gmail.net", "thisUsername", "thisPass");
+    private final Member MEMBER = new Member("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
+        mockMemberRepository = Mockito.mock(MemberRepository.class);
+        memberServicesTestObj = new LogInEndpoint(mockMemberRepository);
     }
 
     @Test
@@ -40,17 +44,17 @@ public class TestLogin {
         Mockito.when(mockMemberRepository.findByEmail(logEmail)).thenReturn(Optional.empty());
 
         Assertions.assertEquals(expected, memberServicesTestObj.login(logEmail, logPassword));
+
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(logEmail);
     }
 
     @Test
     public void testLoginPresent(){
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String expected = MEMBER.getId().toString();
         Mockito.when(mockMemberRepository.findByEmail(MEMBER.getEmail())).thenReturn(Optional.empty());
         Mockito.when(mockMemberRepository.findByUsername(MEMBER.getUsername())).thenReturn(Optional.empty());
         Mockito.when(mockMemberRepository.save(MEMBER)).thenReturn(MEMBER);
-        memberServicesTestObj.createUser("thisemail@gmail.net", "thisUsername", "thisPass");
+        memberServicesTestObj.createUser("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
 
         Mockito.when(mockMemberRepository.findByEmail(MEMBER.getEmail())).thenReturn(Optional.of(MEMBER));
 //        When trying to do encoder.matches in MemberServices.login(), the passwords say that they don't match since they are not encoded correctly
@@ -69,7 +73,7 @@ public class TestLogin {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Member testMember = new Member("thisemail@gmail.net", "thisUsername", encoder.encode("thisPass"));
         String wrongPass = "wrongPass";
-        String expected = "Wrong password";
+        String expected = new BCryptPasswordEncoder().encode("Wrong password");
         Mockito.when(mockMemberRepository.findByEmail(testMember.getEmail())).thenReturn(Optional.of(testMember));
         Assertions.assertEquals(expected, memberServicesTestObj.login(testMember.getEmail(), wrongPass));
 
