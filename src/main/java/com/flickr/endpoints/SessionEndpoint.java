@@ -60,7 +60,7 @@ public class SessionEndpoint {
         // Create a new session associated with a unique groupCode
         // Adds this new session into H2
         // This is called when a group admin "Creates Group" on StartAuth View
-        String groupCode = UUID.randomUUID().toString().substring(0, 8);
+        String groupCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         return repository.save(new Session(groupCode));
     }
 
