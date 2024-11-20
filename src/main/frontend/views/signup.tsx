@@ -79,7 +79,7 @@ export default function SignUpView() {
                 label="Username"
                 value={username}
                 style={style.input}
-                onValueChanged={(e) => setUsername(e.target.value)}
+                onValueChanged={(e) => setUsername(e.detail.value)}
             />
               {usernameError && <span style={{ color: "red" }}>{usernameError}</span>}
 
@@ -87,7 +87,7 @@ export default function SignUpView() {
                 label="Set Password"
                 value={password}
                 style={style.input}
-                onValueChanged={(e) => setPassword(e.target.value)}
+                onValueChanged={(e) => setPassword(e.detail.value)}
                 placeholder="5-7 characters long"
             />
               {passwordError && <span style={{ color: "red" }}>{passwordError}</span>}
@@ -95,7 +95,7 @@ export default function SignUpView() {
             <PasswordField
                 label="Confirm Password"
                 style={style.input}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onValueChanged={(e) => setConfirmPassword(e.detail.value)}
                 value={confirmPassword}
             />
               {confirmPasswordError && (

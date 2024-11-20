@@ -33,17 +33,6 @@ export default function UserProfileView() {
     // selectedGenres & selectedPlatforms are a list of objects
     // The PUT request only accepts a list of Strings as the body of the request
     // The conversion from [Object] to [String] is accomplished here:
-
-    const selectedPlatformList = selectedPlatforms.map((platform) => platform.value);
-    const platformResponse = await fetch(`/api/session/${memberId}/platforms`, {
-      method: "PUT",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(selectedPlatformList)
-    });
-    if (!platformResponse.ok) {
-      throw new Error(`Failed to update Session streaming platforms`);
-    }
-
     window.location.href = `/landing/${memberId}`;
   }
 
@@ -53,14 +42,14 @@ export default function UserProfileView() {
         "https://api.themoviedb.org/3/watch/providers/movie?language=en-US",
         {
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_MOVIE_DB_TOKEN}`,
+            Authorization: `Bearer ${(import.meta as any).env.VITE_MOVIE_DB_TOKEN}`,
             accept: "application/json",
           },
         }
       )
       const data = await response.json();
       if (data.results) {
-        return data.results.map((platform) => (
+        return data.results.map((platform: {provider_name: string, provider_id: number}) => (
           {
             label: platform.provider_name,
             value: platform.provider_id,
@@ -88,7 +77,7 @@ export default function UserProfileView() {
             label="Username"
             value={username}
             style={style.input}
-            onValueChanged={(e) => setUsername(e.target.value)}
+            onValueChanged={(e) => setUsername(e.detail.value)}
           />
 
           <EmailField
@@ -96,7 +85,7 @@ export default function UserProfileView() {
             value={email}
             style={style.input}
             errorMessage="Enter a valid email address"
-            onValueChanged={(e) => setEmail(e.target.value)}
+            onValueChanged={(e) => setEmail(e.detail.value)}
           />
 
           <MultiSelectComboBox
