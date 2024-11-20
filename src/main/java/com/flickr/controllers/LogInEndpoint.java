@@ -1,4 +1,4 @@
-package com.flickr.endpoints;
+package com.flickr.controllers;
 
 import com.flickr.entities.Member;
 import com.flickr.storage.MemberRepository;
@@ -10,10 +10,10 @@ import java.util.Optional;
 
 @AnonymousAllowed
 @Endpoint
-public class MemberServices {
-    private MemberRepository memberRepository;
+public class LogInEndpoint {
+    private final MemberRepository memberRepository;
 
-    public MemberServices(MemberRepository memberRepository) {
+    public LogInEndpoint(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 
@@ -49,15 +49,4 @@ public class MemberServices {
         // Add try and except block to parse the long
         return memberRepository.findById(Long.valueOf(id));
     }
-
-    public void updateUser(String id, String newEmail, String newUsername) {
-        Optional<Member> memberOptional = memberRepository.findById(Long.valueOf(id));
-        if (memberOptional.isPresent()) {
-            Member member = memberOptional.get();
-            member.setEmail(newEmail);
-            member.setUsername(newUsername);
-            memberRepository.save(member);
-        }
-    }
-
 }
