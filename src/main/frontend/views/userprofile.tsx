@@ -112,7 +112,9 @@ export default function UserProfileView() {
 
         <Button
           style={style.secondaryButton}
-          onClick={e => logout()}
+          onClick={e => {
+            logout().then(() => navigate("/"));
+          }}
         >
           Logout
         </Button>
