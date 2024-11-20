@@ -34,15 +34,45 @@ public class TestCreateUser {
 
     @Test
     public void testCreateUserSuccess() {
-        String expected = "Account Created";
+        String expected = "Account created";
         Mockito.when(mockMemberRepository.findByUsername(USERNAME)).thenReturn(Optional.empty());
         Mockito.when(mockMemberRepository.findByEmail(EMAIL)).thenReturn(Optional.empty());
         Mockito.when(mockMemberRepository.save(new Member(USERNAME, PASSWORD, EMAIL))).thenReturn(new Member());
 
-        Assertions.assertEquals(expected, memberServicesTestObj.createUser(USERNAME, PASSWORD, EMAIL));
+        Assertions.assertEquals(expected, memberServicesTestObj.createUser(EMAIL, PASSWORD, USERNAME));
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).save(Mockito.any(Member.class));
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByUsername(Mockito.any(String.class));
+    }
+
+    @Test
+    public void testCreateUserEmailUsed(){
+        String expected = "Email already in use";
+        Mockito.when(mockMemberRepository.findByEmail(EMAIL)).thenReturn(Optional.of(new Member()));
+
+        Assertions.assertEquals(expected, memberServicesTestObj.createUser(EMAIL, USERNAME, PASSWORD));
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
+        Mockito.verify(mockMemberRepository, Mockito.times(0)).findByUsername(Mockito.any(String.class));
+        Mockito.verify(mockMemberRepository, Mockito.times(0)).save(Mockito.any(Member.class));
+    }
+
+    @Test
+    public void testCreateUserNameUsed(){
+        String expected = "Username already in use";
+        Mockito.when(mockMemberRepository.findByEmail(EMAIL)).thenReturn(Optional.empty());
+        Mockito.when(mockMemberRepository.findByUsername(USERNAME)).thenReturn(Optional.of(new Member()));
+
+        Assertions.assertEquals(expected, memberServicesTestObj.createUser(EMAIL, USERNAME, PASSWORD));
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByUsername(Mockito.any(String.class));
+        Mockito.verify(mockMemberRepository, Mockito.times(0)).save(Mockito.any(Member.class));
+    }
+
+    @Test
+    public void testCreateUserFiller(){
+        //We need to find some test to fill this lol
     }
 }
