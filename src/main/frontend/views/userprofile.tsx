@@ -2,8 +2,9 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {Button, EmailField, MultiSelectComboBox, TextField, Icon} from "@vaadin/react-components";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { getMember, logout } from "Frontend/auth";
+import {updateUser} from "Frontend/generated/MemberServices";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -16,7 +17,6 @@ export default function UserProfileView() {
   const navigate = useNavigate();
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
-  const { memberId } = useParams();
 
   useEffect(() => {
     getMember().then(r => {
@@ -30,10 +30,12 @@ export default function UserProfileView() {
   }, []);
 
   const save = async () => {
-    // selectedGenres & selectedPlatforms are a list of objects
-    // The PUT request only accepts a list of Strings as the body of the request
-    // The conversion from [Object] to [String] is accomplished here:
-    window.location.href = `/landing/${memberId}`;
+    const id = localStorage.getItem('RYT');
+    if (id) {
+      updateUser(id, email, username);
+    }
+
+    window.history.back();
   }
 
   const fetchStreamingPlatforms = async () => {
@@ -66,9 +68,7 @@ export default function UserProfileView() {
 
   return (
     <div style={style.outerDiv}>
-      <a href="/start">
-        <Icon icon="vaadin:close" style={style.backButton} />
-      </a>
+      <Icon icon="vaadin:close" style={style.backButton} onClick={() => window.history.back()}/>
       <h2 style={style.pageTitle}>flickr</h2>
 
       <div style={style.innerDiv}>
