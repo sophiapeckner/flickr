@@ -1,12 +1,14 @@
 import {useState, useEffect, KeyboardEvent} from "react";
 import { style } from "../../themes/flickr/css.js";
-import { colors } from "../../themes/flickr/colors";
 import {useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
-import {Icon} from "@vaadin/react-components";
+import {Icon, Scroller} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";
+import {colors} from "Frontend/themes/flickr/colors";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBookmark, faFilm} from "@fortawesome/free-solid-svg-icons";
 
 export default function SwipeView() {
     const { memberId } = useParams();
@@ -14,15 +16,15 @@ export default function SwipeView() {
     const [movieIndex, setMovieIndex] = useState(0);
     const [member, setMember] = useState<Member>();
     const [isVotingComplete, setIsVotingComplete] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const fetchLogin = async () => {
-      const result = await isLoggedIn();
-      setLoggedIn(result);
-    };
-    fetchLogin();
-  }, []);
+    useEffect(() => {
+        const fetchLogin = async () => {
+          const result = await isLoggedIn();
+          setLoggedIn(result);
+        };
+        fetchLogin();
+    }, []);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -39,7 +41,7 @@ export default function SwipeView() {
         const fetchMember = async () => {
             // Fetch the Member with memberId
             try {
-                const response = await fetch(`/api/session/member/${memberId}`);
+                const response = await fetch(`/api/vote/${memberId}`);
                 const member = await response.json();
                 setMember(member);
                 setMovieIndex(member.movieIndex)
@@ -63,7 +65,7 @@ export default function SwipeView() {
             const newMovieIndex = movieIndex + 1;
 
             // Update member's movieIndex in the backend
-            await fetch(`/api/session/member/${memberId}/updateMovieIndex`, {
+            await fetch(`/api/vote/${memberId}/updateMovieIndex`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -73,7 +75,7 @@ export default function SwipeView() {
 
             // Update voteCount if liked
             if (liked) {
-                await fetch(`/api/session/movie/${movies[movieIndex].id}/incrementVote`, {
+                await fetch(`/api/vote/${movies[movieIndex].id}/incrementVote`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                 });
@@ -86,19 +88,29 @@ export default function SwipeView() {
         }
     };
 
-    const exitSession = async () => {
-        // Reset index
+    function parseDate(dateString: string | undefined): string {
+        if (!dateString) return "Unknown Release Date";
+
+        const date = new Date(dateString);
+
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',    // Outputs the year in 4 digits
+            month: 'short',      // Use the full month name (e.g., "October")
+            day: 'numeric',     // Include the day of the month (e.g., 24)
+        };
+
+        return new Intl.DateTimeFormat('en-US', options).format(date);
     }
 
     const viewList = () => {
         window.location.href = `/list/${memberId}`;
     };
 
-  const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
-    if (event.key === "Enter") {
-      viewList();
-    }
-  };
+    const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
+        if (event.key === "Enter") {
+          viewList();
+        }
+    };
 
     return (
         <div style={style.outerDiv}>
@@ -110,39 +122,43 @@ export default function SwipeView() {
                 movies.length > 0 && movies[movieIndex] && (
                     <>
                         <div style={styles.movieProfile}>
-                            <div style={{...styles.movieThumbnail}}>
-                                <img style={{width: '100%', height: 'auto'}}
-                                     src={movies[movieIndex].movie?.imgURL}
-                                     alt="movie poster"
+                            <div style={styles.movieThumbnail}>
+                                <img
+                                    style={{width: '100%', height: 'auto'}}
+                                    src={movies[movieIndex].movie?.imgURL}
+                                    alt="movie poster"
                                 />
                             </div>
                             <div style={styles.movieInfo}>
-                                <h2 style={styles.movieLabel}>
-                                    {movies[movieIndex].movie?.title}
-                                </h2>
-                                <h3 style={styles.movieLabel}>
-                                    {movies[movieIndex].movie?.release}
-                                </h3>
+                                <h2 style={styles.movieTitle}>{movies[movieIndex].movie?.title}</h2>
+                                <h3 style={styles.movieSubtitle}>{parseDate(movies[movieIndex].movie?.release)}</h3>
+                                <Scroller style={styles.movieTextDiv}>
+                                    <p style={styles.movieText}>{movies[movieIndex].movie?.overview}</p>
+                                </Scroller>
                             </div>
                         </div>
                         <div style={styles.choices}>
                             <Icon
-                                style={{float: "left", height: '38px', width: '38px', color: colors.main}}
-                                icon="vaadin:thumbs-down"
+                                style={styles.choiceButton}
+                                icon="vaadin:close"
                                 onClick={() => handleNextMovie(false)}/>
                             <Icon
-                                style={{float: "right", height: '38px', width: '38px', color: colors.main}}
-                                icon="vaadin:thumbs-up"
+                                style={styles.choiceButton}
+                                icon="vaadin:heart"
                                 onClick={() => handleNextMovie(true)}/>
                         </div>
                     </>
                 )
             )}
             <div style={style.bottomNav}>
-                <img src="images/pic.png" alt="pic"/>
-                <img src="images/liked.png" alt="liked"
-               onClick={viewList} tabIndex={0}
-               onKeyUp={(e) => handleKeyPress(e)}/>
+                <div style={style.navBarItem} >
+                    <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
+                    <span>Suggestions</span>
+                </div>
+                <div style={{...style.navBarItem, color: colors.half}} onClick={viewList}>
+                    <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
+                    <span>Liked</span>
+                </div>
             </div>
         </div>
     );
@@ -150,48 +166,74 @@ export default function SwipeView() {
 
 const styles = {
     movieProfile: {
-        // width: '40%',
-        // height: '50%',
-        marginTop: 60,
-        marginRight: 'auto',
-        marginLeft: 'auto',
-        border: '1px solid rgba(0, 0, 0, 0.125)',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        borderRadius: 12,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: colors.light,
+        width: '70%',
+        maxWidth: '600px', // Limit the width for larger screens
+        margin: '0px auto', // Center horizontally and add vertical spacing
+        padding: '15px',
+        border: '1px solid rgba(0, 0, 0, 0.125)',
+        borderRadius: '12px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        backgroundColor: '#fff',
     },
     movieThumbnail: {
-        height: 'auto',
-        width: '70%'
+        width: '100%',
+        maxHeight: '300px',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        marginBottom: '0.3rem', // Add spacing between the image and text content
     },
     movieInfo: {
-        backgroundColor: colors.main,
-        margin: 20,
-        padding: '5px 40px',
-        borderRadius: 12,
-        width: '70%',
         display: 'flex',
         flexDirection: 'column',
-        // alignItems: 'left',
-        // justifyContent: 'left',
-        marginRight: 'auto',
-        marginLeft: 'auto',
+        alignItems: 'flex-start',
+        width: '100%', // Ensure text takes up the full width of the profile
+        textAlign: 'left',
     },
-    movieLabel: {
-        fontSize: '15px',
-        color: 'white'
+    movieTitle: {
+        fontSize: '1.5rem', // Adjust size for phones
+        fontWeight: 'bold',
+        marginBottom: '10px',
+        color: '#333',
+    },
+    movieSubtitle: {
+        fontSize: '1rem',
+        fontWeight: 'normal',
+        // marginBottom: '15px',
+        color: '#888',
+    },
+    movieText: {
+        fontSize: '1rem',
+        fontWeight: 'normal',
+        color: '#555',
+    },
+    movieTextDiv: {
+        maxHeight: '84px', // Restrict maximum height
+        overflowY: 'auto',  // Enable vertical scrolling for overflow
     },
     choices: {
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
-        margin: '30px auto',
-        width: '90%',
-        maxWidth: '500px', // Prevents the container from growing too wide
-        padding: '0 20px',
-    }
+        marginTop: '20px',
+        marginBottom: '20px', // Ensures spacing from bottomNav
+    },
+    choiceButton: {
+        color: "#f54251",
+        height: '50px',
+        width: '50px',
+        cursor: 'pointer',
+        transition: 'transform 0.5s ease',
+        border: `2px solid #00000020`, // Circular border
+        borderRadius: '50%', // Makes it a perfect circle
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '10px', // Adds space between the icon and the border
+        boxSizing: 'border-box', // Ensures padding doesn't affect dimensions
+    },
 }

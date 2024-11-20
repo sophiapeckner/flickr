@@ -1,4 +1,4 @@
 @NonNullApi
-package com.flickr.endpoints;
+package com.flickr.controllers;
 
 import org.springframework.lang.NonNullApi;

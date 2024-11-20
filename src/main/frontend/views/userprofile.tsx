@@ -2,8 +2,9 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {Button, EmailField, MultiSelectComboBox, TextField, Icon} from "@vaadin/react-components";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { getMember, logout } from "Frontend/auth";
+import {updateUser} from "Frontend/generated/ManageProfileEndpoint";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -16,7 +17,6 @@ export default function UserProfileView() {
   const navigate = useNavigate();
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
-  const { memberId } = useParams();
 
   useEffect(() => {
     getMember().then(r => {
@@ -30,21 +30,12 @@ export default function UserProfileView() {
   }, []);
 
   const save = async () => {
-    // selectedGenres & selectedPlatforms are a list of objects
-    // The PUT request only accepts a list of Strings as the body of the request
-    // The conversion from [Object] to [String] is accomplished here:
-
-    const selectedPlatformList = selectedPlatforms.map((platform) => platform.value);
-    const platformResponse = await fetch(`/api/session/${memberId}/platforms`, {
-      method: "PUT",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(selectedPlatformList)
-    });
-    if (!platformResponse.ok) {
-      throw new Error(`Failed to update Session streaming platforms`);
+    const id = localStorage.getItem('RYT');
+    if (id) {
+      await updateUser(id, email, username);
     }
 
-    window.location.href = `/landing/${memberId}`;
+    window.history.back();
   }
 
   const fetchStreamingPlatforms = async () => {
@@ -53,14 +44,14 @@ export default function UserProfileView() {
         "https://api.themoviedb.org/3/watch/providers/movie?language=en-US",
         {
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_MOVIE_DB_TOKEN}`,
+            Authorization: `Bearer ${(import.meta as any).env.VITE_MOVIE_DB_TOKEN}`,
             accept: "application/json",
           },
         }
       )
       const data = await response.json();
       if (data.results) {
-        return data.results.map((platform) => (
+        return data.results.map((platform: {provider_name: string, provider_id: number}) => (
           {
             label: platform.provider_name,
             value: platform.provider_id,
@@ -77,9 +68,7 @@ export default function UserProfileView() {
 
   return (
     <div style={style.outerDiv}>
-      <a href="/start">
-        <Icon icon="vaadin:close" style={style.backButton} />
-      </a>
+      <Icon icon="vaadin:close" style={style.backButton} onClick={() => window.history.back()}/>
       <h2 style={style.pageTitle}>flickr</h2>
 
       <div style={style.innerDiv}>
@@ -88,7 +77,7 @@ export default function UserProfileView() {
             label="Username"
             value={username}
             style={style.input}
-            onValueChanged={(e) => setUsername(e.target.value)}
+            onValueChanged={(e) => setUsername(e.detail.value)}
           />
 
           <EmailField
@@ -96,7 +85,7 @@ export default function UserProfileView() {
             value={email}
             style={style.input}
             errorMessage="Enter a valid email address"
-            onValueChanged={(e) => setEmail(e.target.value)}
+            onValueChanged={(e) => setEmail(e.detail.value)}
           />
 
           <MultiSelectComboBox

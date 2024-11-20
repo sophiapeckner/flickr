@@ -45,6 +45,18 @@ export const style = {
     marginTop: "auto",
     bottom: "0px",
   },
+  navBarItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    color: 'white',
+    fontSize: 12,
+    padding: 16
+  },
+  navBarIcon: {
+    marginBottom: 4,
+    fontSize: 20,
+  },
   label: {
     marginRight: 'auto', 
     marginLeft: '5%'

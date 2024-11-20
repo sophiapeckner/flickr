@@ -9,8 +9,6 @@ public class Movie {
 
     private String title;
 
-//    @ElementCollection
-
     @Column(length = 2048)
     private String overview;
 
