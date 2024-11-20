@@ -50,12 +50,6 @@ export default function MovieListView() {
     window.location.href = `/swipe/${memberId}`;
   };
 
-  const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
-    if (event.key === "Enter") {
-      swipe();
-    }
-  };
-
   return (
       <div style={style.outerDiv}>
         <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
@@ -77,7 +71,7 @@ export default function MovieListView() {
             </div>
 
         <div style={style.bottomNav}>
-          <div style={{...style.navBarItem, color: colors.half}} onClick={swipe}>
+          <div style={{...style.navBarItem, color: colors.half}} onClick={swipe} role='button'>
             <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
             <span>Suggestions</span>
           </div>

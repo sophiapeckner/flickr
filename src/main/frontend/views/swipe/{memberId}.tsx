@@ -14,7 +14,6 @@ export default function SwipeView() {
     const { memberId } = useParams();
     const [movies, setMovies] = useState<SessionMovie[]>([]);
     const [movieIndex, setMovieIndex] = useState(0);
-    const [member, setMember] = useState<Member>();
     const [isVotingComplete, setIsVotingComplete] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
 
@@ -43,7 +42,6 @@ export default function SwipeView() {
             try {
                 const response = await fetch(`/api/vote/${memberId}`);
                 const member = await response.json();
-                setMember(member);
                 setMovieIndex(member.movieIndex)
             } catch (error) {
                 console.error("Failed to fetch Member:", error);
@@ -106,12 +104,6 @@ export default function SwipeView() {
         window.location.href = `/list/${memberId}`;
     };
 
-    const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
-        if (event.key === "Enter") {
-          viewList();
-        }
-    };
-
     return (
         <div style={style.outerDiv}>
             <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
@@ -155,7 +147,7 @@ export default function SwipeView() {
                     <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
                     <span>Suggestions</span>
                 </div>
-                <div style={{...style.navBarItem, color: colors.half}} onClick={viewList}>
+                <div style={{...style.navBarItem, color: colors.half}} onClick={viewList} role={'button'}>
                     <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
                     <span>Liked</span>
                 </div>

@@ -11,7 +11,6 @@ interface CustomHeaderProps {
   hideBackButton?: boolean,
   hideProfileIcon?: boolean,
   confirmExit?: boolean,
-  backPath?: string;
   loggedIn?: boolean;
 }
 
@@ -21,7 +20,6 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
     hideBackButton = false,
     hideProfileIcon = false,
     confirmExit = false,
-    backPath = "/start",
     loggedIn = true
   }) => {
   const navigate = useNavigate()
@@ -63,7 +61,7 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
                 <Button theme="primary"
                   onClick={() => {
                     dialogOpened.value = false;
-                    window.location.href = backPath
+                    window.location.href = "/start"
                   }}
                 >
                   Leave
