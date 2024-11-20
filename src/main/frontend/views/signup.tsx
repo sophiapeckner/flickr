@@ -34,7 +34,7 @@ export default function SignUpView() {
 
     // Password validation
     if (password.length < 5) {
-      setPasswordError("Password must be 5-7 characters long.");
+      setPasswordError("Password must be at least 5 characters.");
       isValid = false;
     }
 
@@ -79,7 +79,7 @@ export default function SignUpView() {
                 label="Username"
                 value={username}
                 style={style.input}
-                onValueChanged={(e) => setUsername(e.target.value)}
+                onValueChanged={(e) => setUsername(e.detail.value)}
             />
               {usernameError && <span style={{ color: "red" }}>{usernameError}</span>}
 
@@ -87,8 +87,8 @@ export default function SignUpView() {
                 label="Set Password"
                 value={password}
                 style={style.input}
-                onValueChanged={(e) => setPassword(e.target.value)}
-                placeholder="5-7 characters long"
+                onValueChanged={(e) => setPassword(e.detail.value)}
+                placeholder="Minimum 5 characters"
             />
               {passwordError && <span style={{ color: "red" }}>{passwordError}</span>}
 
