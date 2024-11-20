@@ -4,7 +4,7 @@ import { style } from "../themes/flickr/css.js";
 import {Button, EmailField, MultiSelectComboBox, TextField, Icon} from "@vaadin/react-components";
 import {useNavigate} from "react-router-dom";
 import { getMember, logout } from "Frontend/auth";
-import {updateUser} from "Frontend/generated/MemberServices";
+import {updateUser} from "Frontend/generated/ManageProfileEndpoint";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -32,7 +32,7 @@ export default function UserProfileView() {
   const save = async () => {
     const id = localStorage.getItem('RYT');
     if (id) {
-      updateUser(id, email, username);
+      await updateUser(id, email, username);
     }
 
     window.history.back();

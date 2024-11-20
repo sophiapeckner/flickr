@@ -14,15 +14,15 @@ export default function SwipeView() {
     const [movieIndex, setMovieIndex] = useState(0);
     const [member, setMember] = useState<Member>();
     const [isVotingComplete, setIsVotingComplete] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const fetchLogin = async () => {
-      const result = await isLoggedIn();
-      setLoggedIn(result);
-    };
-    fetchLogin();
-  }, []);
+    useEffect(() => {
+        const fetchLogin = async () => {
+          const result = await isLoggedIn();
+          setLoggedIn(result);
+        };
+        fetchLogin();
+    }, []);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -39,7 +39,7 @@ export default function SwipeView() {
         const fetchMember = async () => {
             // Fetch the Member with memberId
             try {
-                const response = await fetch(`/api/session/member/${memberId}`);
+                const response = await fetch(`/api/vote/${memberId}`);
                 const member = await response.json();
                 setMember(member);
                 setMovieIndex(member.movieIndex)
@@ -63,7 +63,7 @@ export default function SwipeView() {
             const newMovieIndex = movieIndex + 1;
 
             // Update member's movieIndex in the backend
-            await fetch(`/api/session/member/${memberId}/updateMovieIndex`, {
+            await fetch(`/api/vote/${memberId}/updateMovieIndex`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export default function SwipeView() {
 
             // Update voteCount if liked
             if (liked) {
-                await fetch(`/api/session/movie/${movies[movieIndex].id}/incrementVote`, {
+                await fetch(`/api/vote/${movies[movieIndex].id}/incrementVote`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                 });
@@ -104,11 +104,11 @@ export default function SwipeView() {
         window.location.href = `/list/${memberId}`;
     };
 
-  const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
-    if (event.key === "Enter") {
-      viewList();
-    }
-  };
+    const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
+        if (event.key === "Enter") {
+          viewList();
+        }
+    };
 
     return (
         <div style={style.outerDiv}>

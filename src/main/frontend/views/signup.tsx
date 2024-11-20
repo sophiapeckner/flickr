@@ -1,9 +1,9 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
-import { createUser } from "Frontend/generated/MemberServices";
 import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import {Button, EmailField, PasswordField, TextField} from "@vaadin/react-components";
+import {createUser} from "Frontend/generated/LogInEndpoint";
 
 export const config: ViewConfig = {
   menu: { order: 1, icon: "line-awesome/svg/file.svg" },
