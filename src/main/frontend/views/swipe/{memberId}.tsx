@@ -114,7 +114,7 @@ export default function SwipeView() {
 
     return (
         <div style={style.outerDiv}>
-            <CustomHeader loggedIn={loggedIn}/>
+            <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
 
             {isVotingComplete ? (
                 <p>You're done voting!</p>

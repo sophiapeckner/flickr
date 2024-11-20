@@ -5,6 +5,9 @@ import {Button, EmailField, MultiSelectComboBox, TextField, Icon} from "@vaadin/
 import {useNavigate} from "react-router-dom";
 import { getMember, logout } from "Frontend/auth";
 import {updateUser} from "Frontend/generated/MemberServices";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import {CustomHeader} from "Frontend/themes/flickr/elements";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },
@@ -68,7 +71,7 @@ export default function UserProfileView() {
 
   return (
     <div style={style.outerDiv}>
-      <Icon icon="vaadin:close" style={style.backButton} onClick={() => window.history.back()}/>
+      <CustomHeader hideProfileIcon={true}/>
       <h2 style={style.pageTitle}>flickr</h2>
 
       <div style={style.innerDiv}>

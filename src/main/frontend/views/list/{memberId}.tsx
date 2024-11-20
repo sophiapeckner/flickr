@@ -58,7 +58,7 @@ export default function MovieListView() {
 
   return (
       <div style={style.outerDiv}>
-        <CustomHeader loggedIn={loggedIn}/>
+        <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
 
             <div style={styles.moviesSelected}>
                 {selectedMovies.length > 0 ? (

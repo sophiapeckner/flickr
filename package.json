@@ -38,6 +38,7 @@
     "react": "18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-dom": "18.3.1",
+    "react-modal": "^3.16.1",
     "react-router-dom": "6.26.2",
     "ts-node": "^10.9.2"
   },
@@ -134,7 +135,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "4494076acf6ac2bc43ae47a241a5b8746555c24c2cb2eb31b4000f8bb5908f34"
+    "hash": "0acf94971bc098611e2339941097296bc4f190fde2c5e62a1e05f520d2fe67f4"
   },
   "overrides": {
     "@vaadin/vaadin-development-mode-detector": "$@vaadin/vaadin-development-mode-detector",
@@ -184,6 +185,7 @@
     "@fortawesome/free-brands-svg-icons": "$@fortawesome/free-brands-svg-icons",
     "@fortawesome/free-regular-svg-icons": "$@fortawesome/free-regular-svg-icons",
     "@fortawesome/free-solid-svg-icons": "$@fortawesome/free-solid-svg-icons",
-    "@fortawesome/react-fontawesome": "$@fortawesome/react-fontawesome"
+    "@fortawesome/react-fontawesome": "$@fortawesome/react-fontawesome",
+    "react-modal": "$react-modal"
   }
 }

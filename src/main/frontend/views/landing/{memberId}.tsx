@@ -69,7 +69,7 @@ export default function GroupLandingView() {
 
     return (
       <div style={style.outerDiv}>
-        <CustomHeader loggedIn={loggedIn}/>
+        <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
 
         <h6 style={style.groupTitle}>Group Code: </h6>
         <h3 style={style.groupCode}>{groupCode}</h3>
