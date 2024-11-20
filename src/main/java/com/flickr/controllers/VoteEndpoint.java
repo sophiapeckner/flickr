@@ -1,10 +1,10 @@
 package com.flickr.controllers;
 
-import com.flickr.SessionService;
 import com.flickr.entities.Member;
 import com.flickr.entities.Movie;
 import com.flickr.entities.Session;
 import com.flickr.entities.SessionMovie;
+import com.flickr.services.SessionService;
 import com.flickr.storage.MemberRepository;
 import com.flickr.storage.MovieRepository;
 import com.flickr.storage.SessionMovieRepository;
@@ -25,7 +25,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @Endpoint
 @AnonymousAllowed

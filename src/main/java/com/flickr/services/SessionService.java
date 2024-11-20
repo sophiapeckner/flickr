@@ -1,4 +1,4 @@
-package com.flickr;
+package com.flickr.services;
 
 import com.flickr.entities.Member;
 import com.flickr.entities.Session;

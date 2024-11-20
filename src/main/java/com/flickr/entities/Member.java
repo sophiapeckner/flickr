@@ -27,6 +27,8 @@ public class Member {
 
     private String username;
 
+    private String displayName = "";
+
     private Long sessionId;
 
     private int movieIndex;
@@ -36,6 +38,7 @@ public class Member {
         this.email = email;
         this.password = password;
         this.username = username;
+        this.displayName = username;
     }
 
     public Member() {
@@ -91,4 +94,8 @@ public class Member {
     public Long getSessionId() { return sessionId; }
 
     public void setSessionId(Long sessionId) { this.sessionId = sessionId; }
+
+    public String getDisplayName() { return displayName; }
+
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
 }
