@@ -13,7 +13,6 @@ export const config: ViewConfig = {
 
 export default function PreferencesView() {
     let { memberId } = useParams(); 
-    const params = useParams();
     const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
