@@ -6,6 +6,8 @@ import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark, faFilm } from '@fortawesome/free-solid-svg-icons';
 
 export const config: ViewConfig = {
     menu: { order: 7, icon: "line-awesome/svg/file.svg" },
@@ -75,21 +77,25 @@ export default function MovieListView() {
             </div>
 
         <div style={style.bottomNav}>
-          <img src="/images/pic.png" alt="Suggestions"
-               onClick={swipe} tabIndex={0}
-               onKeyUp={(e) => handleKeyPress(e)}/>
-          <img src="/images/liked.png" alt="Liked"/>
+          <div style={{...style.navBarItem, color: colors.half}} onClick={swipe}>
+            <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
+            <span>Suggestions</span>
+          </div>
+          <div style={style.navBarItem}>
+            <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
+            <span>Liked</span>
+          </div>
         </div>
       </div>
   );
 }
 
 const styles = {
-    moviesSelected: {
-        backgroundColor: colors.light,
-        display: "flex",
-        flexDirection: "column",
-        overflowY: 'auto',
+  moviesSelected: {
+    backgroundColor: colors.light,
+    display: "flex",
+    flexDirection: "column",
+    overflowY: 'auto',
         flex: 1,
     },
     movie: {

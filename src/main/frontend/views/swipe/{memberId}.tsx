@@ -6,6 +6,9 @@ import Member from "Frontend/generated/com/flickr/entities/Member";
 import {Icon, Scroller} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";
+import {colors} from "Frontend/themes/flickr/colors";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBookmark, faFilm} from "@fortawesome/free-solid-svg-icons";
 
 export default function SwipeView() {
     const { memberId } = useParams();
@@ -148,10 +151,14 @@ export default function SwipeView() {
                 )
             )}
             <div style={style.bottomNav}>
-                <img src="images/pic.png" alt="pic"/>
-                <img src="images/liked.png" alt="liked"
-               onClick={viewList} tabIndex={0}
-               onKeyUp={(e) => handleKeyPress(e)}/>
+                <div style={style.navBarItem} >
+                    <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
+                    <span>Suggestions</span>
+                </div>
+                <div style={{...style.navBarItem, color: colors.half}} onClick={viewList}>
+                    <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
+                    <span>Liked</span>
+                </div>
             </div>
         </div>
     );

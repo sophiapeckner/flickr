@@ -4,6 +4,11 @@
   "type": "module",
   "dependencies": {
     "@fontsource/inter": "4.5.0",
+    "@fortawesome/fontawesome-free": "^6.7.0",
+    "@fortawesome/free-brands-svg-icons": "^6.7.0",
+    "@fortawesome/free-regular-svg-icons": "^6.7.0",
+    "@fortawesome/free-solid-svg-icons": "^6.7.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@polymer/polymer": "3.5.2",
     "@vaadin/bundles": "24.5.0",
     "@vaadin/common-frontend": "0.0.19",
@@ -129,7 +134,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "3006269caeb1f0c66932d305768f4014b9e72f17c59769b28c82e0499ab7a412"
+    "hash": "4494076acf6ac2bc43ae47a241a5b8746555c24c2cb2eb31b4000f8bb5908f34"
   },
   "overrides": {
     "@vaadin/vaadin-development-mode-detector": "$@vaadin/vaadin-development-mode-detector",
@@ -174,6 +179,11 @@
     "ts-node": "$ts-node",
     "dotenv": "$dotenv",
     "bootstrap": "$bootstrap",
-    "react-bootstrap": "$react-bootstrap"
+    "react-bootstrap": "$react-bootstrap",
+    "@fortawesome/fontawesome-free": "$@fortawesome/fontawesome-free",
+    "@fortawesome/free-brands-svg-icons": "$@fortawesome/free-brands-svg-icons",
+    "@fortawesome/free-regular-svg-icons": "$@fortawesome/free-regular-svg-icons",
+    "@fortawesome/free-solid-svg-icons": "$@fortawesome/free-solid-svg-icons",
+    "@fortawesome/react-fontawesome": "$@fortawesome/react-fontawesome"
   }
 }
