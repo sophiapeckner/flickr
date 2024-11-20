@@ -28,6 +28,8 @@ public class TestCreateUser {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
+        mockMemberRepository = Mockito.mock(MemberRepository.class);
+        memberServicesTestObj = new LogInEndpoint(mockMemberRepository);
     }
 
     @Test

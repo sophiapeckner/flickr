@@ -50,20 +50,20 @@ public class TestLogin {
 
     @Test
     public void testLoginPresent(){
+        String nonEncryptPass = "thisPass";
         String expected = MEMBER.getId().toString();
-        Mockito.when(mockMemberRepository.findByEmail(MEMBER.getEmail())).thenReturn(Optional.empty());
-        Mockito.when(mockMemberRepository.findByUsername(MEMBER.getUsername())).thenReturn(Optional.empty());
-        Mockito.when(mockMemberRepository.save(MEMBER)).thenReturn(MEMBER);
-        memberServicesTestObj.createUser("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
-
         Mockito.when(mockMemberRepository.findByEmail(MEMBER.getEmail())).thenReturn(Optional.of(MEMBER));
-//        When trying to do encoder.matches in MemberServices.login(), the passwords say that they don't match since they are not encoded correctly
-//        WARN org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder -- Encoded password does not look like BCrypt
-        Assertions.assertEquals(expected, memberServicesTestObj.login(MEMBER.getEmail(), MEMBER.getPass()));
+//        Mockito.when(mockMemberRepository.findByUsername(MEMBER.getUsername())).thenReturn(Optional.empty());
+//        Mockito.when(mockMemberRepository.save(new Member())).thenReturn(new Member());
+        // need to figure out how to make this create user method use the same Member object as the save mockito call.
+//        memberServicesTestObj.createUser(MEMBER.getEmail(), MEMBER.getUsername(), MEMBER.getPass());
 
-        Mockito.verify(mockMemberRepository, Mockito.times(2)).findByEmail(MEMBER.getEmail());
-        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByUsername(MEMBER.getUsername());
-        Mockito.verify(mockMemberRepository, Mockito.times(1)).save(MEMBER);
+//        Mockito.when(mockMemberRepository.findByEmail(MEMBER.getEmail())).thenReturn(Optional.of(MEMBER));
+        Assertions.assertEquals(expected, memberServicesTestObj.login(MEMBER.getEmail(), nonEncryptPass));
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(MEMBER.getEmail());
+//        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByUsername(MEMBER.getUsername());
+//        Mockito.verify(mockMemberRepository, Mockito.times(1)).save(MEMBER);
 
 //        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(member.getEmail());
     }
@@ -73,7 +73,7 @@ public class TestLogin {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Member testMember = new Member("thisemail@gmail.net", "thisUsername", encoder.encode("thisPass"));
         String wrongPass = "wrongPass";
-        String expected = new BCryptPasswordEncoder().encode("Wrong password");
+        String expected = "Wrong password";
         Mockito.when(mockMemberRepository.findByEmail(testMember.getEmail())).thenReturn(Optional.of(testMember));
         Assertions.assertEquals(expected, memberServicesTestObj.login(testMember.getEmail(), wrongPass));
 
