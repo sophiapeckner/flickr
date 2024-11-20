@@ -1,6 +1,5 @@
-import { MemberServices } from 'Frontend/generated/endpoints';
+import { LogInEndpoint } from 'Frontend/generated/endpoints';
 let memberId: undefined | string;
-
 
 /**
  * Login wrapper method that retrieves user information.
@@ -8,7 +7,7 @@ let memberId: undefined | string;
  * Uses `localStorage` for offline support.
  */
 export async function login(email: string, password: string) {
-    memberId = await MemberServices.login(email, password);
+    memberId = await LogInEndpoint.login(email, password);
     if (memberId == "Wrong password" || memberId == "User Not found") {
         return memberId;
     } else {
@@ -25,7 +24,7 @@ export async function isLoggedIn() {
     if (token == null) {
         return false;
     } else {
-        const member = await MemberServices.getMember(token);
+        const member = await LogInEndpoint.getMember(token);
         if (member == null) {
             localStorage.removeItem('RYT');
         }
@@ -40,7 +39,7 @@ export async function getMember() {
     if (await isLoggedIn()) {
         const memberId = localStorage.getItem('RYT');
         if (memberId != null) {
-            return await MemberServices.getMember(memberId);
+            return await LogInEndpoint.getMember(memberId);
         }
     }
     return null;
