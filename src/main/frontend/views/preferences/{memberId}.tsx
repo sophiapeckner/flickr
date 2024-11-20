@@ -37,14 +37,14 @@ export default function PreferencesView() {
                 "https://api.themoviedb.org/3/genre/movie/list?language=en",
                 {
                     headers: {
-                        Authorization: `Bearer ${import.meta.env.VITE_MOVIE_DB_TOKEN}`,
+                        Authorization: `Bearer ${(import.meta as any).env.VITE_MOVIE_DB_TOKEN}`,
                         accept: "application/json",
                     },
                 }
             )
             const data = await response.json();
             if (data.genres) {
-                return data.genres.map((genre) => (
+                return data.genres.map((genre: {name: string, id: number}) => (
                     {
                         label: genre.name,
                         value: genre.id,
@@ -62,14 +62,14 @@ export default function PreferencesView() {
                 "https://api.themoviedb.org/3/watch/providers/movie?language=en-US",
                 {
                     headers: {
-                        Authorization: `Bearer ${import.meta.env.VITE_MOVIE_DB_TOKEN}`,
+                        Authorization: `Bearer ${(import.meta as any).env.VITE_MOVIE_DB_TOKEN}`,
                         accept: "application/json",
                     },
                 }
             )
             const data = await response.json();
             if (data.results) {
-                return data.results.map((platform) => (
+                return data.results.map((platform: {provider_name: string, provider_id: number}) => (
                     {
                         label: platform.provider_name,
                         value: platform.provider_id,
@@ -90,7 +90,7 @@ export default function PreferencesView() {
         // selectedGenres & selectedPlatforms are a list of objects
         // The PUT request only accepts a list of Strings as the body of the request
         // The conversion from [Object] to [String] is accomplished here:
-        const selectedGenreList = selectedGenres.map((genre) => genre.value);
+        const selectedGenreList = selectedGenres.map((genre: { value: string }) => genre.value);
         const genreResponse = await fetch(`/api/session/${memberId}/genres`, {
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },
@@ -100,7 +100,7 @@ export default function PreferencesView() {
             throw new Error(`Failed to update Session genres`);
         }
 
-        const selectedPlatformList = selectedPlatforms.map((platform) => platform.value);
+        const selectedPlatformList = selectedPlatforms.map((platform: { value: string }) => platform.value);
         const platformResponse = await fetch(`/api/session/${memberId}/platforms`, {
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },
