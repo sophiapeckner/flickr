@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class VoteEndpoint {
     private final SessionMovieRepository sessionMovieRepository;
     private final MemberRepository memberRepository;
     private final SessionService sessionService;
-    private final Random random = new Random();
+    private final SecureRandom random = new SecureRandom();
 
     VoteEndpoint (SessionRepository sessionRepository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, SessionService sessionService) {
         this.sessionRepository = sessionRepository;
