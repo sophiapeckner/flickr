@@ -49,7 +49,7 @@ export default function GroupCodeView() {
 
   return (
       <div style={style.outerDiv}>
-        <CustomHeader backPath={"/start"} loggedIn={loggedIn}/>
+        <CustomHeader loggedIn={loggedIn}/>
         <h2 style={style.pageTitle}>flickr</h2>
 
         <div style={{ ...style.innerDiv, ...style.innerDivAddOn }}>
