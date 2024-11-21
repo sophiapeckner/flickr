@@ -69,6 +69,7 @@ export default function UserProfileView() {
 
   return (
     <div style={style.outerDiv}>
+
       <CustomHeader hideProfileIcon={true}/>
       <h2 style={style.pageTitle}>flickr</h2>
 

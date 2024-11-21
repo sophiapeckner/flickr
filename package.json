@@ -135,6 +135,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
+
     "hash": "0acf94971bc098611e2339941097296bc4f190fde2c5e62a1e05f520d2fe67f4"
   },
   "overrides": {
@@ -185,6 +186,7 @@
     "@fortawesome/free-brands-svg-icons": "$@fortawesome/free-brands-svg-icons",
     "@fortawesome/free-regular-svg-icons": "$@fortawesome/free-regular-svg-icons",
     "@fortawesome/free-solid-svg-icons": "$@fortawesome/free-solid-svg-icons",
+
     "@fortawesome/react-fontawesome": "$@fortawesome/react-fontawesome",
     "react-modal": "$react-modal"
   }
