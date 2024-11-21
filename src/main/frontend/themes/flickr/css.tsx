@@ -8,10 +8,12 @@ export const style = {
 	},
 	backButton: {
 		height: '25px',
+    maxWidth: 50,
 		margin: '20px',
 		float: 'left',
 		fontSize: 20,
 		marginRight: 15,
+    color: colors.main
 	},
 	topCornerButton: {
 		height: "50px",
@@ -50,6 +52,7 @@ export const style = {
     flexDirection: 'column',
     alignItems: 'center',
     color: 'white',
+    width: 75,
     fontSize: 12,
     padding: 16
   },
@@ -64,7 +67,7 @@ export const style = {
   input: {
     width: '90%',
     margin: 'auto',
-    marginBottom: 20,
+    // marginBottom: 20,
     fontSize: 16,
     borderRadius: 8,
   },
