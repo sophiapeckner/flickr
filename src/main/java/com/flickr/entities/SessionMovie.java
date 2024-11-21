@@ -3,6 +3,9 @@ package com.flickr.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class SessionMovie {
     @Id
@@ -17,6 +20,9 @@ public class SessionMovie {
     private Session session;
 
     private Integer voteCount = 0;
+
+    @ElementCollection
+    private List<String> voters = new ArrayList<>();
 
     public SessionMovie() {}
 
@@ -57,4 +63,8 @@ public class SessionMovie {
     public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
     }
+
+    public List<String> getVoters() { return voters; }
+
+    public void setVoters(List<String> voters) { this.voters = voters; }
 }

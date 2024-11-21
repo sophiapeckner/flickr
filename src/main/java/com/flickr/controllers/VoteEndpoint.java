@@ -1,10 +1,11 @@
 package com.flickr.controllers;
 
-import com.flickr.SessionService;
 import com.flickr.entities.Member;
 import com.flickr.entities.Movie;
 import com.flickr.entities.Session;
 import com.flickr.entities.SessionMovie;
+import com.flickr.services.MemberService;
+import com.flickr.services.SessionService;
 import com.flickr.storage.MemberRepository;
 import com.flickr.storage.MovieRepository;
 import com.flickr.storage.SessionMovieRepository;
@@ -25,7 +26,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @Endpoint
 @AnonymousAllowed
@@ -38,13 +38,15 @@ public class VoteEndpoint {
     private final MemberRepository memberRepository;
     private final SessionService sessionService;
     private final SecureRandom random = new SecureRandom();
+    private final MemberService memberService;
 
-    VoteEndpoint (SessionRepository sessionRepository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, SessionService sessionService) {
+    VoteEndpoint (SessionRepository sessionRepository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, SessionService sessionService, MemberService memberService) {
         this.sessionRepository = sessionRepository;
         this.movieRepository = movieRepository;
         this.sessionMovieRepository = sessionMovieRepository;
         this.memberRepository = memberRepository;
         this.sessionService = sessionService;
+        this.memberService = memberService;
     }
 
     /**
@@ -124,15 +126,14 @@ public class VoteEndpoint {
     @PutMapping("/{memberId}/updateMovieIndex")
     public Member updateMemberMovieIndex(@PathVariable String memberId, @RequestBody Map<String, Integer> request) {
         int movieIndex = request.get("movieIndex");
-        Member member = memberRepository.findById(Long.valueOf(memberId))
-                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        Member member = memberService.getMember(memberId);
         member.setMovieIndex(movieIndex);
         return memberRepository.save(member);
     }
 
     /**
      * Increment the vote count associated with a movie
-     * @param movieId movie's ID
+     * @param movieId Movie's ID
      * @return SessionMovie associated with movie with movieId
      */
     @PutMapping("/{movieId}/incrementVote")
@@ -140,6 +141,21 @@ public class VoteEndpoint {
         SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("SessionMovie not found"));
         sessionMovie.setVoteCount(sessionMovie.getVoteCount() + 1);
+        return sessionMovieRepository.save(sessionMovie);
+    }
+
+    /**
+     * Add a member to a movie's voter list
+     * @param movieId Movie's ID
+     * @param memberId String representation of member's ID
+     * @return SessionMovie associated with movie with movieId
+     */
+    @PutMapping("/{movieId}/addVoter/{memberId}")
+    public SessionMovie addVoter(@PathVariable Long movieId, @PathVariable String memberId) {
+        String voter = memberService.getMember(memberId).getDisplayName();
+        SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("SessionMovie not found"));
+        sessionMovie.getVoters().add(voter);
         return sessionMovieRepository.save(sessionMovie);
     }
 }
