@@ -1,6 +1,6 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../themes/flickr/css.js";
-import { createUser } from "Frontend/generated/MemberServices";
+import { createUser } from "Frontend/generated/LogInEndpoint";
 import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import {Button, EmailField, PasswordField, TextField} from "@vaadin/react-components";
@@ -34,7 +34,7 @@ export default function SignUpView() {
 
     // Password validation
     if (password.length < 5) {
-      setPasswordError("Password must be at least 5 characters.");
+      setPasswordError("Password must be at least 5 characters long.");
       isValid = false;
     }
 
@@ -88,14 +88,14 @@ export default function SignUpView() {
                 value={password}
                 style={style.input}
                 onValueChanged={(e) => setPassword(e.detail.value)}
-                placeholder="Minimum 5 characters"
+                placeholder="Minimum 5 Characters"
             />
               {passwordError && <span style={{ color: "red" }}>{passwordError}</span>}
 
             <PasswordField
                 label="Confirm Password"
                 style={style.input}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => setConfirmPassword(e.detail.value)}
                 value={confirmPassword}
             />
               {confirmPasswordError && (
