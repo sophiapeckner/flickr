@@ -1,5 +1,5 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import { useState, useEffect, KeyboardEvent} from "react";
+import { useState, useEffect} from "react";
 import {style} from "../../themes/flickr/css.js";
 import {colors} from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
@@ -51,15 +51,9 @@ export default function MovieListView() {
     window.location.href = `/swipe/${memberId}`;
   };
 
-  const handleKeyPress = (event: KeyboardEvent<HTMLImageElement>) => {
-    if (event.key === "Enter") {
-      swipe();
-    }
-  };
-
   return (
       <div style={style.outerDiv}>
-          <CustomHeader loggedIn={loggedIn}/>
+        <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
 
           <div style={styles.moviesSelected}>
               {selectedMovies.length > 0 ? (
@@ -90,16 +84,16 @@ export default function MovieListView() {
               )}
           </div>
 
-          <div style={style.bottomNav}>
-              <div style={{...style.navBarItem, color: colors.half}} onClick={swipe}>
-                  <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
-                  <span>Suggestions</span>
-              </div>
-              <div style={style.navBarItem}>
-                  <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
-                  <span>Liked</span>
-              </div>
+        <div style={style.bottomNav}>
+          <div style={{...style.navBarItem, color: colors.half}} onClick={swipe} role='button'>
+            <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
+            <span>Suggestions</span>
           </div>
+          <div style={style.navBarItem}>
+            <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
+            <span>Liked</span>
+          </div>
+        </div>
       </div>
   );
 }
