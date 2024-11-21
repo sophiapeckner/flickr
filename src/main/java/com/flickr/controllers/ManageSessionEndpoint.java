@@ -11,6 +11,7 @@ import com.vaadin.hilla.Endpoint;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Endpoint
@@ -70,12 +71,17 @@ public class ManageSessionEndpoint {
     /**
      * Associate the member with the display name they inputted in session preferences
      * @param memberId String representation of member's ID
-     * @param displayName Name member would like to go by in current session
+     * @param request Contains name member would like to go by in current session
      */
     @PutMapping("/{memberId}/displayName")
-    public Member updateDisplayName(@PathVariable String memberId, @RequestBody String displayName) {
+    public Member updateDisplayName(@PathVariable String memberId, @RequestBody Map<String, String> request) {
         Member member = memberService.getMember(memberId);
-        member.setDisplayName(displayName);
+        String displayName = request.get("displayName");
+        if (displayName.isEmpty()) {
+            member.setDisplayName("Anonymous");
+        } else {
+            member.setDisplayName(displayName);
+        }
         return memberRepository.save(member);
     }
 

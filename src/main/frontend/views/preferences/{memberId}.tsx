@@ -77,14 +77,14 @@ export default function PreferencesView() {
     }
 
     const submit = async () => {
-        if (displayName == "") {
-            setDisplayName("Anonymous")
-        }
+        console.log("Member ID: " + memberId);
+        console.log("Display Name: " + displayName);
         await fetch(`/api/session/${memberId}/displayName`, {
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },
-            body: displayName
+            body: JSON.stringify({ displayName: displayName })
         });
+
         // selectedGenres & selectedPlatforms are a list of objects
         // The PUT request only accepts a list of Strings as the body of the request
         // The conversion from [Object] to [String] is accomplished here:
@@ -138,7 +138,7 @@ export default function PreferencesView() {
 
             <FormLayout style={style.form} responsiveSteps={ [{ minWidth: '0', columns: 1 }] }>
                 <TextField
-                    label="Display Name"
+                    label="Display Name:"
                     value={displayName}
                     style={{ width: '300px' }}
                     onValueChanged={(e) => setDisplayName(e.detail.value)}
