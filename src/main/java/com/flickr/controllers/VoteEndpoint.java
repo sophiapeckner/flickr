@@ -39,7 +39,7 @@ public class VoteEndpoint {
     private final SessionService sessionService;
     private final SecureRandom random = new SecureRandom();
 
-    VoteEndpoint (SessionRepository sessionRepository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, SessionService sessionService) {
+    public VoteEndpoint (SessionRepository sessionRepository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, SessionService sessionService) {
         this.sessionRepository = sessionRepository;
         this.movieRepository = movieRepository;
         this.sessionMovieRepository = sessionMovieRepository;
@@ -68,7 +68,6 @@ public class VoteEndpoint {
      */
     // when start voiting is presssed, this is called
     // passes the member id of whoever pressed start voting
-    //
     @PostMapping("/{memberId}/movies")
     public Session generateSuggestions(@PathVariable String memberId) throws JSONException, IOException, InterruptedException {
         // based on the member id, it grabs the session that the member is in,

@@ -18,8 +18,7 @@ public class TestCreateUser {
     @Mock
     private MemberRepository mockMemberRepository;
 
-    @InjectMocks
-    private LogInEndpoint memberServicesTestObj = new LogInEndpoint(mockMemberRepository);
+    private LogInEndpoint logInEndpointTestObj = new LogInEndpoint(mockMemberRepository);
 
     private final String USERNAME = "thisUser";
     private final String PASSWORD = new BCryptPasswordEncoder().encode("thisPass");
@@ -29,7 +28,7 @@ public class TestCreateUser {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         mockMemberRepository = Mockito.mock(MemberRepository.class);
-        memberServicesTestObj = new LogInEndpoint(mockMemberRepository);
+        logInEndpointTestObj = new LogInEndpoint(mockMemberRepository);
     }
 
     @Test
@@ -39,7 +38,7 @@ public class TestCreateUser {
         Mockito.when(mockMemberRepository.findByEmail(EMAIL)).thenReturn(Optional.empty());
         Mockito.when(mockMemberRepository.save(new Member(USERNAME, PASSWORD, EMAIL))).thenReturn(new Member());
 
-        Assertions.assertEquals(expected, memberServicesTestObj.createUser(EMAIL, PASSWORD, USERNAME));
+        Assertions.assertEquals(expected, logInEndpointTestObj.createUser(EMAIL, PASSWORD, USERNAME));
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).save(Mockito.any(Member.class));
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
@@ -51,7 +50,7 @@ public class TestCreateUser {
         String expected = "Email already in use";
         Mockito.when(mockMemberRepository.findByEmail(EMAIL)).thenReturn(Optional.of(new Member()));
 
-        Assertions.assertEquals(expected, memberServicesTestObj.createUser(EMAIL, USERNAME, PASSWORD));
+        Assertions.assertEquals(expected, logInEndpointTestObj.createUser(EMAIL, USERNAME, PASSWORD));
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
         Mockito.verify(mockMemberRepository, Mockito.times(0)).findByUsername(Mockito.any(String.class));
@@ -64,7 +63,7 @@ public class TestCreateUser {
         Mockito.when(mockMemberRepository.findByEmail(EMAIL)).thenReturn(Optional.empty());
         Mockito.when(mockMemberRepository.findByUsername(USERNAME)).thenReturn(Optional.of(new Member()));
 
-        Assertions.assertEquals(expected, memberServicesTestObj.createUser(EMAIL, USERNAME, PASSWORD));
+        Assertions.assertEquals(expected, logInEndpointTestObj.createUser(EMAIL, USERNAME, PASSWORD));
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByUsername(Mockito.any(String.class));
