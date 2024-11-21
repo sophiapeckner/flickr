@@ -52,6 +52,9 @@ public class VoteEndpoint {
      * @param memberId Member's ID
      * @return Member object
      */
+    //endpoint - something that the frontend calls in order to fatech data - similar to an api
+    //Fake api is basically located at /api/vote/memberid
+    // that is what @PathVariable does
     @GetMapping("/{memberId}")
     public Member fetchMemberById(@PathVariable String memberId) {
         return memberRepository.findById(Long.valueOf(memberId))
@@ -63,8 +66,12 @@ public class VoteEndpoint {
      * @param memberId ID of the member
      * @return Session that movie suggestions have been generated for
      */
+    // when start voiting is presssed, this is called
+    // passes the member id of whoever pressed start voting
+    //
     @PostMapping("/{memberId}/movies")
     public Session generateSuggestions(@PathVariable String memberId) throws JSONException, IOException, InterruptedException {
+        // based on the member id, it grabs the session that the member is in,
         Session session = sessionService.fetchMembersSession(memberId);
 
         // Get a random page number so that way movie suggestions are varied
@@ -121,6 +128,7 @@ public class VoteEndpoint {
      * @param request New value the movie index should be
      * @return The member with memberId
      */
+    //    https://www.codejava.net/testing/junit-test-exception-examples-how-to-assert-an-exception-is-thrown#:~:text=Test%20Exception%20in%20JUnit%203&text=As%20you%20can%20see%2C%20we,to%20assert%20the%20exception%20message.
     @PutMapping("/{memberId}/updateMovieIndex")
     public Member updateMemberMovieIndex(@PathVariable String memberId, @RequestBody Map<String, Integer> request) {
         int movieIndex = request.get("movieIndex");
