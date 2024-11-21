@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import {Button, FormLayout, MultiSelectComboBox, TextField} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
 import { CustomHeader } from "../../themes/flickr/elements";
-import {isLoggedIn} from "Frontend/auth";
+import {getMember, isLoggedIn} from "Frontend/auth";
 import {getMemberDisplayName} from "Frontend/generated/MemberService";
 
 export const config: ViewConfig = {
@@ -128,6 +128,27 @@ export default function PreferencesView() {
         fetchStreamingPlatforms().then(setStreamingPlatforms)
     }, []);
 
+    useEffect(() => {
+        getMember().then(r => {
+            if (r) {
+                // @ts-ignore
+                setSelectedPlatforms(convertSavedToSelected(r.streamingPlatforms))
+            }
+        })
+    }, []);
+
+    const convertSavedToSelected = (saved: string[]) => {
+        return saved.map((platform: string) => {
+              const index = platform.indexOf(",");
+              return (
+                {
+                    label: platform.slice(index + 1),
+                    value: Number(platform.slice(0, index))
+                })
+          }
+        )
+    }
+
     return (
         <div style={style.outerDiv}>
             <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
@@ -159,6 +180,7 @@ export default function PreferencesView() {
                     items={streamingPlatforms}
                     style={{ width: '300px' }}
                     autoExpandVertically
+                    selectedItems={selectedPlatforms}
                     onChange={e => setSelectedPlatforms(e.target.selectedItems)}
                 />
 

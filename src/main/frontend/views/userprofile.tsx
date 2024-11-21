@@ -1,7 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
-import {Button, EmailField, MultiSelectComboBox, TextField, Icon} from "@vaadin/react-components";
+import {Button, EmailField, MultiSelectComboBox, TextField} from "@vaadin/react-components";
 import {useNavigate} from "react-router-dom";
 import { getMember, logout } from "Frontend/auth";
 import {updateUser} from "Frontend/generated/ManageProfileEndpoint";
@@ -26,14 +26,34 @@ export default function UserProfileView() {
         setUsername(r.username);
         // @ts-ignore
         setEmail(r.email);
+        // @ts-ignore
+        setSelectedPlatforms(convertSavedToSelected(r.streamingPlatforms))
       }
     })
   }, []);
 
+  const convertSelectedToSaved = (selected: { label: string; value: number; }[]) => {
+    return selected.map((platform: {label: string, value: number}) =>
+      platform.value as unknown as string + "," + platform.label
+    )
+  }
+
+  const convertSavedToSelected = (saved: string[]) => {
+    return saved.map((platform: string) => {
+      const index = platform.indexOf(",");
+      return (
+          {
+            label: platform.slice(index + 1),
+            value: Number(platform.slice(0, index))
+          })
+      }
+    )
+  }
+
   const save = async () => {
     const id = localStorage.getItem('RYT');
     if (id) {
-      await updateUser(id, email, username);
+      await updateUser(id, email, username,convertSelectedToSaved(selectedPlatforms));
     }
 
     window.history.back();
@@ -97,14 +117,17 @@ export default function UserProfileView() {
             items={streamingPlatforms}
             style={style.input}
             autoExpandVertically
-            onChange={e => setSelectedPlatforms(e.target.selectedItems)}
+            selectedItems={selectedPlatforms}
+            onChange={e => {
+              // @ts-ignore
+              setSelectedPlatforms(e.target.selectedItems)
+            }}
           />
 
           <Button
             style={style.button}
             onClick={() => {
               save()
-              navigate("/start");
             }}
           >
             Save
