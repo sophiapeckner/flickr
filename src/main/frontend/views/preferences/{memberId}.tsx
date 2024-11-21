@@ -77,8 +77,6 @@ export default function PreferencesView() {
     }
 
     const submit = async () => {
-        console.log("Member ID: " + memberId);
-        console.log("Display Name: " + displayName);
         await fetch(`/api/session/${memberId}/displayName`, {
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },

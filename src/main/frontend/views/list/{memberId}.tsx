@@ -107,5 +107,6 @@ const styles = {
         width: 55,
         backgroundColor: colors.main,
         marginRight: 20,
+        borderRadius: '8px',
     }
 };

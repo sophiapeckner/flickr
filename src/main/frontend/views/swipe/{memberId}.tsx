@@ -14,7 +14,6 @@ export default function SwipeView() {
     const { memberId } = useParams();
     const [movies, setMovies] = useState<SessionMovie[]>([]);
     const [movieIndex, setMovieIndex] = useState(0);
-    const [member, setMember] = useState<Member>();
     const [isVotingComplete, setIsVotingComplete] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
 
@@ -38,12 +37,11 @@ export default function SwipeView() {
             }
         };
 
-        const fetchMember = async () => {
+        const fetchMovieIndex = async () => {
             // Fetch the Member with memberId
             try {
                 const response = await fetch(`/api/vote/${memberId}`);
                 const member = await response.json();
-                setMember(member);
                 setMovieIndex(member.movieIndex)
             } catch (error) {
                 console.error("Failed to fetch Member:", error);
@@ -51,7 +49,7 @@ export default function SwipeView() {
         };
 
         fetchMovies();
-        fetchMember();
+        fetchMovieIndex();
     }, []);
 
     useEffect(() => {
@@ -67,19 +65,25 @@ export default function SwipeView() {
             // Update member's movieIndex in the backend
             await fetch(`/api/vote/${memberId}/updateMovieIndex`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ movieIndex: newMovieIndex }),
             });
 
-            // Update voteCount if liked
+            // Checked if the movie was swiped right on
             if (liked) {
+                // Increment movie's vote count
                 await fetch(`/api/vote/${movies[movieIndex].id}/incrementVote`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                 });
+
+                // Add member to the movie's voter list
+                await fetch(`/api/vote/${movies[movieIndex].id}/addVoter/${memberId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" }
+                });
             }
+
             setMovieIndex(newMovieIndex);
 
             if (movieIndex == movies.length - 1) {
