@@ -95,7 +95,7 @@ export default function SignUpView() {
             <PasswordField
                 label="Confirm Password"
                 style={style.input}
-                onChange={(e) => setConfirmPassword(e.detail.value)}
+                onValueChanged={(e) => setConfirmPassword(e.detail.value)}
                 value={confirmPassword}
             />
               {confirmPasswordError && (

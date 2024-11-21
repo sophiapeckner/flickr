@@ -1,5 +1,5 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {Button, TextField} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
@@ -15,6 +15,15 @@ export const config: ViewConfig = {
 export default function GroupCodeView() {
   const [groupCode, setGroupCode] = useState("")
   const [loggedIn, setLoggedIn] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      // Regular expression to allow only letters and numbers (uppercase and lowercase)
+      if (/^[a-zA-Z0-9]*$/.test(value)) {
+          setInputValue(value); // Update state only if input contains letters or numbers
+      }
+  };
 
   useEffect(() => {
     const fetchLogin = async () => {
@@ -54,9 +63,14 @@ export default function GroupCodeView() {
                   '--vaadin-input-field-label-font-size': '20px',
                   '--vaadin-input-field-value-font-size': '32px',
                 } as React.CSSProperties}
-                placeholder="XXXXXX"
+                placeholder="XXXXXXXX"
                 value={groupCode}
                 onValueChanged={(e) => setGroupCode(e.detail.value)}>
+                {/*trying to only allow letters, numbers, and 8 characters*/}
+                minLength={8}
+                maxLength={8}
+                {/*this line doesn't work*/}
+                {/*onChange={handleInputChange}*/}
             </TextField>
           </div>
 
