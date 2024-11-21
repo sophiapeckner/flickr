@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class TestVote {
+public class TestIncrementAndUpdateInVoteEndpoint {
 
     @Mock
     private SessionRepository mockSessionRepository;
