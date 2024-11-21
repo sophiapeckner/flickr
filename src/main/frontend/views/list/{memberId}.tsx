@@ -8,6 +8,7 @@ import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark, faFilm } from '@fortawesome/free-solid-svg-icons';
+import {AvatarGroup} from "@vaadin/react-components";
 
 export const config: ViewConfig = {
     menu: { order: 7, icon: "line-awesome/svg/file.svg" },
@@ -58,55 +59,81 @@ export default function MovieListView() {
 
   return (
       <div style={style.outerDiv}>
-        <CustomHeader loggedIn={loggedIn}/>
+          <CustomHeader loggedIn={loggedIn}/>
 
-            <div style={styles.moviesSelected}>
-                {selectedMovies.length > 0 ? (
-                    selectedMovies.map((sessionMovie) => (
-                        <div key={sessionMovie.id} style={styles.movie}>
-                            <img style={styles.movieImage} src={sessionMovie.movie?.imgURL} alt=""/>
-                            <div>
-                                <h4>{sessionMovie.movie?.title}</h4>
-                                <h5>Votes: {sessionMovie.voteCount}</h5>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p>No movies have been voted on :(</p>
-                )}
-            </div>
+          <div style={styles.moviesSelected}>
+              {selectedMovies.length > 0 ? (
+                  selectedMovies.map((sessionMovie) => {
+                      const avatarItems =
+                          sessionMovie.voters?.map((voter, index) => ({
+                              name: voter,
+                              colorIndex: index,
+                          }));
 
-        <div style={style.bottomNav}>
-          <div style={{...style.navBarItem, color: colors.half}} onClick={swipe}>
-            <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
-            <span>Suggestions</span>
+                      return (
+                          <div key={sessionMovie.id} style={styles.movie}>
+                              <div style={styles.movieDetails}>
+                                  <img style={styles.movieImage} src={sessionMovie.movie?.imgURL} alt=""/>
+                                  <div>
+                                      <h4>{sessionMovie.movie?.title}</h4>
+                                      <h5 style={{fontSize: '0.8rem'}}>Votes: {sessionMovie.voteCount}</h5>
+                                  </div>
+                              </div>
+                              <div style={styles.avatarGroupContainer}>
+                                  <AvatarGroup maxItemsVisible={3} items={avatarItems} theme="small"/>
+                              </div>
+                          </div>
+                      );
+                  })
+              ) : (
+                  <p>No movies have been voted on :(</p>
+              )}
           </div>
-          <div style={style.navBarItem}>
-            <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
-            <span>Liked</span>
+
+          <div style={style.bottomNav}>
+              <div style={{...style.navBarItem, color: colors.half}} onClick={swipe}>
+                  <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
+                  <span>Suggestions</span>
+              </div>
+              <div style={style.navBarItem}>
+                  <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
+                  <span>Liked</span>
+              </div>
           </div>
-        </div>
       </div>
   );
 }
 
 const styles = {
-  moviesSelected: {
-    backgroundColor: colors.light,
-    display: "flex",
-    flexDirection: "column",
-    overflowY: 'auto',
+    moviesSelected: {
+        backgroundColor: colors.light,
+        display: "flex",
+        flexDirection: "column",
+        overflowY: "auto",
         flex: 1,
     },
     movie: {
         display: "flex",
         flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
         margin: 20,
+        width: "90%",
+    },
+    movieDetails: {
+        display: "flex",
+        flex: 1, // Take up available horizontal space
     },
     movieImage: {
-        width: 55,
+        width: 65,
+        height: 40,
         backgroundColor: colors.main,
         marginRight: 20,
-        borderRadius: '8px',
-    }
+        borderRadius: "4px",
+    },
+    avatarGroupContainer: {
+        display: "flex",
+        justifyContent: "flex-end", // Push avatars to the far right
+        flexShrink: 0, // Prevent the container from shrinking
+    },
 };
