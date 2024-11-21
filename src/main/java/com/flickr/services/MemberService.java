@@ -5,6 +5,8 @@ import com.flickr.storage.MemberRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
 
+import java.util.Set;
+
 @AnonymousAllowed
 @Endpoint
 public class MemberService {
@@ -32,6 +34,8 @@ public class MemberService {
     public String getMemberDisplayName(String memberId) {
         return getMember(memberId).getDisplayName();
     }
+
+    public Set<String> getMemberStreamingPlatforms(String memberId) { return getMember(memberId).getStreamingPlatforms(); }
 }
 
 

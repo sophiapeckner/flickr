@@ -136,7 +136,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "0acf94971bc098611e2339941097296bc4f190fde2c5e62a1e05f520d2fe67f4"
+    "hash": "369f6a8f7ac13b876add3a77f3cbee86fd9166ef3c3acc23cf57eac4f67e7fa3"
   },
   "overrides": {
     "@vaadin/vaadin-development-mode-detector": "$@vaadin/vaadin-development-mode-detector",
@@ -187,6 +187,7 @@
     "@fortawesome/free-regular-svg-icons": "$@fortawesome/free-regular-svg-icons",
     "@fortawesome/free-solid-svg-icons": "$@fortawesome/free-solid-svg-icons",
     "@fortawesome/react-fontawesome": "$@fortawesome/react-fontawesome",
-    "react-modal": "$react-modal"
+    "react-modal": "$react-modal",
+    "react-swipeable": "$react-swipeable"
   }
 }

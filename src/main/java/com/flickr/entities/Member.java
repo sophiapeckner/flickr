@@ -3,18 +3,10 @@ package com.flickr.entities;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.util.Random;
-import java.util.UUID;
+import java.security.SecureRandom;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 public class Member {
@@ -33,8 +25,11 @@ public class Member {
 
     private int movieIndex;
 
+    @ElementCollection
+    private Set<String> streamingPlatforms = new HashSet<>();
+
     public Member(String email, String username, String password) {
-        this.id = new Random().nextLong() >>> 1;
+        this.id = new SecureRandom().nextLong() >>> 1;
         this.email = email;
         this.password = password;
         this.username = username;
@@ -44,7 +39,7 @@ public class Member {
     public Member() {
         // Used for defining an Anon user
         // Because Hilla expects all member variable to be non-null, email & pass are set to dummy values
-        this.id = new Random().nextLong() >>> 1;
+        this.id = new SecureRandom().nextLong() >>> 1;
         this.email = "anon@gmail.com";
         this.password = "anon";
         this.username = "Anonymous";
@@ -98,4 +93,8 @@ public class Member {
     public String getDisplayName() { return displayName; }
 
     public void setDisplayName(String displayName) { this.displayName = displayName; }
+
+    public Set<String> getStreamingPlatforms() { return streamingPlatforms; }
+
+    public void setStreamingPlatforms(Set<String> streamingPlatforms) { this.streamingPlatforms = streamingPlatforms; }
 }
