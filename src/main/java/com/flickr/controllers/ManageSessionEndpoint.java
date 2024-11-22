@@ -50,12 +50,14 @@ public class ManageSessionEndpoint {
     }
 
     /**
-     * Create a new session and associate it with a unique group code
+     * Create a new session and associate it with a unique group code & its group admin
+     * @param email Group admin's email
      * @return The newly created session
      */
-    public Session createSession() {
+    public Session createSession(String email) {
+        Member member = memberService.getMemberByEmail(email);
         String groupCode = UUID.randomUUID().toString().substring(0, 8);
-        return sessionRepository.save(new Session(groupCode));
+        return sessionRepository.save(new Session(groupCode, member.getId().toString()));
     }
 
     /**
@@ -75,7 +77,7 @@ public class ManageSessionEndpoint {
      */
     @PutMapping("/{memberId}/displayName")
     public Member updateDisplayName(@PathVariable String memberId, @RequestBody Map<String, String> request) {
-        Member member = memberService.getMember(memberId);
+        Member member = memberService.getMemberById(memberId);
         String displayName = request.get("displayName");
         if (displayName.isEmpty()) {
             member.setDisplayName("Anonymous");
@@ -108,6 +110,23 @@ public class ManageSessionEndpoint {
     public Session updateStreamingPlatforms(@PathVariable String memberId, @RequestBody List<String> platforms) {
         Session session = fetchMembersSession(memberId);
         session.getStreamingPlatforms().addAll(platforms);
+        return sessionRepository.save(session);
+    }
+
+    /**
+     * Remove member at memberIndex from the session
+     * @param sessionId Session's id
+     * @param memberIndex The member to be removed
+     * @return The updated session
+     */
+    @PutMapping("/{sessionId}/remove/{memberIndex}")
+    public Session removeMember(@PathVariable Long sessionId, @PathVariable int memberIndex) {
+        Session session = sessionRepository.findById(sessionId)
+                        .orElseThrow(() -> new IllegalArgumentException("Session not found"));
+        Member member = session.getMembers().get(memberIndex);  // The member to be removed from group
+        // Set the member's session ID to 0 (which is non-existent)
+        member.setSessionId(0L);
+        session.getMembers().remove(memberIndex);
         return sessionRepository.save(session);
     }
 

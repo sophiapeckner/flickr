@@ -4,9 +4,12 @@ import { colors } from "Frontend/themes/flickr/colors.js";
 import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {useParams} from "react-router-dom";
-import {Avatar, Button, Scroller} from "@vaadin/react-components";
+import {Avatar, Button, Icon, Scroller} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";
+import Session from "Frontend/generated/com/flickr/entities/Session";
+import ErrorBoundary from "Frontend/themes/flickr/ErrorBoundary";
+import {getMemberById} from "Frontend/generated/MemberService";
 
 export const config: ViewConfig = {
   menu: { order: 4, icon: "line-awesome/svg/file.svg" },
@@ -15,20 +18,39 @@ export const config: ViewConfig = {
 
 export default function GroupLandingView() {
     const { memberId } = useParams();
+    const [member, setMember] = useState<Member>();
     const [members, setMembers] = useState<Member[]>([]);
-    const [groupCode, setGroupCode] = useState([]);
+    const [session, setSession] = useState<Session>();
     const [loggedIn, setLoggedIn] = useState(false);
+    // Tracks if member with memberId is still in session
+    const [inSession, setInSession] = useState(true);
 
     const fetchLogin = async () => {
         const result = await isLoggedIn();
         setLoggedIn(result);
     };
 
-    const fetchGroupCode = async () => {
+    const fetchSession = async () => {
         const response = await fetch(`/api/session/${memberId}`);
         const session = await response.json();
-        setGroupCode(session.groupCode);
+        setSession(session);
     }
+
+    const fetchMember = async () => {
+        const memberData = await getMemberById(memberId);
+        setMember(memberData);
+
+        // Check if the member is no longer part of a session
+        if (memberData?.sessionId === 0) {
+            setInSession(false);
+        }
+    };
+
+    const removeMemberFromGroup = async (memberIndex: number) => {
+        const response = await fetch(`/api/session/${session?.id}/remove/${memberIndex}`, { method: "PUT" });
+        const updatedSession = await response.json();
+        setSession(updatedSession);
+    };
 
     const submit = async () => {
         // Generate movie suggestions for the Session that member is in
@@ -38,45 +60,69 @@ export default function GroupLandingView() {
         window.location.href = `/swipe/${memberId}`;
     }
 
-
-    // Fetch the Session with groupCode and update the members currently in the Session
     useEffect(() => {
-        fetchGroupCode();
+        fetchMember(); // Fetch member first
         fetchLogin();
 
-        const intervalId = setInterval(() => {
-            fetch(`/api/session/${memberId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Update member list
-                    setMembers(data.members)
+        if (inSession) {
+            // Member is in a session
+            fetchSession();
 
-                    // Check if someone has started the Session yet
-                    if (data.started) {
-                        clearInterval(intervalId); // Stop polling
-                        window.location.href = `/swipe/${memberId}`;
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching Session data: ", error);
-                });
-        }, 10);
+            const intervalId = setInterval(() => {
+                fetch(`/api/session/${memberId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update member list
+                        setMembers(data.members);
 
-        return () => clearInterval(intervalId);
-    }, []);
+                        // Check if someone has started the Session yet
+                        if (data.started) {
+                            clearInterval(intervalId); // Stop polling
+                            window.location.href = `/swipe/${memberId}`;
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error("Error fetching Session data: ", error);
+                    });
+            }, 10);
+            return () => clearInterval(intervalId);
+        }
+
+        // If not in a session, return undefined
+        return undefined;
+    }, [inSession, memberId]);
+
+    if (!inSession) {
+        // Member has been kicked out of session
+        return (
+            <div style={{ textAlign: 'center', marginTop: '20%' }}>
+                <h2>It appears that you're no longer in this session</h2>
+                <Button style={{ marginTop: '20px' }} onClick={() => (window.location.href = '/')}>
+                    Back to Homepage
+                </Button>
+            </div>
+        );
+    }
 
     return (
       <div style={style.outerDiv}>
         <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
 
         <h6 style={style.groupTitle}>Group Code: </h6>
-        <h3 style={style.groupCode}>{groupCode}</h3>
+        <h3 style={style.groupCode}>{session?.groupCode}</h3>
 
         <Scroller style={styles.membersDiv} scrollDirection="vertical">
-          {members.map((member) => (
-              <div style={styles.personDiv} key={member.id}>
+          {inSession && members?.length > 0 && members.map((member, index) => (
+              <div style={styles.personDiv} key={index}>
                 <Avatar theme="xlarge" />
                 <h4 style={styles.personLabel}>{member?.displayName || 'Unknown'}</h4>
+                  {/*Only allow the group admin to remove member(s) from group*/}
+                  {session?.groupAdminId == memberId && member.id != memberId &&
+                      <Icon
+                          icon="vaadin:trash"
+                          style={style.backButton}
+                          onClick={() => removeMemberFromGroup(index)}/>}
               </div>
           ))}
         </Scroller>
