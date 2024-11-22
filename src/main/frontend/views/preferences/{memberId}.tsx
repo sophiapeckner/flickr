@@ -100,6 +100,18 @@ export default function PreferencesView() {
         setLoggedIn(result);
     };
 
+    const convertSavedToSelected = (saved: string[]) => {
+        return saved.map((platform: string) => {
+                const index = platform.indexOf(",");
+                return (
+                    {
+                        label: platform.slice(index + 1),
+                        value: Number(platform.slice(0, index))
+                    })
+            }
+        )
+    }
+
     const submit = async () => {
         await fetch(`/api/session/${memberId}/displayName`, {
             method: "PUT",
@@ -145,17 +157,6 @@ export default function PreferencesView() {
         }
     }, [inSession, memberId, member]);
 
-    if (!inSession) {
-        return (
-            <div style={{ textAlign: 'center', marginTop: '20%' }}>
-                <h2>It appears that you're no longer in this session</h2>
-                <Button style={{ marginTop: '20px' }} onClick={() => (window.location.href = '/start')}>
-                    Join Another Group
-                </Button>
-            </div>
-        );
-    }
-
     useEffect(() => {
         getMember().then(r => {
             if (r) {
@@ -165,16 +166,15 @@ export default function PreferencesView() {
         })
     }, []);
 
-    const convertSavedToSelected = (saved: string[]) => {
-        return saved.map((platform: string) => {
-              const index = platform.indexOf(",");
-              return (
-                {
-                    label: platform.slice(index + 1),
-                    value: Number(platform.slice(0, index))
-                })
-          }
-        )
+    if (!inSession) {
+        return (
+            <div style={{ textAlign: 'center', marginTop: '20%' }}>
+                <h2>It appears that you're no longer in this session</h2>
+                <Button style={{ marginTop: '20px' }} onClick={() => (window.location.href = '/start')}>
+                    Join Another Group
+                </Button>
+            </div>
+        );
     }
 
     return (
