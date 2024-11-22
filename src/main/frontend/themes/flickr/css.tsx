@@ -23,7 +23,7 @@ export const style = {
   pageTitle: {
     color: colors.main, 
     textAlign: 'center',
-    fontSize: '48px',
+    fontSize: '52px',
     fontFamily: 'Nunito, Verdana',
   },
   innerDiv: {
