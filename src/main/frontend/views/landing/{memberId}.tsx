@@ -8,7 +8,6 @@ import {Avatar, Button, Icon, Scroller} from "@vaadin/react-components";
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";
 import Session from "Frontend/generated/com/flickr/entities/Session";
-import ErrorBoundary from "Frontend/themes/flickr/ErrorBoundary";
 import {getMemberById} from "Frontend/generated/MemberService";
 
 export const config: ViewConfig = {
@@ -65,7 +64,7 @@ export default function GroupLandingView() {
         fetchLogin();
 
         if (inSession) {
-            // Member is in a session
+            // Member is STILL in the session
             fetchSession();
 
             const intervalId = setInterval(() => {
@@ -91,15 +90,14 @@ export default function GroupLandingView() {
 
         // If not in a session, return undefined
         return undefined;
-    }, [inSession, memberId]);
+    }, [inSession, memberId, member]);
 
     if (!inSession) {
-        // Member has been kicked out of session
         return (
             <div style={{ textAlign: 'center', marginTop: '20%' }}>
                 <h2>It appears that you're no longer in this session</h2>
-                <Button style={{ marginTop: '20px' }} onClick={() => (window.location.href = '/')}>
-                    Back to Homepage
+                <Button style={{ marginTop: '20px' }} onClick={() => (window.location.href = '/start')}>
+                    Join Another Group
                 </Button>
             </div>
         );
@@ -113,18 +111,22 @@ export default function GroupLandingView() {
         <h3 style={style.groupCode}>{session?.groupCode}</h3>
 
         <Scroller style={styles.membersDiv} scrollDirection="vertical">
-          {inSession && members?.length > 0 && members.map((member, index) => (
-              <div style={styles.personDiv} key={index}>
-                <Avatar theme="xlarge" />
-                <h4 style={styles.personLabel}>{member?.displayName || 'Unknown'}</h4>
-                  {/*Only allow the group admin to remove member(s) from group*/}
-                  {session?.groupAdminId == memberId && member.id != memberId &&
-                      <Icon
-                          icon="vaadin:trash"
-                          style={style.backButton}
-                          onClick={() => removeMemberFromGroup(index)}/>}
-              </div>
-          ))}
+          {inSession && members?.length > 0 &&
+              members.map((member, index) => (
+                  <div style={styles.personDiv} key={index}>
+                      <div style={styles.person}>
+                          <Avatar theme="xlarge" />
+                          <h4 style={styles.personLabel}>{member?.displayName || 'Waiting...'}</h4>
+                      </div>
+                      {/*Only allow the group admin to remove member(s) from group*/}
+                      {session?.groupAdminId == memberId && member.id != memberId &&
+                          <Icon
+                              icon="vaadin:trash"
+                              style={styles.trashIcon}
+                              onClick={() => removeMemberFromGroup(index)}/>}
+                  </div>
+              ))
+          }
         </Scroller>
 
         <div style={style.form}>
@@ -135,21 +137,34 @@ export default function GroupLandingView() {
 }
 
 const styles = {
-  membersDiv: {
-    width: '60%',
-    margin: '10px auto',
-    height: '50%',
-    backgroundColor: colors.light,
-    borderRadius: 12,
-    padding: 10
-  },
-  personDiv: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  personLabel: {
-    padding: 20,
-    fontSize: 20,
-  }
-}
+    membersDiv: {
+        width: '60%',
+        margin: '10px auto',
+        height: '50%',
+        backgroundColor: colors.light,
+        borderRadius: 12,
+        padding: 10,
+        overflowY: 'auto', // Allow vertical scrolling if needed
+    },
+    personDiv: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between', // Push children to the edges
+        padding: '10px 0', // Add spacing between rows
+    },
+    person: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center', // Align avatar and label vertically
+    },
+    personLabel: {
+        marginLeft: 15, // Add spacing between Avatar and text
+        fontSize: 20,
+    },
+    trashIcon: {
+        cursor: 'pointer', // Make it look clickable
+        color: "#f54251", // Optional: Set icon color
+        marginLeft: 'auto', // Ensure it stays on the right side
+    },
+};
