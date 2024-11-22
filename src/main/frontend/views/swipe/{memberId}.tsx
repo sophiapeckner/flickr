@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
@@ -9,6 +9,7 @@ import {isLoggedIn} from "Frontend/auth";
 import {colors} from "Frontend/themes/flickr/colors";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark, faFilm} from "@fortawesome/free-solid-svg-icons";
+import { useSwipeable } from 'react-swipeable';
 
 export default function SwipeView() {
     const { memberId } = useParams();
@@ -16,6 +17,7 @@ export default function SwipeView() {
     const [movieIndex, setMovieIndex] = useState(0);
     const [isVotingComplete, setIsVotingComplete] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [position, setPosition] = useState(0);
 
     useEffect(() => {
         const fetchLogin = async () => {
@@ -37,7 +39,7 @@ export default function SwipeView() {
             }
         };
 
-        const fetchMember = async () => {
+        const fetchMovieIndex = async () => {
             // Fetch the Member with memberId
             try {
                 const response = await fetch(`/api/vote/${memberId}`);
@@ -49,7 +51,7 @@ export default function SwipeView() {
         };
 
         fetchMovies();
-        fetchMember();
+        fetchMovieIndex();
     }, []);
 
     useEffect(() => {
@@ -65,19 +67,25 @@ export default function SwipeView() {
             // Update member's movieIndex in the backend
             await fetch(`/api/vote/${memberId}/updateMovieIndex`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ movieIndex: newMovieIndex }),
             });
 
-            // Update voteCount if liked
+            // Checked if the movie was swiped right on
             if (liked) {
+                // Increment movie's vote count
                 await fetch(`/api/vote/${movies[movieIndex].id}/incrementVote`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                 });
+
+                // Add member to the movie's voter list
+                await fetch(`/api/vote/${movies[movieIndex].id}/addVoter/${memberId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" }
+                });
             }
+
             setMovieIndex(newMovieIndex);
 
             if (movieIndex == movies.length - 1) {
@@ -85,6 +93,17 @@ export default function SwipeView() {
             }
         }
     };
+
+    const handlers = useSwipeable({
+        onSwipedLeft: () => handleNextMovie(false),
+        onSwipedRight: () => handleNextMovie(true),
+        onSwiping: (eventData) => {
+            setPosition(eventData.deltaX); // Update position during swipe
+        },
+        onSwiped: () => {
+            setPosition(0); // Reset position after swipe
+        },
+    });
 
     function parseDate(dateString: string | undefined): string {
         if (!dateString) return "Unknown Release Date";
@@ -113,8 +132,11 @@ export default function SwipeView() {
                 <p>You're done voting!</p>
             ) : (
                 movies.length > 0 && movies[movieIndex] && (
-                    <>
-                        <div style={styles.movieProfile}>
+                    <div style={style.innerDiv}>
+                        <div {...handlers} style={{...styles.movieProfile,
+                              transform: `translateX(${position}px)`,
+                              transition: position === 0 ? 'transform 0.3s ease-out' : 'none',}}
+                        >
                             <div style={styles.movieThumbnail}>
                                 <img
                                     style={{width: '100%', height: 'auto'}}
@@ -140,7 +162,7 @@ export default function SwipeView() {
                                 icon="vaadin:heart"
                                 onClick={() => handleNextMovie(true)}/>
                         </div>
-                    </>
+                    </div>
                 )
             )}
             <div style={style.bottomNav}>

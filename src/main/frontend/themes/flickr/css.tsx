@@ -16,7 +16,7 @@ export const style = {
     color: colors.main
 	},
 	topCornerButton: {
-		height: "50px",
+		height: "25px",
 		margin: "15px",
 		float: "right",
 	},

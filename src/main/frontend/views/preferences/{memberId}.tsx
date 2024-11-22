@@ -1,10 +1,11 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
-import {Button, FormLayout, MultiSelectComboBox} from "@vaadin/react-components";
+import {Button, FormLayout, MultiSelectComboBox, TextField} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
 import { CustomHeader } from "../../themes/flickr/elements";
-import {isLoggedIn} from "Frontend/auth";
+import {getMember, isLoggedIn} from "Frontend/auth";
+import {getMemberDisplayName} from "Frontend/generated/MemberService";
 
 export const config: ViewConfig = {
     menu: { order: 5, icon: "line-awesome/svg/file.svg" },
@@ -14,11 +15,12 @@ export const config: ViewConfig = {
 export default function PreferencesView() {
     let { memberId } = useParams();
     const [loggedIn, setLoggedIn] = useState(false);
-    const [genres, setGenres] = useState([]);
     const [groupCode, setGroupCode] = useState([]);
+    const [displayName, setDisplayName] = useState("");
+    const [genres, setGenres] = useState([]);
+    const [selectedGenres, setSelectedGenres] = useState([]);
     const [streamingPlatforms, setStreamingPlatforms] = useState([]);
     const [selectedPlatforms, setSelectedPlatforms] = useState([]);
-    const [selectedGenres, setSelectedGenres] = useState([]);
 
     // Retrieve every genre option available on The Movie Database
     const fetchGenres = async () => {
@@ -70,7 +72,17 @@ export default function PreferencesView() {
         }
     };
 
+    const fetchDisplayName = async () => {
+        setDisplayName(await getMemberDisplayName(memberId ?? "") ?? "")
+    }
+
     const submit = async () => {
+        await fetch(`/api/session/${memberId}/displayName`, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ displayName: displayName })
+        });
+
         // selectedGenres & selectedPlatforms are a list of objects
         // The PUT request only accepts a list of Strings as the body of the request
         // The conversion from [Object] to [String] is accomplished here:
@@ -109,11 +121,33 @@ export default function PreferencesView() {
     };
 
     useEffect(() => {
-        fetchLogin();
+        fetchLogin()
         fetchGroupCode()
+        fetchDisplayName()
         fetchGenres().then(setGenres)
         fetchStreamingPlatforms().then(setStreamingPlatforms)
     }, []);
+
+    useEffect(() => {
+        getMember().then(r => {
+            if (r) {
+                // @ts-ignore
+                setSelectedPlatforms(convertSavedToSelected(r.streamingPlatforms))
+            }
+        })
+    }, []);
+
+    const convertSavedToSelected = (saved: string[]) => {
+        return saved.map((platform: string) => {
+              const index = platform.indexOf(",");
+              return (
+                {
+                    label: platform.slice(index + 1),
+                    value: Number(platform.slice(0, index))
+                })
+          }
+        )
+    }
 
     return (
         <div style={style.outerDiv}>
@@ -122,6 +156,13 @@ export default function PreferencesView() {
             <h3 style={style.groupCode}>{groupCode}</h3>
 
             <FormLayout style={style.form} responsiveSteps={ [{ minWidth: '0', columns: 1 }] }>
+                <TextField
+                    label="Display Name:"
+                    value={displayName}
+                    style={{ width: '300px' }}
+                    onValueChanged={(e) => setDisplayName(e.detail.value)}
+                />
+
                 <MultiSelectComboBox
                     label="Select Genre(s):"
                     itemLabelPath="label"
@@ -139,6 +180,7 @@ export default function PreferencesView() {
                     items={streamingPlatforms}
                     style={{ width: '300px' }}
                     autoExpandVertically
+                    selectedItems={selectedPlatforms}
                     onChange={e => setSelectedPlatforms(e.target.selectedItems)}
                 />
 

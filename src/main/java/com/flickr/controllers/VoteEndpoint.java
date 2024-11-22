@@ -5,6 +5,8 @@ import com.flickr.entities.Member;
 import com.flickr.entities.Movie;
 import com.flickr.entities.Session;
 import com.flickr.entities.SessionMovie;
+import com.flickr.services.MemberService;
+import com.flickr.services.SessionService;
 import com.flickr.storage.MemberRepository;
 import com.flickr.storage.MovieRepository;
 import com.flickr.storage.SessionMovieRepository;
@@ -38,13 +40,15 @@ public class VoteEndpoint {
     private final MemberRepository memberRepository;
     private final SessionService sessionService;
     private final SecureRandom random = new SecureRandom();
+    private final MemberService memberService;
 
-    public VoteEndpoint (SessionRepository sessionRepository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, SessionService sessionService) {
+    VoteEndpoint (SessionRepository sessionRepository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, SessionService sessionService) {
         this.sessionRepository = sessionRepository;
         this.movieRepository = movieRepository;
         this.sessionMovieRepository = sessionMovieRepository;
         this.memberRepository = memberRepository;
         this.sessionService = sessionService;
+        this.memberService = memberService;
     }
 
     /**
@@ -139,7 +143,7 @@ public class VoteEndpoint {
 
     /**
      * Increment the vote count associated with a movie
-     * @param movieId movie's ID
+     * @param movieId Movie's ID
      * @return SessionMovie associated with movie with movieId
      */
     @PutMapping("/{movieId}/incrementVote")
@@ -147,6 +151,21 @@ public class VoteEndpoint {
         SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("SessionMovie not found"));
         sessionMovie.setVoteCount(sessionMovie.getVoteCount() + 1);
+        return sessionMovieRepository.save(sessionMovie);
+    }
+
+    /**
+     * Add a member to a movie's voter list
+     * @param movieId Movie's ID
+     * @param memberId String representation of member's ID
+     * @return SessionMovie associated with movie with movieId
+     */
+    @PutMapping("/{movieId}/addVoter/{memberId}")
+    public SessionMovie addVoter(@PathVariable Long movieId, @PathVariable String memberId) {
+        String voter = memberService.getMember(memberId).getDisplayName();
+        SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("SessionMovie not found"));
+        sessionMovie.getVoters().add(voter);
         return sessionMovieRepository.save(sessionMovie);
     }
 }

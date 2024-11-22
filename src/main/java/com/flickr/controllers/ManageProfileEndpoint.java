@@ -6,6 +6,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Endpoint
 @AnonymousAllowed
@@ -16,12 +17,13 @@ public class ManageProfileEndpoint {
         this.memberRepository = memberRepository;
     }
 
-    public void updateUser(String id, String newEmail, String newUsername) {
+    public void updateUser(String id, String newEmail, String newUsername, Set<String> newStreamingPlatforms) {
         Optional<Member> memberOptional = memberRepository.findById(Long.valueOf(id));
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
             member.setEmail(newEmail);
             member.setUsername(newUsername);
+            member.setStreamingPlatforms(newStreamingPlatforms);
             memberRepository.save(member);
         }
     }

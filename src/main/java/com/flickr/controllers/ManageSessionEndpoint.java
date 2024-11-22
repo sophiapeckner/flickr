@@ -1,13 +1,17 @@
 package com.flickr.controllers;
 
-import com.flickr.SessionService;
+import com.flickr.entities.Member;
 import com.flickr.entities.Session;
+import com.flickr.services.MemberService;
+import com.flickr.services.SessionService;
+import com.flickr.storage.MemberRepository;
 import com.flickr.storage.SessionRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.Endpoint;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Endpoint
@@ -17,10 +21,14 @@ import java.util.UUID;
 public class ManageSessionEndpoint {
     private final SessionRepository sessionRepository;
     private final SessionService sessionService;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    ManageSessionEndpoint(SessionRepository sessionRepository, SessionService sessionService) {
+    ManageSessionEndpoint(SessionRepository sessionRepository, SessionService sessionService, MemberRepository memberRepository, MemberService memberService) {
         this.sessionRepository = sessionRepository;
         this.sessionService = sessionService;
+        this.memberRepository = memberRepository;
+        this.memberService = memberService;
     }
 
     /**
@@ -58,6 +66,23 @@ public class ManageSessionEndpoint {
     @GetMapping("/{memberId}")
     public Session fetchMembersSession(@PathVariable String memberId) {
         return sessionService.fetchMembersSession(memberId);
+    }
+
+    /**
+     * Associate the member with the display name they inputted in session preferences
+     * @param memberId String representation of member's ID
+     * @param request Contains name member would like to go by in current session
+     */
+    @PutMapping("/{memberId}/displayName")
+    public Member updateDisplayName(@PathVariable String memberId, @RequestBody Map<String, String> request) {
+        Member member = memberService.getMember(memberId);
+        String displayName = request.get("displayName");
+        if (displayName.isEmpty()) {
+            member.setDisplayName("Anonymous");
+        } else {
+            member.setDisplayName(displayName);
+        }
+        return memberRepository.save(member);
     }
 
     /**

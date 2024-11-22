@@ -76,7 +76,7 @@ export default function GroupLandingView() {
           {members.map((member) => (
               <div style={styles.personDiv} key={member.id}>
                 <Avatar theme="xlarge" />
-                <h4 style={styles.personLabel}>{member?.username || 'Unknown'}</h4>
+                <h4 style={styles.personLabel}>{member?.displayName || 'Unknown'}</h4>
               </div>
           ))}
         </Scroller>
