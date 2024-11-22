@@ -5,7 +5,8 @@ import {Button, FormLayout, MultiSelectComboBox, TextField} from "@vaadin/react-
 import {useEffect, useState} from "react";
 import { CustomHeader } from "../../themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";
-import {getMemberDisplayName} from "Frontend/generated/MemberService";
+import {getMemberById, getMemberDisplayName} from "Frontend/generated/MemberService";
+import Member from "Frontend/generated/com/flickr/entities/Member";
 
 export const config: ViewConfig = {
     menu: { order: 5, icon: "line-awesome/svg/file.svg" },
@@ -21,6 +22,8 @@ export default function PreferencesView() {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [streamingPlatforms, setStreamingPlatforms] = useState([]);
     const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+    const [member, setMember] = useState<Member>();
+    const [inSession, setInSession] = useState(true);
 
     // Retrieve every genre option available on The Movie Database
     const fetchGenres = async () => {
@@ -72,9 +75,30 @@ export default function PreferencesView() {
         }
     };
 
+    const fetchMember = async () => {
+        const memberData = await getMemberById(memberId);
+        setMember(memberData);
+
+        // Check if the member is no longer part of a session
+        if (memberData?.sessionId === 0) {
+            setInSession(false);
+        }
+    };
+
     const fetchDisplayName = async () => {
         setDisplayName(await getMemberDisplayName(memberId ?? "") ?? "")
     }
+
+    const fetchGroupCode = async () => {
+        const response = await fetch(`/api/session/${memberId}`);
+        const session = await response.json();
+        setGroupCode(session.groupCode);
+    }
+
+    const fetchLogin = async () => {
+        const result = await isLoggedIn();
+        setLoggedIn(result);
+    };
 
     const submit = async () => {
         await fetch(`/api/session/${memberId}/displayName`, {
@@ -109,24 +133,28 @@ export default function PreferencesView() {
         window.location.href = `/landing/${memberId}`;
     }
 
-    const fetchGroupCode = async () => {
-        const response = await fetch(`/api/session/${memberId}`);
-        const session = await response.json();
-        setGroupCode(session.groupCode);
-    }
-
-    const fetchLogin = async () => {
-        const result = await isLoggedIn();
-        setLoggedIn(result);
-    };
-
     useEffect(() => {
+        fetchMember();
         fetchLogin()
-        fetchGroupCode()
-        fetchDisplayName()
-        fetchGenres().then(setGenres)
-        fetchStreamingPlatforms().then(setStreamingPlatforms)
-    }, []);
+
+        if (inSession) {
+            fetchGroupCode()
+            fetchDisplayName()
+            fetchGenres().then(setGenres)
+            fetchStreamingPlatforms().then(setStreamingPlatforms)
+        }
+    }, [inSession, memberId, member]);
+
+    if (!inSession) {
+        return (
+            <div style={{ textAlign: 'center', marginTop: '20%' }}>
+                <h2>It appears that you're no longer in this session</h2>
+                <Button style={{ marginTop: '20px' }} onClick={() => (window.location.href = '/start')}>
+                    Join Another Group
+                </Button>
+            </div>
+        );
+    }
 
     return (
         <div style={style.outerDiv}>
@@ -139,6 +167,7 @@ export default function PreferencesView() {
                     label="Display Name:"
                     value={displayName}
                     style={{ width: '300px' }}
+                    maxlength={10}
                     onValueChanged={(e) => setDisplayName(e.detail.value)}
                 />
 
