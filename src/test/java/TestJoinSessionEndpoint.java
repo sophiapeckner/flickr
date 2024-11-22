@@ -1,5 +1,4 @@
 import com.flickr.controllers.JoinSessionEndpoint;
-import com.flickr.controllers.LogInEndpoint;
 import com.flickr.entities.Member;
 import com.flickr.entities.Session;
 import com.flickr.storage.MemberRepository;
@@ -23,11 +22,13 @@ public class TestJoinSessionEndpoint {
     @Mock
     private MemberRepository mockMemberRepository;
 
-    private JoinSessionEndpoint joinSessionEndpointTestObj = new JoinSessionEndpoint(mockSessionRepository, mockMemberRepository);
+    private JoinSessionEndpoint joinSessionEndpointTestObj = new JoinSessionEndpoint(
+            mockSessionRepository, mockMemberRepository);
 
     private final Session sampleSession = new Session();
     private final String sampleEmail = "thisEmail@gmial.com";
-    private final Member sampleMember = new Member("sampleEmail@gmail.com", "sampleUser", "samplePass");
+    private final Member sampleMember = new Member(
+            "sampleEmail@gmail.com", "sampleUser", "samplePass");
 
     @BeforeEach
     public void setup() {
@@ -40,41 +41,127 @@ public class TestJoinSessionEndpoint {
     @Test
     void testJoinSessionNotFound(){
         String expected = "Session not found";
-        Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockSessionRepository
+                .findById(sampleSession.getId()))
+                .thenReturn(Optional.empty());
 
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            joinSessionEndpointTestObj.joinSession(sampleSession.getId(), sampleEmail);
+            joinSessionEndpointTestObj
+                    .joinSession(sampleSession.getId(), sampleEmail);
         });
         Assertions.assertEquals(expected, exception.getMessage());
 
-        Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
-        Mockito.verify(mockMemberRepository, Mockito.times(0)).findByEmail(Mockito.any(String.class));
-        Mockito.verify(mockMemberRepository, Mockito.times(0)).save(Mockito.any(Member.class));
-        Mockito.verify(mockSessionRepository, Mockito.times(0)).save(Mockito.any(Session.class));
+        Mockito.verify(mockSessionRepository, Mockito
+                .times(1))
+                .findById(Mockito.any(Long.class));
+        Mockito.verify(mockMemberRepository, Mockito
+                .times(0))
+                .findByEmail(Mockito.any(String.class));
+        Mockito.verify(mockMemberRepository, Mockito
+                .times(0))
+                .save(Mockito.any(Member.class));
+        Mockito.verify(mockSessionRepository, Mockito
+                .times(0))
+                .save(Mockito.any(Session.class));
     }
 
+
+    //I do not think that this works the way that Iwant it to
+    // I want to test that logging in without an email works correctly.
+    // but how do I get the memberId of the member that is created in the middle of the method
     @Test
     void testJoinSessionAnonJoin(){
         String expected = sampleMember.getId().toString();
-        Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.of(sampleSession));
-        Mockito.when(mockMemberRepository.save(sampleMember)).thenReturn(sampleMember);
-        Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
+        Mockito.when(mockSessionRepository
+                .findById(sampleSession.getId()))
+                .thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockMemberRepository
+                .save(sampleMember))
+                .thenReturn(sampleMember);
+        Mockito.when(mockSessionRepository
+                .save(sampleSession))
+                .thenReturn(sampleSession);
 
-        String actualResult = joinSessionEndpointTestObj.joinSession(sampleSession.getId(), "");
+        String actualResult = joinSessionEndpointTestObj
+                .joinSession(sampleSession.getId(), "");
         Assertions.assertEquals(expected, actualResult);
 
-        Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
-        Mockito.verify(mockMemberRepository, Mockito.times(0)).findByEmail(Mockito.any(String.class));
-        Mockito.verify(mockMemberRepository, Mockito.times(1)).save(Mockito.any(Member.class));
-        Mockito.verify(mockSessionRepository, Mockito.times(1)).save(Mockito.any(Session.class));
+        Mockito.verify(mockSessionRepository, Mockito
+                .times(1))
+                .findById(Mockito.any(Long.class));
+        Mockito.verify(mockMemberRepository, Mockito
+                .times(0))
+                .findByEmail(Mockito.any(String.class));
+        Mockito.verify(mockMemberRepository, Mockito
+                .times(1))
+                .save(Mockito.any(Member.class));
+        Mockito.verify(mockSessionRepository, Mockito
+                .times(1))
+                .save(Mockito.any(Session.class));
     }
 
     @Test
     void testJoinSessionMemberJoin(){
+        Mockito.when(mockSessionRepository
+                .findById(sampleSession.getId()))
+                .thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockMemberRepository
+                .findByEmail(sampleEmail))
+                .thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockMemberRepository
+                .save(sampleMember))
+                .thenReturn(sampleMember);
+        Mockito.when(mockSessionRepository
+                .save(sampleSession))
+                .thenReturn(sampleSession);
+
         String expected = sampleMember.getId().toString();
-        Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.of(sampleSession));
-        Mockito.when(mockMemberRepository.findByEmail(sampleEmail)).thenReturn(Optional.of(sampleMember));
-        String actual = joinSessionEndpointTestObj.joinSession(sampleSession.getId(), sampleEmail);
+        String actual = joinSessionEndpointTestObj
+                .joinSession(sampleSession.getId(), sampleEmail);
+
         Assertions.assertEquals(expected, actual);
+
+        Mockito.verify(mockSessionRepository, Mockito
+                .times(1))
+                .findById(Mockito.any(Long.class));
+        Mockito.verify(mockMemberRepository, Mockito
+                .times(1))
+                .findByEmail(Mockito.any(String.class));
+        Mockito.verify(mockMemberRepository, Mockito
+                .times(1))
+                .save(Mockito.any(Member.class));
+        Mockito.verify(mockSessionRepository, Mockito
+                .times(1))
+                .save(Mockito.any(Session.class));
+    }
+
+    @Test
+    void testJoinSessionMemberByEmailFail(){
+        String expected = "Member not found with email: " + sampleEmail;
+        Mockito.when(mockSessionRepository
+                .findById(sampleSession.getId()))
+                .thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockMemberRepository
+                .findByEmail(sampleEmail))
+                .thenReturn(Optional.empty());
+
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            joinSessionEndpointTestObj
+                    .joinSession(sampleSession.getId(), sampleEmail);
+        });
+        Assertions.assertEquals(expected, exception.getMessage());
+
+        Mockito.verify(mockSessionRepository, Mockito
+                        .times(1))
+                .findById(Mockito.any(Long.class));
+        Mockito.verify(mockMemberRepository, Mockito
+                        .times(1))
+                .findByEmail(Mockito.any(String.class));
+        Mockito.verify(mockMemberRepository, Mockito
+                        .times(0))
+                .save(Mockito.any(Member.class));
+        Mockito.verify(mockSessionRepository, Mockito
+                        .times(0))
+                .save(Mockito.any(Session.class));
     }
 }

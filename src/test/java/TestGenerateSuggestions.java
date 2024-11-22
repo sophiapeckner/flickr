@@ -10,6 +10,7 @@ import com.flickr.storage.MovieRepository;
 import com.flickr.storage.SessionMovieRepository;
 import com.flickr.storage.SessionRepository;
 
+import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -65,7 +67,7 @@ public class TestGenerateSuggestions {
      * But until then this will stay here
      */
     @Test
-    public void testGenerateSuggestions() {
+    public void testGenerateSuggestions() throws JSONException, IOException, InterruptedException{
         Mockito.when(mockSessionService.fetchMembersSession(sampleMember.getId().toString())).thenReturn(sampleSession);
         Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
 //        Mockito.when(mockSessionMovieRepository.findById(sampleMovie.getId())).thenReturn(Optional.of(sampleSessionMovie));
