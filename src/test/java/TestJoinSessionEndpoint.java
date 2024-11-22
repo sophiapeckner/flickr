@@ -25,8 +25,9 @@ public class TestJoinSessionEndpoint {
 
     private JoinSessionEndpoint joinSessionEndpointTestObj = new JoinSessionEndpoint(mockSessionRepository, mockMemberRepository);
 
-    private Session sampleSession = new Session();
-    private String sampleEmail = "thisEmail@gmial.com";
+    private final Session sampleSession = new Session();
+    private final String sampleEmail = "thisEmail@gmial.com";
+    private final Member sampleMember = new Member("sampleEmail@gmail.com", "sampleUser", "samplePass");
 
     @BeforeEach
     public void setup() {
@@ -50,9 +51,30 @@ public class TestJoinSessionEndpoint {
         Mockito.verify(mockMemberRepository, Mockito.times(0)).findByEmail(Mockito.any(String.class));
         Mockito.verify(mockMemberRepository, Mockito.times(0)).save(Mockito.any(Member.class));
         Mockito.verify(mockSessionRepository, Mockito.times(0)).save(Mockito.any(Session.class));
-
-
     }
 
+    @Test
+    void testJoinSessionAnonJoin(){
+        String expected = sampleMember.getId().toString();
+        Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockMemberRepository.save(sampleMember)).thenReturn(sampleMember);
+        Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
 
+        String actualResult = joinSessionEndpointTestObj.joinSession(sampleSession.getId(), "");
+        Assertions.assertEquals(expected, actualResult);
+
+        Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
+        Mockito.verify(mockMemberRepository, Mockito.times(0)).findByEmail(Mockito.any(String.class));
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).save(Mockito.any(Member.class));
+        Mockito.verify(mockSessionRepository, Mockito.times(1)).save(Mockito.any(Session.class));
+    }
+
+    @Test
+    void testJoinSessionMemberJoin(){
+        String expected = sampleMember.getId().toString();
+        Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockMemberRepository.findByEmail(sampleEmail)).thenReturn(Optional.of(sampleMember));
+        String actual = joinSessionEndpointTestObj.joinSession(sampleSession.getId(), sampleEmail);
+        Assertions.assertEquals(expected, actual);
+    }
 }
