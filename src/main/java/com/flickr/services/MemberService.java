@@ -19,9 +19,19 @@ public class MemberService {
      * @param memberId String representation of member's ID
      * @return Member with member ID
      */
-    public Member getMember(String memberId) {
+    public Member getMemberById(String memberId) {
         return memberRepository.findById(Long.valueOf(memberId))
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+    }
+
+    /**
+     * Fetch member by email (requires Member to be authenticated)
+     * @param email Member's email
+     * @return Member with corresponding email
+     */
+    public Member getMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found with email: " + email));
     }
 
     /**
@@ -30,7 +40,7 @@ public class MemberService {
      * @return Display name
      */
     public String getMemberDisplayName(String memberId) {
-        return getMember(memberId).getDisplayName();
+        return getMemberById(memberId).getDisplayName();
     }
 }
 

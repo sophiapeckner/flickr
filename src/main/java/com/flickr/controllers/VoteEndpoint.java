@@ -126,7 +126,7 @@ public class VoteEndpoint {
     @PutMapping("/{memberId}/updateMovieIndex")
     public Member updateMemberMovieIndex(@PathVariable String memberId, @RequestBody Map<String, Integer> request) {
         int movieIndex = request.get("movieIndex");
-        Member member = memberService.getMember(memberId);
+        Member member = memberService.getMemberById(memberId);
         member.setMovieIndex(movieIndex);
         return memberRepository.save(member);
     }
@@ -152,7 +152,7 @@ public class VoteEndpoint {
      */
     @PutMapping("/{movieId}/addVoter/{memberId}")
     public SessionMovie addVoter(@PathVariable Long movieId, @PathVariable String memberId) {
-        String voter = memberService.getMember(memberId).getDisplayName();
+        String voter = memberService.getMemberById(memberId).getDisplayName();
         SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("SessionMovie not found"));
         sessionMovie.getVoters().add(voter);
