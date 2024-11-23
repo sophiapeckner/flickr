@@ -1,12 +1,11 @@
 package com.flickr.controllers;
 
-import com.flickr.SessionService;
+import com.flickr.services.SessionService;
 import com.flickr.entities.Member;
 import com.flickr.entities.Movie;
 import com.flickr.entities.Session;
 import com.flickr.entities.SessionMovie;
 import com.flickr.services.MemberService;
-import com.flickr.services.SessionService;
 import com.flickr.storage.MemberRepository;
 import com.flickr.storage.MovieRepository;
 import com.flickr.storage.SessionMovieRepository;
@@ -42,12 +41,13 @@ public class VoteEndpoint {
     private final SecureRandom random = new SecureRandom();
     private final MemberService memberService;
 
-    VoteEndpoint (SessionRepository sessionRepository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, SessionService sessionService) {
+    public VoteEndpoint (SessionRepository sessionRepository, MovieRepository movieRepository, SessionMovieRepository sessionMovieRepository, MemberRepository memberRepository, SessionService sessionService, MemberService memberService) {
         this.sessionRepository = sessionRepository;
         this.movieRepository = movieRepository;
         this.sessionMovieRepository = sessionMovieRepository;
         this.memberRepository = memberRepository;
         this.sessionService = sessionService;
+//        I don't know if this is supposed to be in the constructor or if it needs a 'new MemberService();' call
         this.memberService = memberService;
     }
 
@@ -56,7 +56,7 @@ public class VoteEndpoint {
      * @param memberId Member's ID
      * @return Member object
      */
-    //endpoint - something that the frontend calls in order to fatech data - similar to an api
+    //endpoint - something that the frontend calls in order to fetch data - similar to an api
     //Fake api is basically located at /api/vote/memberid
     // that is what @PathVariable does
     @GetMapping("/{memberId}")

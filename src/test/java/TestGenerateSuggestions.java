@@ -1,4 +1,5 @@
-import com.flickr.SessionService;
+import com.flickr.services.MemberService;
+import com.flickr.services.SessionService;
 import com.flickr.controllers.VoteEndpoint;
 import com.flickr.entities.Member;
 
@@ -38,9 +39,11 @@ public class TestGenerateSuggestions {
     private MemberRepository mockMemberRepository;
     @Mock
     private SessionService mockSessionService;
+    @Mock
+    private MemberService mockMemberService;
 
     @InjectMocks
-    private VoteEndpoint voteEndpointTestObj = new VoteEndpoint(mockSessionRepository, mockMovieRepository, mockSessionMovieRepository, mockMemberRepository, mockSessionService);
+    private VoteEndpoint voteEndpointTestObj = new VoteEndpoint(mockSessionRepository, mockMovieRepository, mockSessionMovieRepository, mockMemberRepository, mockSessionService, mockMemberService);
 
     private final Member sampleMember = new Member("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
     private final Movie sampleMovie = new Movie();
@@ -56,7 +59,7 @@ public class TestGenerateSuggestions {
         mockSessionMovieRepository = Mockito.mock(SessionMovieRepository.class);
         mockMemberRepository = Mockito.mock(MemberRepository.class);
         mockSessionService = Mockito.mock(SessionService.class);
-        voteEndpointTestObj = new VoteEndpoint(mockSessionRepository, mockMovieRepository, mockSessionMovieRepository, mockMemberRepository, mockSessionService);
+        voteEndpointTestObj = new VoteEndpoint(mockSessionRepository, mockMovieRepository, mockSessionMovieRepository, mockMemberRepository, mockSessionService, mockMemberService);
         sampleRequestBody.put("movieIndex", 6);
     }
 

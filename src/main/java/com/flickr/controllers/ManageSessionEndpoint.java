@@ -24,7 +24,7 @@ public class ManageSessionEndpoint {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    ManageSessionEndpoint(SessionRepository sessionRepository, SessionService sessionService, MemberRepository memberRepository, MemberService memberService) {
+    public ManageSessionEndpoint(SessionRepository sessionRepository, SessionService sessionService, MemberRepository memberRepository, MemberService memberService) {
         this.sessionRepository = sessionRepository;
         this.sessionService = sessionService;
         this.memberRepository = memberRepository;
