@@ -15,11 +15,10 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-public class TestLogin {
+public class LoginTest {
 
     @Mock
     private MemberRepository mockMemberRepository;

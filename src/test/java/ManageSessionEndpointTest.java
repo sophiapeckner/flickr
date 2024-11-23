@@ -1,7 +1,5 @@
-import com.flickr.controllers.JoinSessionEndpoint;
 import com.flickr.controllers.ManageSessionEndpoint;
 import com.flickr.entities.Member;
-import com.flickr.entities.Session;
 import com.flickr.services.MemberService;
 import com.flickr.services.SessionService;
 import com.flickr.storage.MemberRepository;
@@ -19,9 +17,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class testManageSessionEndpoint {
+public class ManageSessionEndpointTest {
 
     @Mock
     SessionRepository mockSessionRepository;

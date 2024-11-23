@@ -24,10 +24,10 @@ import org.mockito.MockitoAnnotations;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class TestGenerateSuggestions {
+public class GenerateSuggestionsTest {
 
     @Mock
     private SessionRepository mockSessionRepository;
