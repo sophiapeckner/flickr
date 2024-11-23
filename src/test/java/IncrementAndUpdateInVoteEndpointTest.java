@@ -34,13 +34,10 @@ public class IncrementAndUpdateInVoteEndpointTest {
     private SessionMovieRepository mockSessionMovieRepository;
     @Mock
     private MemberRepository mockMemberRepository;
-    @Mock
     private SessionService mockSessionService;
-    @Mock
     private MemberService mockMemberService;
 
-    @InjectMocks
-    private VoteEndpoint voteEndpointTestObj = new VoteEndpoint(mockSessionRepository, mockMovieRepository, mockSessionMovieRepository, mockMemberRepository, mockSessionService, mockMemberService);
+    private VoteEndpoint voteEndpointTestObj;
 
     private final Member sampleMember = new Member("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
     private final Movie sampleMovie = new Movie();
@@ -54,7 +51,8 @@ public class IncrementAndUpdateInVoteEndpointTest {
         mockMovieRepository = Mockito.mock(MovieRepository.class);
         mockSessionMovieRepository = Mockito.mock(SessionMovieRepository.class);
         mockMemberRepository = Mockito.mock(MemberRepository.class);
-        mockSessionService = Mockito.mock(SessionService.class);
+        mockSessionService = new SessionService(mockMemberRepository, mockSessionRepository);
+        mockMemberService = new MemberService(mockMemberRepository);
         voteEndpointTestObj = new VoteEndpoint(mockSessionRepository, mockMovieRepository, mockSessionMovieRepository, mockMemberRepository, mockSessionService, mockMemberService);
         sampleRequestBody.put("movieIndex", 6);
     }
@@ -64,10 +62,10 @@ public class IncrementAndUpdateInVoteEndpointTest {
         Mockito.when(mockSessionMovieRepository.findById(sampleMovie.getId())).thenReturn(Optional.of(sampleSessionMovie));
         Mockito.when(mockSessionMovieRepository.save(sampleSessionMovie)).thenReturn(sampleSessionMovie);
 
-        Assertions.assertEquals(sampleSessionMovie, voteEndpointTestObj.incrementMovieVoteCount(sampleMember.getId()));
+        Assertions.assertEquals(sampleSessionMovie, voteEndpointTestObj.incrementMovieVoteCount(sampleMovie.getId()));
 
-        Mockito.verify(mockSessionMovieRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
-        Mockito.verify(mockSessionMovieRepository, Mockito.times(1)).save(Mockito.any(SessionMovie.class));
+        Mockito.verify(mockSessionMovieRepository, Mockito.times(1)).findById(sampleMovie.getId());
+        Mockito.verify(mockSessionMovieRepository, Mockito.times(1)).save(sampleSessionMovie);
     }
 
     @Test
@@ -81,7 +79,7 @@ public class IncrementAndUpdateInVoteEndpointTest {
 
         Assertions.assertEquals(expectedException, exception.getMessage());
 
-        Mockito.verify(mockSessionMovieRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
+        Mockito.verify(mockSessionMovieRepository, Mockito.times(1)).findById(sampleMovie.getId());
         Mockito.verify(mockSessionMovieRepository, Mockito.times(0)).save(Mockito.any(SessionMovie.class));
     }
 
@@ -92,8 +90,8 @@ public class IncrementAndUpdateInVoteEndpointTest {
 
         Assertions.assertEquals(sampleMember, voteEndpointTestObj.updateMemberMovieIndex(sampleMember.getId().toString(), sampleRequestBody));
 
-        Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
-        Mockito.verify(mockMemberRepository, Mockito.times(1)).save(Mockito.any(Member.class));
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).save(sampleMember);
     }
 
     @Test
@@ -101,7 +99,7 @@ public class IncrementAndUpdateInVoteEndpointTest {
         String expectedException = "Member not found";
         Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.empty());
 
-        Exception exception = Assertions.assertThrows(IllegalAccessException.class, () -> {
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             voteEndpointTestObj.updateMemberMovieIndex(sampleMember.getId().toString(), sampleRequestBody);
         });
 

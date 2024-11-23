@@ -23,7 +23,7 @@ public class JoinSessionEndpointTest {
     private JoinSessionEndpoint joinSessionEndpointTestObj = new JoinSessionEndpoint(
             mockSessionRepository, mockMemberRepository);
 
-    private final Session sampleSession = new Session();
+    private final Session sampleSession = new Session("D4572HF3");
     private final String sampleEmail = "thisEmail@gmial.com";
     private final Member sampleMember = new Member(
             "sampleEmail@gmail.com", "sampleUser", "samplePass");
@@ -51,7 +51,7 @@ public class JoinSessionEndpointTest {
 
         Mockito.verify(mockSessionRepository, Mockito
                 .times(1))
-                .findById(Mockito.any(Long.class));
+                .findById(sampleSession.getId());
         Mockito.verify(mockMemberRepository, Mockito
                 .times(0))
                 .findByEmail(Mockito.any(String.class));
@@ -64,7 +64,7 @@ public class JoinSessionEndpointTest {
     }
 
 
-    //I do not think that this works the way that Iwant it to
+    //I do not think that this works the way that I want it to
     // I want to test that logging in without an email works correctly.
     // but how do I get the memberId of the member that is created in the middle of the method
     @Test
@@ -74,7 +74,7 @@ public class JoinSessionEndpointTest {
                 .findById(sampleSession.getId()))
                 .thenReturn(Optional.of(sampleSession));
         Mockito.when(mockMemberRepository
-                .save(sampleMember))
+                .save(Mockito.any(Member.class)))
                 .thenReturn(sampleMember);
         Mockito.when(mockSessionRepository
                 .save(sampleSession))
@@ -86,7 +86,7 @@ public class JoinSessionEndpointTest {
 
         Mockito.verify(mockSessionRepository, Mockito
                 .times(1))
-                .findById(Mockito.any(Long.class));
+                .findById(sampleSession.getId());
         Mockito.verify(mockMemberRepository, Mockito
                 .times(0))
                 .findByEmail(Mockito.any(String.class));
@@ -95,7 +95,7 @@ public class JoinSessionEndpointTest {
                 .save(Mockito.any(Member.class));
         Mockito.verify(mockSessionRepository, Mockito
                 .times(1))
-                .save(Mockito.any(Session.class));
+                .save(sampleSession);
     }
 
     @Test
@@ -121,16 +121,16 @@ public class JoinSessionEndpointTest {
 
         Mockito.verify(mockSessionRepository, Mockito
                 .times(1))
-                .findById(Mockito.any(Long.class));
+                .findById(sampleSession.getId());
         Mockito.verify(mockMemberRepository, Mockito
                 .times(1))
-                .findByEmail(Mockito.any(String.class));
+                .findByEmail(sampleEmail);
         Mockito.verify(mockMemberRepository, Mockito
                 .times(1))
-                .save(Mockito.any(Member.class));
+                .save(sampleMember);
         Mockito.verify(mockSessionRepository, Mockito
                 .times(1))
-                .save(Mockito.any(Session.class));
+                .save(sampleSession);
     }
 
     @Test
@@ -151,10 +151,10 @@ public class JoinSessionEndpointTest {
 
         Mockito.verify(mockSessionRepository, Mockito
                         .times(1))
-                .findById(Mockito.any(Long.class));
+                .findById(sampleSession.getId());
         Mockito.verify(mockMemberRepository, Mockito
                         .times(1))
-                .findByEmail(Mockito.any(String.class));
+                .findByEmail(sampleEmail);
         Mockito.verify(mockMemberRepository, Mockito
                         .times(0))
                 .save(Mockito.any(Member.class));

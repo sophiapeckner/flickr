@@ -78,8 +78,8 @@ public class LoginTest {
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(sampleMember.getEmail());
     }
 
-    @Test
-    public void testLoginFiller(){
-        //We need to come up with another test here
-    }
+//    @Test
+//    public void testLoginFiller(){
+//        //We need to come up with another test here
+//    }
 }
