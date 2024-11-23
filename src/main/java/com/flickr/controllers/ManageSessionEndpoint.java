@@ -54,7 +54,7 @@ public class ManageSessionEndpoint {
      * @return The newly created session
      */
     public Session createSession() {
-        String groupCode = UUID.randomUUID().toString().substring(0, 8);
+        String groupCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         return sessionRepository.save(new Session(groupCode));
     }
 

@@ -13,8 +13,17 @@ export const config: ViewConfig = {
 };
 
 export default function GroupCodeView() {
-  const [groupCode, setGroupCode] = useState("")
-  const [loggedIn, setLoggedIn] = useState(false);
+    const [groupCode, setGroupCode] = useState("")
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [inputValue, setInputValue] = useState("");
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        // Regular expression to allow only letters and numbers (uppercase and lowercase)
+        if (/^[a-zA-Z0-9]*$/.test(value)) {
+            setInputValue(value); // Update state only if input contains letters or numbers
+        }
+    };
 
   useEffect(() => {
     const fetchLogin = async () => {
@@ -25,7 +34,7 @@ export default function GroupCodeView() {
   }, []);
 
   const submit = async () => {
-      let session = await fetchSessionByGroupCode(groupCode);
+      let session = await fetchSessionByGroupCode(groupCode.toUpperCase());
 
       if (session.id == null) {
           console.log("Session's ID is null");
@@ -54,8 +63,10 @@ export default function GroupCodeView() {
                   '--vaadin-input-field-label-font-size': '20px',
                   '--vaadin-input-field-value-font-size': '32px',
                 } as React.CSSProperties}
-                placeholder="XXXXXX"
+                placeholder="XXXXXXXX"
                 value={groupCode}
+                maxlength={8}
+                onChange={handleInputChange}
                 onValueChanged={(e) => setGroupCode(e.detail.value)}>
             </TextField>
           </div>
@@ -82,5 +93,6 @@ const styles = {
     width: '75%',
     borderRadius: 24,
     marginBottom: '20px',
+      textTransform: 'uppercase'
   },
 }
