@@ -19,6 +19,9 @@ const checkLoginStatus = async () => {
 
 export default function StartView() {
   const [allowCreateGroup, setAllowCreateGroup] = useState(false);
+  const [joinButtonHover, setJoinButtonHover] = useState(false);
+  const [createButtonHover, setCreateButtonHover] = useState(false);
+
 
   useEffect(() => {
     const fetchLogin = async () => {
@@ -66,9 +69,22 @@ export default function StartView() {
 
         <h2 style={style.pageTitle}>flickr</h2>
         <div style={{...style.innerDiv, ...style.innerDivAddOn}}>
-          <Button style={style.groupChoiceButton} onClick={handleJoinGroup}>Join Group</Button>
+          <Button
+              style={{
+                ...style.groupChoiceButton,
+                backgroundColor: joinButtonHover ? colors.mainHovered : colors.main}}
+              onMouseEnter={() =>setJoinButtonHover(true)}
+              onMouseLeave={() => setJoinButtonHover(false)}
+              onClick={handleJoinGroup}
+          >Join Group</Button>
           {allowCreateGroup ? (
-              <Button style={style.groupChoiceButton} onClick={handleCreateGroup}>Create Group</Button>
+              <Button
+                  style={{
+                    ...style.groupChoiceButton,
+                    backgroundColor: createButtonHover ? colors.mainHovered : colors.main}}
+                  onMouseEnter={() =>setCreateButtonHover(true)}
+                  onMouseLeave={() => setCreateButtonHover(false)}
+                  onClick={handleCreateGroup}>Create Group</Button>
           ) : (
             <p style={{color: colors.main}}>
               Please{" "}
