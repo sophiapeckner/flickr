@@ -30,12 +30,18 @@ public class ManageSessionEndpointTest {
     private ManageSessionEndpoint manageSessionEndpointTestObj;
 
     private final Member sampleMember = new Member("thisEmail@gmail.com", "thisUser", "thisPass");
-    private final Map<String,String> sampleRequestBody = new HashMap<>();
+    private final Map<String,String> sampleRequestBody = new HashMap<>(){{
+        put("displayName", "updated");
+    }};
     private final Session sampleSession = new Session("432b423d");
-    private final Set<String> sampleGenreSet = new HashSet<>();
-    private final Set<String> samplePlatformSet = new HashSet<>();
-    private final List<String> sampleGenreList = new ArrayList<>();
-    private final List<String> samplePlatformList = new ArrayList<>();
+    private final Set<String> sampleGenreSet =
+            new HashSet<>(Arrays.asList("war", "romance"));
+    private final Set<String> samplePlatformSet =
+            new HashSet<>(Arrays.asList("Netflix", "Hulu"));
+    private final List<String> sampleGenreList =
+            new ArrayList<>(List.of("war", "romance"));
+    private final List<String> samplePlatformList =
+            new ArrayList<>(List.of("Netflix", "Hulu"));
 
     @BeforeEach
     void setup() {
@@ -45,15 +51,6 @@ public class ManageSessionEndpointTest {
         mockMemberService = new MemberService(mockMemberRepository);
         mockSessionService = new SessionService(mockMemberRepository, mockSessionRepository);
         manageSessionEndpointTestObj = new ManageSessionEndpoint(mockSessionRepository, mockSessionService, mockMemberRepository, mockMemberService);
-        sampleRequestBody.put("displayName", "updated");
-        sampleGenreList.add("war");
-        sampleGenreList.add("romance");
-        sampleGenreSet.add("war");
-        sampleGenreSet.add("romance");
-        samplePlatformList.add("Netflix");
-        samplePlatformList.add("Hulu");
-        samplePlatformSet.add("Netflix");
-        samplePlatformSet.add("Hulu");
     }
 
     @Test
@@ -100,29 +97,53 @@ public class ManageSessionEndpointTest {
 
     @Test
     void testUpdateGenres(){
-        Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.of(sampleMember));
-        Mockito.when(mockSessionRepository.findById(sampleMember.getSessionId())).thenReturn(Optional.of(sampleSession));
-        Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
+        Mockito.when(mockMemberRepository
+                .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockSessionRepository
+                .findById(sampleMember.getSessionId()))
+                .thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockSessionRepository
+                .save(sampleSession))
+                .thenReturn(sampleSession);
 
         Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateGenres(sampleMember.getId().toString(), sampleGenreList));
         Assertions.assertEquals(sampleGenreSet, sampleSession.getGenres());
 
-        Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
-        Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(sampleMember.getSessionId());
-        Mockito.verify(mockSessionRepository, Mockito.times(1)).save(sampleSession);
+        Mockito.verify(mockMemberRepository,
+                Mockito.times(1))
+                .findById(sampleMember.getId());
+        Mockito.verify(mockSessionRepository,
+                Mockito.times(1))
+                .findById(sampleMember.getSessionId());
+        Mockito.verify(mockSessionRepository,
+                Mockito.times(1))
+                .save(sampleSession);
     }
 
     @Test
     void testUpdateStreamingPlatforms(){
-        Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.of(sampleMember));
-        Mockito.when(mockSessionRepository.findById(sampleMember.getSessionId())).thenReturn(Optional.of(sampleSession));
-        Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
+        Mockito.when(mockMemberRepository
+                .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockSessionRepository
+                .findById(sampleMember.getSessionId()))
+                .thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockSessionRepository
+                .save(sampleSession))
+                .thenReturn(sampleSession);
 
         Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateGenres(sampleMember.getId().toString(), samplePlatformList));
         Assertions.assertEquals(samplePlatformSet, sampleSession.getGenres());
 
-        Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
-        Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(sampleMember.getSessionId());
-        Mockito.verify(mockSessionRepository, Mockito.times(1)).save(sampleSession);
+        Mockito.verify(mockMemberRepository,
+                Mockito.times(1))
+                .findById(sampleMember.getId());
+        Mockito.verify(mockSessionRepository,
+                Mockito.times(1))
+                .findById(sampleMember.getSessionId());
+        Mockito.verify(mockSessionRepository,
+                Mockito.times(1))
+                .save(sampleSession);
     }
 }
