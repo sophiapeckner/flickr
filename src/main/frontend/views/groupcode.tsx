@@ -2,6 +2,7 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {Button, TextField} from "@vaadin/react-components";
+import type { TextFieldChangeEvent } from '@vaadin/react-components';
 import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {fetchSessionByGroupCode} from "Frontend/generated/ManageSessionEndpoint";
@@ -15,15 +16,6 @@ export const config: ViewConfig = {
 export default function GroupCodeView() {
     const [groupCode, setGroupCode] = useState("")
     const [loggedIn, setLoggedIn] = useState(false);
-    const [inputValue, setInputValue] = useState("");
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        // Regular expression to allow only letters and numbers (uppercase and lowercase)
-        if (/^[a-zA-Z0-9]*$/.test(value)) {
-            setInputValue(value); // Update state only if input contains letters or numbers
-        }
-    };
 
   useEffect(() => {
     const fetchLogin = async () => {
@@ -66,7 +58,8 @@ export default function GroupCodeView() {
                 placeholder="XXXXXXXX"
                 value={groupCode}
                 maxlength={8}
-                onChange={handleInputChange}
+                allowedCharPattern="[0-9a-zA-Z]"
+                clearButtonVisible={true}
                 onValueChanged={(e) => setGroupCode(e.detail.value)}>
             </TextField>
           </div>
