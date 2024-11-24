@@ -17,7 +17,7 @@ public class JoinSessionEndpoint {
     private final SessionRepository sessionRepository;
     private final MemberRepository memberRepository;
 
-    JoinSessionEndpoint(SessionRepository sessionRepository, MemberRepository memberRepository) {
+    public JoinSessionEndpoint(SessionRepository sessionRepository, MemberRepository memberRepository) {
         this.sessionRepository = sessionRepository;
         this.memberRepository = memberRepository;
     }

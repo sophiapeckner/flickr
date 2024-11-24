@@ -1,5 +1,5 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {Button, TextField} from "@vaadin/react-components";
 import type { TextFieldChangeEvent } from '@vaadin/react-components';
