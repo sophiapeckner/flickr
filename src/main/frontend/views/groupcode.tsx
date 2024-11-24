@@ -14,8 +14,8 @@ export const config: ViewConfig = {
 };
 
 export default function GroupCodeView() {
-  const [groupCode, setGroupCode] = useState("")
-  const [loggedIn, setLoggedIn] = useState(false);
+    const [groupCode, setGroupCode] = useState("")
+    const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchLogin = async () => {
@@ -26,7 +26,7 @@ export default function GroupCodeView() {
   }, []);
 
   const submit = async () => {
-      let session = await fetchSessionByGroupCode(groupCode);
+      let session = await fetchSessionByGroupCode(groupCode.toUpperCase());
 
       if (session.id == null) {
           console.log("Session's ID is null");
@@ -86,5 +86,6 @@ const styles = {
     width: '75%',
     borderRadius: 24,
     marginBottom: '20px',
+      textTransform: 'uppercase'
   },
 }

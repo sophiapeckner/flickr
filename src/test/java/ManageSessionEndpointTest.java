@@ -30,6 +30,7 @@ public class ManageSessionEndpointTest {
     private ManageSessionEndpoint manageSessionEndpointTestObj;
 
     private final Member sampleMember = new Member("thisEmail@gmail.com", "thisUser", "thisPass");
+
     private final Map<String,String> sampleRequestBody = new HashMap<>(){{
         put("displayName", "updated");
     }};
@@ -42,6 +43,7 @@ public class ManageSessionEndpointTest {
             new ArrayList<>(List.of("war", "romance"));
     private final List<String> samplePlatformList =
             new ArrayList<>(List.of("Netflix", "Hulu"));
+
 
     @BeforeEach
     void setup() {
@@ -107,6 +109,7 @@ public class ManageSessionEndpointTest {
                 .save(sampleSession))
                 .thenReturn(sampleSession);
 
+
         Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateGenres(sampleMember.getId().toString(), sampleGenreList));
         Assertions.assertEquals(sampleGenreSet, sampleSession.getGenres());
 
@@ -119,6 +122,7 @@ public class ManageSessionEndpointTest {
         Mockito.verify(mockSessionRepository,
                 Mockito.times(1))
                 .save(sampleSession);
+
     }
 
     @Test
@@ -132,6 +136,7 @@ public class ManageSessionEndpointTest {
         Mockito.when(mockSessionRepository
                 .save(sampleSession))
                 .thenReturn(sampleSession);
+
 
         Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateGenres(sampleMember.getId().toString(), samplePlatformList));
         Assertions.assertEquals(samplePlatformSet, sampleSession.getGenres());
