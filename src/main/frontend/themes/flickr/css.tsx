@@ -13,7 +13,7 @@ export const style = {
 		float: 'left',
 		fontSize: 20,
 		marginRight: 15,
-    color: colors.main
+        color: colors.main
 	},
 	topCornerButton: {
 		height: "25px",

@@ -7,6 +7,7 @@ import {CustomHeader} from "Frontend/themes/flickr/elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {fetchSessionByGroupCode} from "Frontend/generated/ManageSessionEndpoint";
 import {joinSession} from "Frontend/generated/JoinSessionEndpoint";
+import {colors} from "Frontend/themes/flickr/colors";
 
 export const config: ViewConfig = {
   menu: { order: 3, icon: "line-awesome/svg/file.svg" },
@@ -16,6 +17,7 @@ export const config: ViewConfig = {
 export default function GroupCodeView() {
   const [groupCode, setGroupCode] = useState("")
   const [loggedIn, setLoggedIn] = useState(false);
+  const [joinButtonHover, setJoinButtonHover] = useState(false);
 
   useEffect(() => {
     const fetchLogin = async () => {
@@ -26,7 +28,7 @@ export default function GroupCodeView() {
   }, []);
 
   const submit = async () => {
-      let session = await fetchSessionByGroupCode(groupCode);
+      let session = await fetchSessionByGroupCode(groupCode.toUpperCase());
 
       if (session.id == null) {
           console.log("Session's ID is null");
@@ -65,7 +67,11 @@ export default function GroupCodeView() {
           </div>
 
           <Button
-              style={style.groupChoiceButton}
+              style={{
+                  ...style.groupChoiceButton,
+                  backgroundColor: joinButtonHover ? colors.mainHovered : colors.main}}
+              onMouseEnter={() =>setJoinButtonHover(true)}
+              onMouseLeave={() => setJoinButtonHover(false)}
               onClick={submit}
           >
             Join

@@ -4,6 +4,7 @@ import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import {Button, EmailField, PasswordField, TextField} from "@vaadin/react-components";
 import {createUser} from "Frontend/generated/LogInEndpoint";
+import {colors} from "Frontend/themes/flickr/colors";
 
 export const config: ViewConfig = {
   menu: { order: 1, icon: "line-awesome/svg/file.svg" },
@@ -19,6 +20,7 @@ export default function SignUpView() {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const navigate = useNavigate();
+  const [signUpButtonHover, setSignUpButtonHover] = useState(false);
 
   const validateForm = () => {
     let isValid = true;
@@ -104,7 +106,11 @@ export default function SignUpView() {
 
 
               <Button
-                  style={style.button}
+                  style={{
+                    ...style.button,
+                    backgroundColor: signUpButtonHover ? colors.mainHovered : colors.main}}
+                  onMouseEnter={() =>setSignUpButtonHover(true)}
+                  onMouseLeave={() => setSignUpButtonHover(false)}
                   onClick={handleSignUp}
               >
                 Sign Up

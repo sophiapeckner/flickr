@@ -18,6 +18,7 @@ export default function GroupLandingView() {
     const [members, setMembers] = useState<Member[]>([]);
     const [groupCode, setGroupCode] = useState([]);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [startButtonHover, setStartButtonHover] = useState(false);
 
     const fetchLogin = async () => {
         const result = await isLoggedIn();
@@ -82,7 +83,14 @@ export default function GroupLandingView() {
         </Scroller>
 
         <div style={style.form}>
-          <Button style={style.button} onClick={submit}>Start Voting</Button>
+          <Button
+              style={{
+                  ...style.button,
+                  backgroundColor: startButtonHover ? colors.mainHovered : colors.main}}
+              onClick={submit}
+              onMouseEnter={() =>setStartButtonHover(true)}
+              onMouseLeave={() => setStartButtonHover(false)}
+          >Start Voting</Button>
         </div>
       </div>
     );
