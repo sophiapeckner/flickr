@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.InjectMocks;
+
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -63,6 +63,8 @@ public class IncrementAndUpdateInVoteEndpointTest {
         Mockito.when(mockSessionMovieRepository.save(sampleSessionMovie)).thenReturn(sampleSessionMovie);
 
         Assertions.assertEquals(sampleSessionMovie, voteEndpointTestObj.incrementMovieVoteCount(sampleMovie.getId()));
+        Assertions.assertEquals(1, sampleSessionMovie.getVoteCount());
+
 
         Mockito.verify(mockSessionMovieRepository, Mockito.times(1)).findById(sampleMovie.getId());
         Mockito.verify(mockSessionMovieRepository, Mockito.times(1)).save(sampleSessionMovie);
@@ -89,6 +91,7 @@ public class IncrementAndUpdateInVoteEndpointTest {
         Mockito.when(mockMemberRepository.save(sampleMember)).thenReturn(sampleMember);
 
         Assertions.assertEquals(sampleMember, voteEndpointTestObj.updateMemberMovieIndex(sampleMember.getId().toString(), sampleRequestBody));
+        Assertions.assertEquals(6, sampleMember.getMovieIndex());
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
         Mockito.verify(mockMemberRepository, Mockito.times(1)).save(sampleMember);
