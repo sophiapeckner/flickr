@@ -149,6 +149,6 @@ public class ManageSessionEndpoint {
             member.setSessionId(0L);
         }
         sessionRepository.delete(session);
-        return sessionRepository.save(session);
+        return session;
     }
 }
