@@ -52,19 +52,10 @@ public class LoginTest {
         String nonEncryptPass = "thisPass";
         String expected = sampleMember.getId().toString();
         Mockito.when(mockMemberRepository.findByEmail(sampleMember.getEmail())).thenReturn(Optional.of(sampleMember));
-//        Mockito.when(mockMemberRepository.findByUsername(MEMBER.getUsername())).thenReturn(Optional.empty());
-//        Mockito.when(mockMemberRepository.save(new Member())).thenReturn(new Member());
-        // need to figure out how to make this create user method use the same Member object as the save mockito call.
-//        memberServicesTestObj.createUser(MEMBER.getEmail(), MEMBER.getUsername(), MEMBER.getPass());
 
-//        Mockito.when(mockMemberRepository.findByEmail(MEMBER.getEmail())).thenReturn(Optional.of(MEMBER));
         Assertions.assertEquals(expected, memberServicesTestObj.login(sampleMember.getEmail(), nonEncryptPass));
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(sampleMember.getEmail());
-//        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByUsername(MEMBER.getUsername());
-//        Mockito.verify(mockMemberRepository, Mockito.times(1)).save(MEMBER);
-
-//        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(member.getEmail());
     }
 
     @Test

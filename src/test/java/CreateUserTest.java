@@ -19,25 +19,25 @@ public class CreateUserTest {
 
     private LogInEndpoint logInEndpointTestObj = new LogInEndpoint(mockMemberRepository);
 
-    private final String USERNAME = "thisUser";
-    private final String PASSWORD = new BCryptPasswordEncoder().encode("thisPass");
-    private final String EMAIL = "thisemail@gmail.com";
+    private final String sampleUsername = "thisUser";
+    private final String samplePass = new BCryptPasswordEncoder().encode("thisPass");
+    private final String sampleEmail = "thisemail@gmail.com";
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
         mockMemberRepository = Mockito.mock(MemberRepository.class);
         logInEndpointTestObj = new LogInEndpoint(mockMemberRepository);
     }
 
     @Test
-    public void testCreateUserSuccess() {
+    void testCreateUserSuccess() {
         String expected = "Account created";
-        Mockito.when(mockMemberRepository.findByUsername(USERNAME)).thenReturn(Optional.empty());
-        Mockito.when(mockMemberRepository.findByEmail(EMAIL)).thenReturn(Optional.empty());
-        Mockito.when(mockMemberRepository.save(new Member(USERNAME, PASSWORD, EMAIL))).thenReturn(new Member());
+        Mockito.when(mockMemberRepository.findByUsername(sampleUsername)).thenReturn(Optional.empty());
+        Mockito.when(mockMemberRepository.findByEmail(sampleEmail)).thenReturn(Optional.empty());
+        Mockito.when(mockMemberRepository.save(new Member(sampleUsername, samplePass, sampleEmail))).thenReturn(new Member());
 
-        Assertions.assertEquals(expected, logInEndpointTestObj.createUser(EMAIL, PASSWORD, USERNAME));
+        Assertions.assertEquals(expected, logInEndpointTestObj.createUser(sampleEmail, samplePass, sampleUsername));
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).save(Mockito.any(Member.class));
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
@@ -45,11 +45,11 @@ public class CreateUserTest {
     }
 
     @Test
-    public void testCreateUserEmailUsed(){
+    void testCreateUserEmailUsed(){
         String expected = "Email already in use";
-        Mockito.when(mockMemberRepository.findByEmail(EMAIL)).thenReturn(Optional.of(new Member()));
+        Mockito.when(mockMemberRepository.findByEmail(sampleEmail)).thenReturn(Optional.of(new Member()));
 
-        Assertions.assertEquals(expected, logInEndpointTestObj.createUser(EMAIL, USERNAME, PASSWORD));
+        Assertions.assertEquals(expected, logInEndpointTestObj.createUser(sampleEmail, sampleUsername, samplePass));
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
         Mockito.verify(mockMemberRepository, Mockito.times(0)).findByUsername(Mockito.any(String.class));
@@ -57,12 +57,12 @@ public class CreateUserTest {
     }
 
     @Test
-    public void testCreateUserNameUsed(){
+    void testCreateUserNameUsed(){
         String expected = "Username already in use";
-        Mockito.when(mockMemberRepository.findByEmail(EMAIL)).thenReturn(Optional.empty());
-        Mockito.when(mockMemberRepository.findByUsername(USERNAME)).thenReturn(Optional.of(new Member()));
+        Mockito.when(mockMemberRepository.findByEmail(sampleEmail)).thenReturn(Optional.empty());
+        Mockito.when(mockMemberRepository.findByUsername(sampleUsername)).thenReturn(Optional.of(new Member()));
 
-        Assertions.assertEquals(expected, logInEndpointTestObj.createUser(EMAIL, USERNAME, PASSWORD));
+        Assertions.assertEquals(expected, logInEndpointTestObj.createUser(sampleEmail, sampleUsername, samplePass));
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByUsername(Mockito.any(String.class));
