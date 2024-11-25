@@ -4,7 +4,7 @@ import {style} from "../../themes/flickr/css.js";
 import {colors} from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
-import {CustomHeader} from "Frontend/themes/flickr/elements";
+import {CustomHeader} from "Frontend/views/elements";
 import {isLoggedIn} from "Frontend/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark, faFilm } from '@fortawesome/free-solid-svg-icons';
