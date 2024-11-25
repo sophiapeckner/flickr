@@ -15,7 +15,7 @@ public class Member {
 
     private String email;
 
-    private String password;
+    private String password = "";
 
     private String username;
 
@@ -41,7 +41,6 @@ public class Member {
         // Because Hilla expects all member variable to be non-null, email & pass are set to dummy values
         this.id = new SecureRandom().nextLong() >>> 1;
         this.email = "anon@gmail.com";
-        this.password = "anon";
         this.username = "Anonymous";
     }
 
