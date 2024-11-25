@@ -34,7 +34,7 @@ public class ManageSessionEndpointTest {
     private final Map<String,String> sampleRequestBody = new HashMap<>(){{
         put("displayName", "updated");
     }};
-    private final Session sampleSession = new Session("432b423d");
+    private final Session sampleSession = new Session("432b423d", sampleMember.getId().toString());
     private final Set<String> sampleGenreSet =
             new HashSet<>(Arrays.asList("war", "romance"));
     private final Set<String> samplePlatformSet =

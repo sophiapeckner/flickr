@@ -1,11 +1,6 @@
 @import url("@fontsource/inter/index.css");
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
-/* currently not working */
-@font-face {
-  font-family: 'Nunito';
-  src: url('src/main/resources/META-INF/resources/fonts/Nunito-Regular.ttf') format('truetype');
-  font-display: swap;
-}
 html {
   --lumo-primary-color: rgb(101, 85, 143);
   --lumo-primary-color-50pct: rgba(101, 85, 143, 0.5);

@@ -83,7 +83,7 @@ public class VoteEndpoint {
         // Build the API URL
         String genreParam = String.join("OR", session.getGenres());
         String platformParam = String.join("AND", session.getStreamingPlatforms());
-        String url = String.format("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=%s&sort_by=popularity.desc&with_genres=%s&with_watch_providers=%s", pageNum, genreParam, platformParam);
+        String url = String.format("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=%s&sort_by=popularity.desc&with_original_language=en&with_genres=%s&with_watch_providers=%s", pageNum, genreParam, platformParam);
 
         // Create the request
         HttpRequest request = HttpRequest.newBuilder()
@@ -162,7 +162,7 @@ public class VoteEndpoint {
      */
     @PutMapping("/{movieId}/addVoter/{memberId}")
     public SessionMovie addVoter(@PathVariable Long movieId, @PathVariable String memberId) {
-        String voter = memberService.getMember(memberId).getDisplayName();
+        String voter = memberService.getMemberById(memberId).getDisplayName();
         SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("SessionMovie not found"));
         sessionMovie.getVoters().add(voter);

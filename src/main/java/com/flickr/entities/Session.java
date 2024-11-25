@@ -29,8 +29,11 @@ public class Session {
 
     private boolean started = false;
 
-    public Session(String groupCode) {
+    private String groupAdminId = "";
+
+    public Session(String groupCode, String groupAdminId) {
         this.groupCode = groupCode;
+        this.groupAdminId = groupAdminId;
         this.members = new ArrayList<>();
     }
 
@@ -76,4 +79,8 @@ public class Session {
     public boolean isStarted() { return started; }
 
     public void setStarted(boolean started) { this.started = started; }
+
+    public String getGroupAdminId() { return groupAdminId; }
+
+    public void setGroupAdminId(String groupAdminId) { this.groupAdminId = groupAdminId; }
 }

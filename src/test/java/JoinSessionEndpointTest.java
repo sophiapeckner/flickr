@@ -1,6 +1,7 @@
 import com.flickr.controllers.JoinSessionEndpoint;
 import com.flickr.entities.Member;
 import com.flickr.entities.Session;
+import com.flickr.services.MemberService;
 import com.flickr.storage.MemberRepository;
 
 import com.flickr.storage.SessionRepository;
@@ -19,21 +20,22 @@ public class JoinSessionEndpointTest {
     private SessionRepository mockSessionRepository;
     @Mock
     private MemberRepository mockMemberRepository;
+    private MemberService mockMemberService;
 
-    private JoinSessionEndpoint joinSessionEndpointTestObj = new JoinSessionEndpoint(
-            mockSessionRepository, mockMemberRepository);
+    private JoinSessionEndpoint joinSessionEndpointTestObj;
 
-    private final Session sampleSession = new Session("D4572HF3");
     private final String sampleEmail = "thisEmail@gmial.com";
     private final Member sampleMember = new Member(
             "sampleEmail@gmail.com", "sampleUser", "samplePass");
+    private final Session sampleSession = new Session("D4572HF3", sampleMember.getId().toString());
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         mockSessionRepository = Mockito.mock(SessionRepository.class);
         mockMemberRepository = Mockito.mock(MemberRepository.class);
-        joinSessionEndpointTestObj = new JoinSessionEndpoint(mockSessionRepository, mockMemberRepository);
+        mockMemberService = new MemberService(mockMemberRepository);
+        joinSessionEndpointTestObj = new JoinSessionEndpoint(mockSessionRepository, mockMemberRepository, mockMemberService);
     }
 
     @Test
