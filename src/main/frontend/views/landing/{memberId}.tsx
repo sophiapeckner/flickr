@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {useParams} from "react-router-dom";
 import {Avatar, Button, Icon, Scroller} from "@vaadin/react-components";
-import {CustomHeader, NoLongerInSession} from "Frontend/themes/flickr/elements";
+import {CustomHeader, NoLongerInSession} from "Frontend/views/elements";
 import {isLoggedIn} from "Frontend/auth";
 import Session from "Frontend/generated/com/flickr/entities/Session";
 import {getMemberById} from "Frontend/generated/MemberService";
@@ -84,7 +84,7 @@ export default function GroupLandingView() {
                     .catch(error => {
                         console.error("Error fetching Session data: ", error);
                     });
-            }, 10);
+            }, 50);
             return () => clearInterval(intervalId);
         }
 
@@ -98,7 +98,7 @@ export default function GroupLandingView() {
 
     return (
       <div style={style.outerDiv}>
-        <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
+        <CustomHeader confirmExit={true} loggedIn={loggedIn} isAdmin={session?.groupAdminId == memberId} sessionId={session?.id}/>
 
         <h6 style={style.groupTitle}>Group Code: </h6>
         <h3 style={style.groupCode}>{session?.groupCode}</h3>

@@ -3,11 +3,12 @@ import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
 import {Button, FormLayout, MultiSelectComboBox, TextField, RadioButton, RadioGroup} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
-import {CustomHeader, NoLongerInSession} from "../../themes/flickr/elements";
+import {CustomHeader, NoLongerInSession} from "../elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {getMemberById, getMemberDisplayName} from "Frontend/generated/MemberService";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {colors} from "Frontend/themes/flickr/colors";
+import Session from "Frontend/generated/com/flickr/entities/Session";
 
 export const config: ViewConfig = {
     menu: { order: 5, icon: "line-awesome/svg/file.svg" },
@@ -24,7 +25,7 @@ export default function PreferencesView() {
     const [streamingPlatforms, setStreamingPlatforms] = useState([]);
     const [selectedPlatforms, setSelectedPlatforms] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState("en");
-    const [member, setMember] = useState<Member>();
+    const [session, setSession] = useState<Session>();
     const [inSession, setInSession] = useState(true);
     const [readyButtonHover, setReadyButtonHover] = useState(false);
 
@@ -78,12 +79,17 @@ export default function PreferencesView() {
         }
     };
 
+    const fetchSession = async () => {
+        const response = await fetch(`/api/session/${memberId}`);
+        const session = await response.json();
+        setSession(session);
+    }
+
     const fetchMember = async () => {
-        const memberData = await getMemberById(memberId);
-        setMember(memberData);
+        const member = await getMemberById(memberId);
 
         // Check if the member is no longer part of a session
-        if (memberData?.sessionId === 0) {
+        if (member?.sessionId === 0) {
             setInSession(false);
         }
     };
@@ -162,6 +168,7 @@ export default function PreferencesView() {
         fetchLogin()
 
         if (inSession) {
+            fetchSession();
             fetchGroupCode()
             fetchDisplayName()
             fetchGenres().then(setGenres)
@@ -184,7 +191,7 @@ export default function PreferencesView() {
 
     return (
         <div style={style.outerDiv}>
-            <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
+            <CustomHeader confirmExit={true} loggedIn={loggedIn} isAdmin={session?.groupAdminId == memberId} sessionId={session?.id}/>
             <h6 style={style.groupTitle}>Group Code: </h6>
             <h3 style={style.groupCode}>{groupCode}</h3>
 
