@@ -27,6 +27,9 @@ public class Session {
     @ElementCollection
     private Set<String> streamingPlatforms = new HashSet<>();
 
+    @ElementCollection
+    private Set<String> languages = new HashSet<>();
+
     private boolean started = false;
 
     private String groupAdminId = "";
@@ -72,6 +75,10 @@ public class Session {
 
     public void setStreamingPlatforms(Set<String> streamingPlatforms) { this.streamingPlatforms = streamingPlatforms; }
 
+    public Set<String> getLanguages() { return languages; }
+
+    public void setLanguages(Set<String> languages) { this.languages = languages; }
+
     public List<SessionMovie> getMovies() { return movies; }
 
     public void setMovies(List<SessionMovie> movies) { this.movies = movies; }
@@ -83,4 +90,5 @@ public class Session {
     public String getGroupAdminId() { return groupAdminId; }
 
     public void setGroupAdminId(String groupAdminId) { this.groupAdminId = groupAdminId; }
+
 }
