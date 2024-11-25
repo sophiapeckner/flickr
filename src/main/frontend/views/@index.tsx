@@ -4,6 +4,7 @@ import { login } from "../auth"
 import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import {Button, EmailField, PasswordField} from "@vaadin/react-components";
+import {colors} from "Frontend/themes/flickr/colors";
 
 export const config: ViewConfig = {
   menu: { order: 0, icon: "line-awesome/svg/file.svg" },
@@ -15,6 +16,8 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [guestButtonHover, setGuestButtonHover] = useState(false);
+  const [signInButtonHover, setSignInButtonHover] = useState(false);
 
   const handleLogin = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -54,7 +57,13 @@ export default function LoginForm() {
                   />
 
 
-                  <Button style={style.button} onClick={handleLogin}>
+                  <Button
+                      style={{
+                          ...style.button,
+                          backgroundColor: signInButtonHover ? colors.mainHovered : colors.main}}
+                      onMouseEnter={() =>setSignInButtonHover(true)}
+                      onMouseLeave={() => setSignInButtonHover(false)}
+                      onClick={handleLogin}>
                       Sign In
                   </Button>
 
@@ -66,7 +75,11 @@ export default function LoginForm() {
               </form>
 
           <Button
-              style={style.secondaryButton}
+              style={{
+                  ...style.secondaryButton,
+                  backgroundColor: guestButtonHover ? colors.secondaryHovered : colors.secondary}}
+              onMouseEnter={() =>setGuestButtonHover(true)}
+              onMouseLeave={() => setGuestButtonHover(false)}
               onClick={() => navigate("/start")}
           >
             Continue as Guest

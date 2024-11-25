@@ -7,6 +7,7 @@ import {CustomHeader, NoLongerInSession} from "../../themes/flickr/elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {getMemberById, getMemberDisplayName} from "Frontend/generated/MemberService";
 import Member from "Frontend/generated/com/flickr/entities/Member";
+import {colors} from "Frontend/themes/flickr/colors";
 
 export const config: ViewConfig = {
     menu: { order: 5, icon: "line-awesome/svg/file.svg" },
@@ -24,6 +25,7 @@ export default function PreferencesView() {
     const [selectedPlatforms, setSelectedPlatforms] = useState([]);
     const [member, setMember] = useState<Member>();
     const [inSession, setInSession] = useState(true);
+    const [readyButtonHover, setReadyButtonHover] = useState(false);
 
     // Retrieve every genre option available on The Movie Database
     const fetchGenres = async () => {
@@ -206,7 +208,14 @@ export default function PreferencesView() {
                     onChange={e => setSelectedPlatforms(e.target.selectedItems)}
                 />
 
-                <Button onClick={submit} style={style.button}>Ready</Button>
+                <Button
+                    onClick={submit}
+                    style={{
+                        ...style.button,
+                        backgroundColor: readyButtonHover ? colors.mainHovered : colors.main}}
+                    onMouseEnter={() =>setReadyButtonHover(true)}
+                    onMouseLeave={() => setReadyButtonHover(false)}
+                >Ready</Button>
             </FormLayout>
         </div>
     );

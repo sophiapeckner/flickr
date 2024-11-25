@@ -15,11 +15,10 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-public class TestLogin {
+public class LoginTest {
 
     @Mock
     private MemberRepository mockMemberRepository;
@@ -27,7 +26,7 @@ public class TestLogin {
     @InjectMocks
     private LogInEndpoint memberServicesTestObj = new LogInEndpoint(mockMemberRepository);
 
-    private final Member MEMBER = new Member("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
+    private final Member sampleMember = new Member("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
 
     @BeforeEach
     public void setup() {
@@ -51,17 +50,17 @@ public class TestLogin {
     @Test
     public void testLoginPresent(){
         String nonEncryptPass = "thisPass";
-        String expected = MEMBER.getId().toString();
-        Mockito.when(mockMemberRepository.findByEmail(MEMBER.getEmail())).thenReturn(Optional.of(MEMBER));
+        String expected = sampleMember.getId().toString();
+        Mockito.when(mockMemberRepository.findByEmail(sampleMember.getEmail())).thenReturn(Optional.of(sampleMember));
 //        Mockito.when(mockMemberRepository.findByUsername(MEMBER.getUsername())).thenReturn(Optional.empty());
 //        Mockito.when(mockMemberRepository.save(new Member())).thenReturn(new Member());
         // need to figure out how to make this create user method use the same Member object as the save mockito call.
 //        memberServicesTestObj.createUser(MEMBER.getEmail(), MEMBER.getUsername(), MEMBER.getPass());
 
 //        Mockito.when(mockMemberRepository.findByEmail(MEMBER.getEmail())).thenReturn(Optional.of(MEMBER));
-        Assertions.assertEquals(expected, memberServicesTestObj.login(MEMBER.getEmail(), nonEncryptPass));
+        Assertions.assertEquals(expected, memberServicesTestObj.login(sampleMember.getEmail(), nonEncryptPass));
 
-        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(MEMBER.getEmail());
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(sampleMember.getEmail());
 //        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByUsername(MEMBER.getUsername());
 //        Mockito.verify(mockMemberRepository, Mockito.times(1)).save(MEMBER);
 
@@ -70,18 +69,17 @@ public class TestLogin {
 
     @Test
     public void testLoginWrongPass(){
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        Member testMember = new Member("thisemail@gmail.net", "thisUsername", encoder.encode("thisPass"));
         String wrongPass = "wrongPass";
         String expected = "Wrong password";
-        Mockito.when(mockMemberRepository.findByEmail(testMember.getEmail())).thenReturn(Optional.of(testMember));
-        Assertions.assertEquals(expected, memberServicesTestObj.login(testMember.getEmail(), wrongPass));
+        Mockito.when(mockMemberRepository.findByEmail(sampleMember.getEmail())).thenReturn(Optional.of(sampleMember));
 
-        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(testMember.getEmail());
+        Assertions.assertEquals(expected, memberServicesTestObj.login(sampleMember.getEmail(), wrongPass));
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(sampleMember.getEmail());
     }
 
-    @Test
-    public void testLoginFiller(){
-        //We need to come up with another test here
-    }
+//    @Test
+//    public void testLoginFiller(){
+//        //We need to come up with another test here
+//    }
 }

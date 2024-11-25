@@ -24,7 +24,7 @@ public class ManageSessionEndpoint {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    ManageSessionEndpoint(SessionRepository sessionRepository, SessionService sessionService, MemberRepository memberRepository, MemberService memberService) {
+    public ManageSessionEndpoint(SessionRepository sessionRepository, SessionService sessionService, MemberRepository memberRepository, MemberService memberService) {
         this.sessionRepository = sessionRepository;
         this.sessionService = sessionService;
         this.memberRepository = memberRepository;
@@ -56,7 +56,7 @@ public class ManageSessionEndpoint {
      */
     public Session createSession(String email) {
         Member member = memberService.getMemberByEmail(email);
-        String groupCode = UUID.randomUUID().toString().substring(0, 8);
+        String groupCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         return sessionRepository.save(new Session(groupCode, member.getId().toString()));
     }
 
