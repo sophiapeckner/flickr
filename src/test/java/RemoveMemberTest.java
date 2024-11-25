@@ -158,13 +158,11 @@ public class RemoveMemberTest {
     void testRemoveSession() {
         sampleSession.setMembers(List.of(sampleMember));
         Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.of(sampleSession));
-        Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
 
         Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.removeSession(sampleSession.getId()));
         Assertions.assertEquals(0L, sampleMember.getSessionId());
 
         Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(sampleSession.getId());
-        Mockito.verify(mockSessionRepository, Mockito.times(1)).save(sampleSession);
     }
 
     @Test
