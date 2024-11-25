@@ -23,10 +23,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Endpoint
 @AnonymousAllowed
@@ -83,8 +80,15 @@ public class VoteEndpoint {
         // Build the API URL
         String genreParam = String.join("OR", session.getGenres());
         String platformParam = String.join("AND", session.getStreamingPlatforms());
-        String url = String.format("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=%s&sort_by=popularity.desc&with_original_language=en&with_genres=%s&with_watch_providers=%s", pageNum, genreParam, platformParam);
 
+        Set<String> languages = session.getLanguages();
+        String languageParam = String.join("OR", session.getLanguages());
+        if (languages.contains("any")) {
+            languageParam = "";
+        }
+
+        String url = String.format("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=%s&sort_by=popularity.desc&with_original_language=%s&with_genres=%s&with_watch_providers=%s", pageNum, languageParam, genreParam, platformParam);
+        
         // Create the request
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

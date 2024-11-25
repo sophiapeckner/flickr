@@ -1,7 +1,7 @@
 import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
-import {Button, FormLayout, MultiSelectComboBox, TextField} from "@vaadin/react-components";
+import {Button, FormLayout, MultiSelectComboBox, TextField, RadioButton, RadioGroup} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
 import {CustomHeader, NoLongerInSession} from "../elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
@@ -24,6 +24,7 @@ export default function PreferencesView() {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [streamingPlatforms, setStreamingPlatforms] = useState([]);
     const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+    const [selectedLanguage, setSelectedLanguage] = useState("en");
     const [session, setSession] = useState<Session>();
     const [inSession, setInSession] = useState(true);
     const [readyButtonHover, setReadyButtonHover] = useState(false);
@@ -150,6 +151,15 @@ export default function PreferencesView() {
             throw new Error(`Failed to update Session streaming platforms`);
         }
 
+        const languageResponse = await fetch(`/api/session/${memberId}/languages`, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({language: selectedLanguage})
+        });
+        if (!languageResponse.ok) {
+            throw new Error(`Failed to update Session language preference`);
+        }
+
         window.location.href = `/landing/${memberId}`;
     }
 
@@ -214,6 +224,16 @@ export default function PreferencesView() {
                     selectedItems={selectedPlatforms}
                     onChange={e => setSelectedPlatforms(e.target.selectedItems)}
                 />
+
+                <RadioGroup
+                  label="Language" theme="horizontal"
+                  value={selectedLanguage}
+                  onValueChanged={(e) => setSelectedLanguage(e.detail.value)}
+                >
+                    <RadioButton value="en" label="English" checked />
+                    <RadioButton value="it" label="Italian" />
+                    <RadioButton value="any" label="Any" />
+                </RadioGroup>
 
                 <Button
                     onClick={submit}

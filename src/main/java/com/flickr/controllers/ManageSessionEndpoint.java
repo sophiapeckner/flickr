@@ -115,6 +115,19 @@ public class ManageSessionEndpoint {
     }
 
     /**
+     * Insert selected streaming platform(s) into the session that member is in
+     * @param memberId String representation of member's ID
+     * @param request List of selected streaming platforms
+     * @return The session that has been updated
+     */
+    @PutMapping("/{memberId}/languages")
+    public Session updateLanguages(@PathVariable String memberId, @RequestBody Map<String, String> request) {
+        Session session = fetchMembersSession(memberId);
+        session.getLanguages().add(request.get("language"));
+        return sessionRepository.save(session);
+    }
+
+    /**
      * Remove member at memberIndex from the session
      * @param sessionId Session's id
      * @param memberIndex The member to be removed
