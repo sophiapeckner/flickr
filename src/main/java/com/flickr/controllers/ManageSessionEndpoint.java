@@ -23,6 +23,7 @@ public class ManageSessionEndpoint {
     private final SessionService sessionService;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
+    public static final String sessionError = "Session not found";
 
     public ManageSessionEndpoint(SessionRepository sessionRepository, SessionService sessionService, MemberRepository memberRepository, MemberService memberService) {
         this.sessionRepository = sessionRepository;
@@ -46,7 +47,7 @@ public class ManageSessionEndpoint {
      */
     public Session fetchSessionByGroupCode(String groupCode) {
         return sessionRepository.findByGroupCode(groupCode)
-                .orElseThrow(() -> new IllegalArgumentException("Session not found"));
+                .orElseThrow(() -> new IllegalArgumentException(sessionError));
     }
 
     /**
@@ -122,7 +123,7 @@ public class ManageSessionEndpoint {
     @PutMapping("/{sessionId}/remove/{memberIndex}")
     public Session removeMember(@PathVariable Long sessionId, @PathVariable int memberIndex) {
         Session session = sessionRepository.findById(sessionId)
-                        .orElseThrow(() -> new IllegalArgumentException("Session not found"));
+                        .orElseThrow(() -> new IllegalArgumentException(sessionError));
         Member member = session.getMembers().get(memberIndex);  // The member to be removed from group
         // Set the member's session ID to 0 (which is non-existent)
         member.setSessionId(0L);
@@ -144,11 +145,11 @@ public class ManageSessionEndpoint {
 
     public Session removeSession(@PathVariable Long sessionId) {
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new IllegalArgumentException("Session not found"));
+                .orElseThrow(() -> new IllegalArgumentException(sessionError));
         for (Member member : session.getMembers()) {
             member.setSessionId(0L);
         }
         sessionRepository.delete(session);
-        return sessionRepository.save(session);
+        return session;
     }
 }
