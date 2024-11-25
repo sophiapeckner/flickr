@@ -154,5 +154,29 @@ public class RemoveMemberTest {
 
     }
 
+    @Test
+    void testRemoveSession() {
+        sampleSession.setMembers(List.of(sampleMember));
+        Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
 
+        Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.removeSession(sampleSession.getId()));
+        Assertions.assertEquals(0L, sampleMember.getSessionId());
+
+        Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(sampleSession.getId());
+        Mockito.verify(mockSessionRepository, Mockito.times(1)).save(sampleSession);
+    }
+
+    @Test
+    void testRemoveSessionFailure(){
+        String expectedException = "Session not found";
+        Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.empty());
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class,() ->{
+            manageSessionEndpointTestObj.removeSession(sampleSession.getId());
+        });
+        Assertions.assertEquals(expectedException, exception.getMessage());
+
+        Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(sampleSession.getId());
+        Mockito.verify(mockSessionRepository, Mockito.times(0)).save(sampleSession);
+    }
 }
