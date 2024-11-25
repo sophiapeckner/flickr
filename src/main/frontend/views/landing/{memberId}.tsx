@@ -90,7 +90,7 @@ export default function GroupLandingView() {
 
         // If not in a session, return undefined
         return undefined;
-    }, [inSession, memberId, member]);
+    }, [inSession, memberId]);
 
     if (!inSession) {
         return <NoLongerInSession />;
