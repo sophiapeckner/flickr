@@ -162,7 +162,7 @@ public class VoteEndpoint {
      */
     @PutMapping("/{movieId}/addVoter/{memberId}")
     public SessionMovie addVoter(@PathVariable Long movieId, @PathVariable String memberId) {
-        String voter = memberService.getMember(memberId).getDisplayName();
+        String voter = memberService.getMemberById(memberId).getDisplayName();
         SessionMovie sessionMovie = sessionMovieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("SessionMovie not found"));
         sessionMovie.getVoters().add(voter);

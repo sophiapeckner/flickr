@@ -2,6 +2,7 @@ package com.flickr.controllers;
 
 import com.flickr.entities.Member;
 import com.flickr.entities.Session;
+import com.flickr.services.MemberService;
 import com.flickr.storage.MemberRepository;
 import com.flickr.storage.SessionRepository;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class JoinSessionEndpoint {
     private final SessionRepository sessionRepository;
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    public JoinSessionEndpoint(SessionRepository sessionRepository, MemberRepository memberRepository) {
+    public JoinSessionEndpoint(SessionRepository sessionRepository, MemberRepository memberRepository, MemberService memberService) {
         this.sessionRepository = sessionRepository;
         this.memberRepository = memberRepository;
+        this.memberService = memberService;
     }
 
     /**
@@ -38,8 +41,7 @@ public class JoinSessionEndpoint {
             member = new Member();
         } else {
             // Member is signed in
-            member = memberRepository.findByEmail(email)
-                    .orElseThrow(() -> new IllegalArgumentException("Member not found with email: " + email));
+            member = memberService.getMemberByEmail(email);
         }
         member.setSessionId(sessionId); // Associate member with newly created session's ID
         member.setMovieIndex(0);

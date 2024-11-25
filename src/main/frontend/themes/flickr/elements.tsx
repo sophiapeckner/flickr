@@ -97,3 +97,14 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
     </div>
   );
 }
+
+export const NoLongerInSession = () => {
+  return (
+    <div style={{textAlign: 'center', marginTop: '20%'}}>
+      <h2>It appears that you're no longer in this session</h2>
+      <Button style={{marginTop: '20px'}} onClick={() => (window.location.href = '/start')}>
+        Join Another Group
+      </Button>
+    </div>
+  )
+}

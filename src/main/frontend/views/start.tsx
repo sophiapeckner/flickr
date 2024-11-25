@@ -38,7 +38,10 @@ export default function StartView() {
 
     // Try creating a Session and pushing to H2 DB
     try {
-      session = await createSession();
+      // Pass in the email of the member who's creating the session
+      // Since member's must be authenticated in order to create a session
+      // assume that member.email will be non null
+      session = await createSession(member?.email ?? "");
     } catch (error) {
       console.error("Error creating session: ", error);
       return;

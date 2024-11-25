@@ -3,9 +3,10 @@ import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
 import {Button, FormLayout, MultiSelectComboBox, TextField} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
-import { CustomHeader } from "../../themes/flickr/elements";
+import {CustomHeader, NoLongerInSession} from "../../themes/flickr/elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
-import {getMemberDisplayName} from "Frontend/generated/MemberService";
+import {getMemberById, getMemberDisplayName} from "Frontend/generated/MemberService";
+import Member from "Frontend/generated/com/flickr/entities/Member";
 import {colors} from "Frontend/themes/flickr/colors";
 
 export const config: ViewConfig = {
@@ -22,6 +23,8 @@ export default function PreferencesView() {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [streamingPlatforms, setStreamingPlatforms] = useState([]);
     const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+    const [member, setMember] = useState<Member>();
+    const [inSession, setInSession] = useState(true);
     const [readyButtonHover, setReadyButtonHover] = useState(false);
 
     // Retrieve every genre option available on The Movie Database
@@ -74,8 +77,41 @@ export default function PreferencesView() {
         }
     };
 
+    const fetchMember = async () => {
+        const memberData = await getMemberById(memberId);
+        setMember(memberData);
+
+        // Check if the member is no longer part of a session
+        if (memberData?.sessionId === 0) {
+            setInSession(false);
+        }
+    };
+
     const fetchDisplayName = async () => {
         setDisplayName(await getMemberDisplayName(memberId ?? "") ?? "")
+    }
+
+    const fetchGroupCode = async () => {
+        const response = await fetch(`/api/session/${memberId}`);
+        const session = await response.json();
+        setGroupCode(session.groupCode);
+    }
+
+    const fetchLogin = async () => {
+        const result = await isLoggedIn();
+        setLoggedIn(result);
+    };
+
+    const convertSavedToSelected = (saved: string[]) => {
+        return saved.map((platform: string) => {
+                const index = platform.indexOf(",");
+                return (
+                    {
+                        label: platform.slice(index + 1),
+                        value: Number(platform.slice(0, index))
+                    })
+            }
+        )
     }
 
     const submit = async () => {
@@ -111,24 +147,17 @@ export default function PreferencesView() {
         window.location.href = `/landing/${memberId}`;
     }
 
-    const fetchGroupCode = async () => {
-        const response = await fetch(`/api/session/${memberId}`);
-        const session = await response.json();
-        setGroupCode(session.groupCode);
-    }
-
-    const fetchLogin = async () => {
-        const result = await isLoggedIn();
-        setLoggedIn(result);
-    };
-
     useEffect(() => {
+        fetchMember();
         fetchLogin()
-        fetchGroupCode()
-        fetchDisplayName()
-        fetchGenres().then(setGenres)
-        fetchStreamingPlatforms().then(setStreamingPlatforms)
-    }, []);
+
+        if (inSession) {
+            fetchGroupCode()
+            fetchDisplayName()
+            fetchGenres().then(setGenres)
+            fetchStreamingPlatforms().then(setStreamingPlatforms)
+        }
+    }, [inSession, memberId, member]);
 
     useEffect(() => {
         getMember().then(r => {
@@ -139,16 +168,8 @@ export default function PreferencesView() {
         })
     }, []);
 
-    const convertSavedToSelected = (saved: string[]) => {
-        return saved.map((platform: string) => {
-              const index = platform.indexOf(",");
-              return (
-                {
-                    label: platform.slice(index + 1),
-                    value: Number(platform.slice(0, index))
-                })
-          }
-        )
+    if (!inSession) {
+        return <NoLongerInSession />;
     }
 
     return (
@@ -162,6 +183,7 @@ export default function PreferencesView() {
                     label="Display Name:"
                     value={displayName}
                     style={{ width: '300px' }}
+                    maxlength={10}
                     onValueChanged={(e) => setDisplayName(e.detail.value)}
                 />
 
