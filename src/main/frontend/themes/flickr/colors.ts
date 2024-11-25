@@ -2,7 +2,7 @@
 
 export const colors = {
 	main: '#62598b',
-	mainHovered: '#6453ad',
+	mainHovered: 'rgba(98,89,139,0.95)',
 
 	secondary: '#bcb3c8',
 	secondaryHovered:'#dcd8e3',
