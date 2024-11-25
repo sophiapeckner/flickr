@@ -68,56 +68,59 @@ export default function SignUpView() {
         <img style={{ width: "100%" }} src="images/movie_reel.png" alt={""}/>
 
         <div style={style.innerDiv}>
-          <form style={{ ...style.form, ...style.formAddOn }} onSubmit={(e) => e.preventDefault()}>
+          <form style={{...style.form, ...style.formAddOn}} onSubmit={(e) => e.preventDefault()}>
+
+            <div style={{...style.label, fontSize: 24}}>Sign Up</div>
             <EmailField
-                label="Email address"
-                value={email}
-                style={style.input}
-                errorMessage="Enter a valid email address"
-                onValueChanged={(e) => setEmail(e.detail.value)}
+              label="Email address"
+              value={email}
+              style={style.input}
+              errorMessage="Enter a valid email address"
+              onValueChanged={(e) => setEmail(e.detail.value)}
             />
 
             <TextField
-                label="Username"
-                value={username}
-                style={style.input}
-                onValueChanged={(e) => setUsername(e.detail.value)}
+              label="Username"
+              value={username}
+              style={style.input}
+              onValueChanged={(e) => setUsername(e.detail.value)}
             />
-              {usernameError && <span style={{ color: "red" }}>{usernameError}</span>}
+            {usernameError && <span style={{color: "red"}}>{usernameError}</span>}
 
             <PasswordField
-                label="Set Password"
-                value={password}
-                style={style.input}
-                onValueChanged={(e) => setPassword(e.detail.value)}
-                placeholder="Minimum 5 characters"
+              label="Set Password"
+              value={password}
+              style={style.input}
+              onValueChanged={(e) => setPassword(e.detail.value)}
+              placeholder="Minimum 5 characters"
             />
-              {passwordError && <span style={{ color: "red" }}>{passwordError}</span>}
+            {passwordError && <span style={{color: "red"}}>{passwordError}</span>}
 
             <PasswordField
-                label="Confirm Password"
-                style={style.input}
-                onValueChanged={(e) => setConfirmPassword(e.detail.value)}
-                value={confirmPassword}
+              label="Confirm Password"
+              style={style.input}
+              onValueChanged={(e) => setConfirmPassword(e.detail.value)}
+              value={confirmPassword}
             />
-              {confirmPasswordError && (
-                  <span style={{ color: "red" }}>{confirmPasswordError}</span>
-              )}
+            {confirmPasswordError && (
+              <span style={{color: "red"}}>{confirmPasswordError}</span>
+            )}
 
 
-              <Button
-                  style={{
-                    ...style.button,
-                    backgroundColor: signUpButtonHover ? colors.mainHovered : colors.main}}
-                  onMouseEnter={() =>setSignUpButtonHover(true)}
-                  onMouseLeave={() => setSignUpButtonHover(false)}
-                  onClick={handleSignUp}
-              >
-                Sign Up
-              </Button>
+            <Button
+              style={{
+                ...style.button,
+                backgroundColor: signUpButtonHover ? colors.mainHovered : colors.main
+              }}
+              onMouseEnter={() => setSignUpButtonHover(true)}
+              onMouseLeave={() => setSignUpButtonHover(false)}
+              onClick={handleSignUp}
+            >
+              Sign Up
+            </Button>
 
 
-            <a style={{ ...style.redirect, display: 'flex' }} href="/">
+            <a style={{...style.redirect, display: 'flex'}} href="/">
               Already have an account
             </a>
           </form>

@@ -39,6 +39,8 @@ export default function LoginForm() {
           <div style={style.innerDiv}>
               <form style={{...style.form, ...style.formAddOn}} onSubmit={(e) => e.preventDefault()}>
                   {error && <span style={{color: 'red'}}>{error}</span>}
+
+                  <div style={{...style.label, fontSize: 24}}>Log In</div>
                   <EmailField
                       label="Email address"
                       value={email}
