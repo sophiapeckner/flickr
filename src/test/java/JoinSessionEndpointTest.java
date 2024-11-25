@@ -63,10 +63,8 @@ public class JoinSessionEndpointTest {
                 .save(Mockito.any(Session.class));
     }
 
-
-    //I do not think that this works the way that I want it to
-    // I want to test that logging in without an email works correctly.
-    // but how do I get the memberId of the member that is created in the middle of the method
+    // so instead of checking for the ID matching like I usually do,
+    // in this test I just mkae sure that the size of the members list is long enough
     @Test
     void testJoinSessionAnonJoin(){
         String expected = sampleMember.getId().toString();
@@ -80,9 +78,9 @@ public class JoinSessionEndpointTest {
                 .save(sampleSession))
                 .thenReturn(sampleSession);
 
-        String actualResult = joinSessionEndpointTestObj
+       joinSessionEndpointTestObj
                 .joinSession(sampleSession.getId(), "");
-        Assertions.assertEquals(expected, actualResult);
+        Assertions.assertEquals(sampleSession.getMembers().size(), 1);
 
         Mockito.verify(mockSessionRepository, Mockito
                 .times(1))
@@ -116,8 +114,8 @@ public class JoinSessionEndpointTest {
         String expected = sampleMember.getId().toString();
         String actual = joinSessionEndpointTestObj
                 .joinSession(sampleSession.getId(), sampleEmail);
-
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(sampleSession.getMembers().size(), 1);
 
         Mockito.verify(mockSessionRepository, Mockito
                 .times(1))
