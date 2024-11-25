@@ -141,4 +141,14 @@ public class ManageSessionEndpoint {
         session.setStarted(true);
         return sessionRepository.save(session);
     }
+
+    public Session removeSession(@PathVariable Long sessionId) {
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("Session not found"));
+        for (Member member : session.getMembers()) {
+            member.setSessionId(0L);
+        }
+        sessionRepository.delete(session);
+        return sessionRepository.save(session);
+    }
 }

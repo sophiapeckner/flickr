@@ -4,12 +4,14 @@ import {useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {Icon, Scroller} from "@vaadin/react-components";
-import {CustomHeader} from "Frontend/themes/flickr/elements";
+import {CustomHeader, NoLongerInSession} from "Frontend/views/elements";
 import {isLoggedIn} from "Frontend/auth";
 import {colors} from "Frontend/themes/flickr/colors";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark, faFilm} from "@fortawesome/free-solid-svg-icons";
 import { useSwipeable } from 'react-swipeable';
+import Session from "Frontend/generated/com/flickr/entities/Session";
+import {getMemberById} from "Frontend/generated/MemberService";
 
 export default function SwipeView() {
     const { memberId } = useParams();
@@ -18,6 +20,45 @@ export default function SwipeView() {
     const [isVotingComplete, setIsVotingComplete] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
     const [position, setPosition] = useState(0);
+    const [session, setSession] = useState<Session>();
+    const [inSession, setInSession] = useState(true);
+
+    const fetchMovies = async () => {
+        // Fetch the movie recommendations associated with the Session member is in
+        try {
+            const response = await fetch(`/api/session/${memberId}`);
+            const session = await response.json();
+            setMovies(session.movies || []);
+        } catch (error) {
+            console.error("Failed to fetch Session's movies:", error);
+        }
+    };
+
+    const fetchMovieIndex = async () => {
+        // Fetch the Member with memberId
+        try {
+            const response = await fetch(`/api/vote/${memberId}`);
+            const member = await response.json();
+            setMovieIndex(member.movieIndex)
+        } catch (error) {
+            console.error("Failed to fetch Member:", error);
+        }
+    };
+
+    const fetchSession = async () => {
+        const response = await fetch(`/api/session/${memberId}`);
+        const session = await response.json();
+        setSession(session);
+    }
+
+    const fetchMember = async () => {
+        const member = await getMemberById(memberId);
+
+        // Check if the member is no longer part of a session
+        if (member?.sessionId === 0) {
+            setInSession(false);
+        }
+    };
 
     useEffect(() => {
         const fetchLogin = async () => {
@@ -28,31 +69,14 @@ export default function SwipeView() {
     }, []);
 
     useEffect(() => {
-        const fetchMovies = async () => {
-            // Fetch the movie recommendations associated with the Session member is in
-            try {
-                const response = await fetch(`/api/session/${memberId}`);
-                const session = await response.json();
-                setMovies(session.movies || []);
-            } catch (error) {
-                console.error("Failed to fetch Session's movies:", error);
-            }
-        };
+        fetchMember();
+        fetchSession();
 
-        const fetchMovieIndex = async () => {
-            // Fetch the Member with memberId
-            try {
-                const response = await fetch(`/api/vote/${memberId}`);
-                const member = await response.json();
-                setMovieIndex(member.movieIndex)
-            } catch (error) {
-                console.error("Failed to fetch Member:", error);
-            }
-        };
-
-        fetchMovies();
-        fetchMovieIndex();
-    }, []);
+        if (inSession) {
+            fetchMovies();
+            fetchMovieIndex();
+        }
+    }, [memberId, inSession]);
 
     useEffect(() => {
         if (movies.length > 0) {
@@ -123,10 +147,13 @@ export default function SwipeView() {
         window.location.href = `/list/${memberId}`;
     };
 
+    if (!inSession) {
+        return <NoLongerInSession />;
+    }
 
     return (
         <div style={style.outerDiv}>
-            <CustomHeader confirmExit={true} loggedIn={loggedIn}/>
+            <CustomHeader confirmExit={true} loggedIn={loggedIn} isAdmin={session?.groupAdminId == memberId} sessionId={session?.id}/>
 
             {isVotingComplete ? (
                 <p>You're done voting!</p>

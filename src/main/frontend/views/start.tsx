@@ -4,7 +4,7 @@ import { style } from "../themes/flickr/css.js";
 import {colors} from "Frontend/themes/flickr/colors";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {Button} from "@vaadin/react-components";
-import {CustomHeader} from "Frontend/themes/flickr/elements";
+import {CustomHeader} from "Frontend/views/elements";
 import {createSession} from "Frontend/generated/ManageSessionEndpoint";
 import {joinSession} from "Frontend/generated/JoinSessionEndpoint";
 

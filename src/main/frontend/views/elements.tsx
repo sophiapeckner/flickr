@@ -6,12 +6,15 @@ import {logout} from "Frontend/auth";
 import {useSignal} from "@vaadin/hilla-react-signals";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import {removeSession} from "Frontend/generated/ManageSessionEndpoint";
 
 interface CustomHeaderProps {
   hideBackButton?: boolean,
   hideProfileIcon?: boolean,
   confirmExit?: boolean,
   loggedIn?: boolean;
+  isAdmin?: boolean;
+  sessionId?: number;
 }
 
 // @ts-ignore
@@ -20,7 +23,9 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
     hideBackButton = false,
     hideProfileIcon = false,
     confirmExit = false,
-    loggedIn = true
+    loggedIn = true,
+      isAdmin = false,
+      sessionId = 0,
   }) => {
   const navigate = useNavigate()
   const dialogOpened = useSignal(false);
@@ -61,6 +66,7 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
                 <Button theme="primary"
                   onClick={() => {
                     dialogOpened.value = false;
+                    if (isAdmin)    removeSession(sessionId ?? 0);
                     window.location.href = "/start"
                   }}
                 >
