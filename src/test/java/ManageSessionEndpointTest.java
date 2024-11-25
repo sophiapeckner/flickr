@@ -26,7 +26,6 @@ public class ManageSessionEndpointTest {
     MemberService mockMemberService;
     SessionService mockSessionService;
 
-    @InjectMocks
     private ManageSessionEndpoint manageSessionEndpointTestObj;
 
     private final Member sampleMember = new Member("thisEmail@gmail.com", "thisUser", "thisPass");
