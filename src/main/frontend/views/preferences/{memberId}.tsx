@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import { CustomHeader } from "../../themes/flickr/elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {getMemberDisplayName} from "Frontend/generated/MemberService";
+import {colors} from "Frontend/themes/flickr/colors";
 
 export const config: ViewConfig = {
     menu: { order: 5, icon: "line-awesome/svg/file.svg" },
@@ -21,6 +22,7 @@ export default function PreferencesView() {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [streamingPlatforms, setStreamingPlatforms] = useState([]);
     const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+    const [readyButtonHover, setReadyButtonHover] = useState(false);
 
     // Retrieve every genre option available on The Movie Database
     const fetchGenres = async () => {
@@ -184,7 +186,14 @@ export default function PreferencesView() {
                     onChange={e => setSelectedPlatforms(e.target.selectedItems)}
                 />
 
-                <Button onClick={submit} style={style.button}>Ready</Button>
+                <Button
+                    onClick={submit}
+                    style={{
+                        ...style.button,
+                        backgroundColor: readyButtonHover ? colors.mainHovered : colors.main}}
+                    onMouseEnter={() =>setReadyButtonHover(true)}
+                    onMouseLeave={() => setReadyButtonHover(false)}
+                >Ready</Button>
             </FormLayout>
         </div>
     );
