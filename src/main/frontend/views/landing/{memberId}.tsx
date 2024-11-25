@@ -106,7 +106,7 @@ export default function GroupLandingView() {
         <Scroller style={styles.membersDiv} scrollDirection="vertical">
           {inSession && members?.length > 0 &&
               members.map((member, index) => (
-                  <div style={styles.personDiv} key={index}>
+                  <div style={styles.personDiv} key={member.id}>
                       <div style={styles.person}>
                           <Avatar theme="xlarge" />
                           <h4 style={styles.personLabel}>{member?.displayName || 'Waiting...'}</h4>
