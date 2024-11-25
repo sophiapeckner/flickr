@@ -137,4 +137,22 @@ public class RemoveMemberTest {
 
     }
 
+
+    @Test
+    void testStartSession(){
+        Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockSessionRepository.findById(sampleMember.getSessionId())).thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
+
+        Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.startSession(sampleMember.getId().toString()));
+        Assertions.assertTrue(sampleSession.isStarted());
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
+        Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(sampleMember.getSessionId());
+        Mockito.verify(mockSessionRepository, Mockito.times(1)).save(sampleSession);
+
+
+    }
+
+
 }
