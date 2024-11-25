@@ -3,7 +3,7 @@ import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
 import {Button, FormLayout, MultiSelectComboBox, TextField} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
-import { CustomHeader } from "../../themes/flickr/elements";
+import {CustomHeader, NoLongerInSession} from "../../themes/flickr/elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {getMemberById, getMemberDisplayName} from "Frontend/generated/MemberService";
 import Member from "Frontend/generated/com/flickr/entities/Member";
@@ -167,14 +167,7 @@ export default function PreferencesView() {
     }, []);
 
     if (!inSession) {
-        return (
-            <div style={{ textAlign: 'center', marginTop: '20%' }}>
-                <h2>It appears that you're no longer in this session</h2>
-                <Button style={{ marginTop: '20px' }} onClick={() => (window.location.href = '/start')}>
-                    Join Another Group
-                </Button>
-            </div>
-        );
+        return <NoLongerInSession />;
     }
 
     return (

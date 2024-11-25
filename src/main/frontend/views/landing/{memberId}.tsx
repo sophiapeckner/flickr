@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {useParams} from "react-router-dom";
 import {Avatar, Button, Icon, Scroller} from "@vaadin/react-components";
-import {CustomHeader} from "Frontend/themes/flickr/elements";
+import {CustomHeader, NoLongerInSession} from "Frontend/themes/flickr/elements";
 import {isLoggedIn} from "Frontend/auth";
 import Session from "Frontend/generated/com/flickr/entities/Session";
 import {getMemberById} from "Frontend/generated/MemberService";
@@ -93,14 +93,7 @@ export default function GroupLandingView() {
     }, [inSession, memberId, member]);
 
     if (!inSession) {
-        return (
-            <div style={{ textAlign: 'center', marginTop: '20%' }}>
-                <h2>It appears that you're no longer in this session</h2>
-                <Button style={{ marginTop: '20px' }} onClick={() => (window.location.href = '/start')}>
-                    Join Another Group
-                </Button>
-            </div>
-        );
+        return <NoLongerInSession />;
     }
 
     return (
