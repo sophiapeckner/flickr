@@ -74,7 +74,7 @@ public class GenerateSuggestionsTest {
      * This specific test is for the standard use and maximum use of the loop
      */
     @Test
-    public void testGenerateSuggestions() throws JSONException, IOException, InterruptedException{
+    void testGenerateSuggestions() throws JSONException, IOException, InterruptedException{
         sampleSession.setLanguages(Set.of("any"));
         Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.of(sampleMember));
         Mockito.when(mockSessionRepository.findById(sampleMember.getSessionId())).thenReturn(Optional.of(sampleSession));
@@ -92,7 +92,7 @@ public class GenerateSuggestionsTest {
     }
 
     @Test
-    public void testGenerateSuggestionsLanguageParam() throws JSONException, IOException, InterruptedException{
+    void testGenerateSuggestionsLanguageParam() throws JSONException, IOException, InterruptedException{
         sampleSession.setLanguages(Set.of("it"));
         Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.of(sampleMember));
         Mockito.when(mockSessionRepository.findById(sampleMember.getSessionId())).thenReturn(Optional.of(sampleSession));
@@ -112,7 +112,7 @@ public class GenerateSuggestionsTest {
     }
 
     @Test
-    public void testHighSpecificityGenerateSuggestions() throws JSONException, IOException, InterruptedException{
+    void testHighSpecificityGenerateSuggestions() throws JSONException, IOException, InterruptedException{
         sampleSession.setStreamingPlatforms(Set.of("2", "9", "15"));
         sampleSession.setGenres(Set.of("28", "12", "16", "35", "80", "99", "18", "10751", "14"));
         Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.of(sampleSession));

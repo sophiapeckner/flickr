@@ -117,7 +117,7 @@ public class JoinSessionEndpointTest {
         String actual = joinSessionEndpointTestObj
                 .joinSession(sampleSession.getId(), sampleEmail);
         Assertions.assertEquals(expected, actual);
-        Assertions.assertEquals(sampleSession.getMembers().size(), 1);
+        Assertions.assertEquals(1, sampleSession.getMembers().size());
 
         Mockito.verify(mockSessionRepository, Mockito
                 .times(1))
@@ -181,7 +181,7 @@ public class JoinSessionEndpointTest {
         joinSessionEndpointTestObj.joinSession(sampleSession.getId(), sampleEmail);
         joinSessionEndpointTestObj.joinSession(sampleSession.getId(), sampleEmail);
 
-        Assertions.assertEquals(sampleSession.getMembers().size(), 1);
+        Assertions.assertEquals(1, sampleSession.getMembers().size());
 
         Mockito.verify(mockSessionRepository, Mockito
                         .times(2))

@@ -159,8 +159,8 @@ public class TbhIdkTest {
                 .thenReturn(Optional.empty());
 
         manageProfileEndpointTestObj.updateUser("0", newEmail, newUsername, newPlatforms);
-        Assertions.assertEquals(sampleMember.getEmail(), "thisemail@gmail.net");
-        Assertions.assertEquals(sampleMember.getUsername(), "thisUsername");
+        Assertions.assertEquals("thisemail@gmail.net", sampleMember.getEmail());
+        Assertions.assertEquals("thisUsername", sampleMember.getUsername());
         Assertions.assertEquals(sampleMember.getStreamingPlatforms(), Set.of());
 
         Mockito.verify(mockMemberRepository,
