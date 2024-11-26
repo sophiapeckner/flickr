@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
-public class ManageSessionEndpointTest {
+class ManageSessionEndpointTest {
 
     @Mock
     SessionRepository mockSessionRepository;
@@ -63,9 +63,10 @@ public class ManageSessionEndpointTest {
                 .findById(sampleMember.getId()))
                 .thenReturn(Optional.empty());
 
+        String memberId = sampleMember.getId().toString();
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             manageSessionEndpointTestObj
-                    .updateDisplayName(sampleMember.getId().toString(), sampleRequestBody);
+                    .updateDisplayName(memberId, sampleRequestBody);
         });
         Assertions.assertEquals(expected, exception.getMessage());
 
@@ -88,7 +89,7 @@ public class ManageSessionEndpointTest {
 
         Assertions.assertEquals(sampleMember, manageSessionEndpointTestObj.updateDisplayName(sampleMember.getId().toString(), sampleRequestBody));
         //Assert updated to "updated" as described in the setup()
-        Assertions.assertEquals(sampleMember.getDisplayName(), "updated");
+        Assertions.assertEquals("updated", sampleMember.getDisplayName());
 
         Mockito.verify(mockMemberRepository,
                 Mockito.times(1))
@@ -108,7 +109,7 @@ public class ManageSessionEndpointTest {
                 .thenReturn(sampleMember);
 
         Assertions.assertEquals(sampleMember, manageSessionEndpointTestObj.updateDisplayName(sampleMember.getId().toString(), sampleRequestBody2));
-        Assertions.assertEquals(sampleMember.getDisplayName(), "Anonymous");
+        Assertions.assertEquals("Anonymous", sampleMember.getDisplayName());
 
         Mockito.verify(mockMemberRepository,
                         Mockito.times(1))

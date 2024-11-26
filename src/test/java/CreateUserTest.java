@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class CreateUserTest {
+class CreateUserTest {
     @Mock
     private MemberRepository mockMemberRepository;
 
@@ -69,8 +69,4 @@ public class CreateUserTest {
         Mockito.verify(mockMemberRepository, Mockito.times(0)).save(Mockito.any(Member.class));
     }
 
-//    @Test
-//    public void testCreateUserFiller(){
-//        //We need to find some test to fill this lol
-//    }
 }

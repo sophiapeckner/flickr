@@ -26,7 +26,7 @@ import java.util.*;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class TbhIdkTest {
+class TbhIdkTest {
 
     @Mock
     private SessionRepository mockSessionRepository;
@@ -106,8 +106,10 @@ public class TbhIdkTest {
                 .findById(sampleMovie.getId()))
                 .thenReturn(Optional.empty());
 
+        Long movieId = sampleMovie.getId();
+        String memberId = sampleMember.getId().toString();
         Exception exception = Assertions.assertThrows(RuntimeException.class, () -> {
-            voteEndpointTestObj.addVoter(sampleMovie.getId(), sampleMember.getId().toString());
+            voteEndpointTestObj.addVoter(movieId, memberId);
         });
         Assertions.assertEquals(expectedException, exception.getMessage());
 

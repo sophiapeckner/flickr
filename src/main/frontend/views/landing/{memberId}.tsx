@@ -17,7 +17,6 @@ export const config: ViewConfig = {
 
 export default function GroupLandingView() {
     const { memberId } = useParams();
-    const [member, setMember] = useState<Member>();
     const [members, setMembers] = useState<Member[]>([]);
     const [session, setSession] = useState<Session>();
     const [loggedIn, setLoggedIn] = useState(false);
@@ -37,7 +36,6 @@ export default function GroupLandingView() {
 
     const fetchMember = async () => {
         const memberData = await getMemberById(memberId);
-        setMember(memberData);
 
         // Check if the member is no longer part of a session
         if (memberData?.sessionId === 0) {

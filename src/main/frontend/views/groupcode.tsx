@@ -2,7 +2,6 @@ import { ViewConfig } from "@vaadin/hilla-file-router/types.js";
 import React, {useEffect, useState} from "react";
 import { style } from "../themes/flickr/css.js";
 import {Button, TextField} from "@vaadin/react-components";
-import type { TextFieldChangeEvent } from '@vaadin/react-components';
 import {CustomHeader} from "Frontend/views/elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {fetchSessionByGroupCode} from "Frontend/generated/ManageSessionEndpoint";

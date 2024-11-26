@@ -15,7 +15,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-public class JoinSessionEndpointTest {
+class JoinSessionEndpointTest {
     @Mock
     private SessionRepository mockSessionRepository;
     @Mock
@@ -45,9 +45,9 @@ public class JoinSessionEndpointTest {
                 .findById(sampleSession.getId()))
                 .thenReturn(Optional.empty());
 
+        Long sessionId = sampleSession.getId();
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            joinSessionEndpointTestObj
-                    .joinSession(sampleSession.getId(), sampleEmail);
+            joinSessionEndpointTestObj.joinSession(sessionId, sampleEmail);
         });
         Assertions.assertEquals(expected, exception.getMessage());
 
@@ -69,7 +69,6 @@ public class JoinSessionEndpointTest {
     // in this test I just mkae sure that the size of the members list is long enough
     @Test
     void testJoinSessionAnonJoin(){
-        String expected = sampleMember.getId().toString();
         Mockito.when(mockSessionRepository
                 .findById(sampleSession.getId()))
                 .thenReturn(Optional.of(sampleSession));
@@ -82,7 +81,7 @@ public class JoinSessionEndpointTest {
 
        joinSessionEndpointTestObj
                 .joinSession(sampleSession.getId(), "");
-        Assertions.assertEquals(sampleSession.getMembers().size(), 1);
+        Assertions.assertEquals(1, sampleSession.getMembers().size());
 
         Mockito.verify(mockSessionRepository, Mockito
                 .times(1))
@@ -143,9 +142,9 @@ public class JoinSessionEndpointTest {
                 .findByEmail(sampleEmail))
                 .thenReturn(Optional.empty());
 
+        Long sessionId = sampleSession.getId();
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            joinSessionEndpointTestObj
-                    .joinSession(sampleSession.getId(), sampleEmail);
+            joinSessionEndpointTestObj.joinSession(sessionId, sampleEmail);
         });
         Assertions.assertEquals(expected, exception.getMessage());
 

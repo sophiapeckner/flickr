@@ -6,7 +6,6 @@ import {useEffect, useState} from "react";
 import {CustomHeader, NoLongerInSession} from "../elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {getMemberById, getMemberDisplayName} from "Frontend/generated/MemberService";
-import Member from "Frontend/generated/com/flickr/entities/Member";
 import {colors} from "Frontend/themes/flickr/colors";
 import Session from "Frontend/generated/com/flickr/entities/Session";
 

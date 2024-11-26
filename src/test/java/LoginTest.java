@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-public class LoginTest {
+class LoginTest {
 
     @Mock
     private MemberRepository mockMemberRepository;
@@ -36,7 +36,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testLoginAbsent(){
+    void testLoginAbsent(){
         String logEmail = "thisemail@gmail.net";
         String logPassword = "thisPass";
         final String expected = "User Not found";
@@ -48,7 +48,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testLoginPresent(){
+    void testLoginPresent(){
         String nonEncryptPass = "thisPass";
         String expected = sampleMember.getId().toString();
         Mockito.when(mockMemberRepository.findByEmail(sampleMember.getEmail())).thenReturn(Optional.of(sampleMember));
@@ -59,7 +59,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testLoginWrongPass(){
+    void testLoginWrongPass(){
         String wrongPass = "wrongPass";
         String expected = "Wrong password";
         Mockito.when(mockMemberRepository.findByEmail(sampleMember.getEmail())).thenReturn(Optional.of(sampleMember));
@@ -69,8 +69,4 @@ public class LoginTest {
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(sampleMember.getEmail());
     }
 
-//    @Test
-//    public void testLoginFiller(){
-//        //We need to come up with another test here
-//    }
 }

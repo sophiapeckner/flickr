@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class IncrementAndUpdateInVoteEndpointTest {
+class IncrementAndUpdateInVoteEndpointTest {
 
     @Mock
     private SessionRepository mockSessionRepository;
@@ -58,7 +58,7 @@ public class IncrementAndUpdateInVoteEndpointTest {
     }
 
     @Test
-    public void testIncrementMovieCountSuccess(){
+    void testIncrementMovieCountSuccess(){
         Mockito.when(mockSessionMovieRepository.findById(sampleMovie.getId())).thenReturn(Optional.of(sampleSessionMovie));
         Mockito.when(mockSessionMovieRepository.save(sampleSessionMovie)).thenReturn(sampleSessionMovie);
 
@@ -71,12 +71,13 @@ public class IncrementAndUpdateInVoteEndpointTest {
     }
 
     @Test
-    public void testIncrementMovieCountFailure(){
+    void testIncrementMovieCountFailure(){
         String expectedException = "SessionMovie not found";
         Mockito.when(mockSessionMovieRepository.findById(sampleMovie.getId())).thenReturn(Optional.empty());
 
+        Long movieId = sampleMovie.getId();
         Exception exception = Assertions.assertThrows(RuntimeException.class, () -> {
-            voteEndpointTestObj.incrementMovieVoteCount(sampleMovie.getId());
+            voteEndpointTestObj.incrementMovieVoteCount(movieId);
         });
 
         Assertions.assertEquals(expectedException, exception.getMessage());
@@ -102,8 +103,9 @@ public class IncrementAndUpdateInVoteEndpointTest {
         String expectedException = "Member not found";
         Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.empty());
 
+        String memberId = sampleMember.getId().toString();
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            voteEndpointTestObj.updateMemberMovieIndex(sampleMember.getId().toString(), sampleRequestBody);
+            voteEndpointTestObj.updateMemberMovieIndex(memberId, sampleRequestBody);
         });
 
         Assertions.assertEquals(expectedException, exception.getMessage());

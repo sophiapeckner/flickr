@@ -30,7 +30,7 @@ import java.util.Set;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class GenerateSuggestionsTest {
+class GenerateSuggestionsTest {
 
     @Mock
     private SessionRepository mockSessionRepository;
@@ -102,7 +102,7 @@ public class GenerateSuggestionsTest {
 
         Assertions.assertEquals(sampleSession, voteEndpointTestObj.generateSuggestions(sampleMember.getId().toString()));
         //Asserts that the loop has been run through the maximum amount of times (20). This would fill the List with 20 movies
-        Assertions.assertEquals(sampleSession.getMovies().size(), 20);
+        Assertions.assertEquals(20, sampleSession.getMovies().size());
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
         Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(sampleMember.getSessionId());
@@ -128,7 +128,7 @@ public class GenerateSuggestionsTest {
 
         voteEndpointTestObj.generateSuggestions(sampleMember.getId().toString());
         //This shows that the method will always run the loop 20 times, regardless of how specific the API request is
-        Assertions.assertEquals(sampleSession.getMovies().size(), 20);
+        Assertions.assertEquals(20, sampleSession.getMovies().size());
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(sampleMember.getEmail());
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
@@ -141,29 +141,4 @@ public class GenerateSuggestionsTest {
 
     }
 
-//    @Test
-//    void testUpdateMemberMovieIndexSuccess(){
-////        Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.of(sampleMember));
-////        Mockito.when(mockMemberRepository.save(sampleMember)).thenReturn(sampleMember);
-////
-////        Assertions.assertEquals(sampleMember, voteEndpointTestObj.updateMemberMovieIndex(sampleMember.getId().toString(), sampleRequestBody));
-////
-////        Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
-////        Mockito.verify(mockMemberRepository, Mockito.times(1)).save(Mockito.any(Member.class));
-//    }
-
-//    @Test
-//    void testUpdateMemberMovieIndexFailure(){
-////        String expectedException = "Member not found";
-////        Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.empty());
-////
-////        Exception exception = Assertions.assertThrows(IllegalAccessException.class, () -> {
-////            voteEndpointTestObj.updateMemberMovieIndex(sampleMember.getId().toString(), sampleRequestBody);
-////        });
-////
-////        Assertions.assertEquals(expectedException, exception.getMessage());
-////
-////        Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
-////        Mockito.verify(mockMemberRepository, Mockito.times(0)).save(Mockito.any(Member.class));
-//    }
 }

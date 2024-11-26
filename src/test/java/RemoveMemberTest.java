@@ -11,14 +11,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
-public class RemoveMemberTest {
+class RemoveMemberTest {
 
     @Mock
     SessionRepository mockSessionRepository;
@@ -78,7 +77,7 @@ public class RemoveMemberTest {
         manageSessionEndpointTestObj.removeMember(sampleSession.getId(), 1);
 
         Assertions.assertEquals(sampleMemberListPostRemoval, sampleSession.getMembers());
-        Assertions.assertEquals(otherSampleMember.getSessionId(), 0L);
+        Assertions.assertEquals(0L, otherSampleMember.getSessionId());
 
         Mockito.verify(mockSessionRepository,
                 Mockito.times(3))
@@ -98,8 +97,6 @@ public class RemoveMemberTest {
         Mockito.verify(mockMemberRepository,
                 Mockito.times(1))
                 .save(otherSampleMember);
-
-
     }
 
     @Test
@@ -109,8 +106,9 @@ public class RemoveMemberTest {
                 .findById(sampleSession.getId()))
                 .thenReturn(Optional.empty());
 
+        Long sessionId = sampleSession.getId();
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class,() ->{
-            manageSessionEndpointTestObj.removeMember(sampleSession.getId(), 1);
+            manageSessionEndpointTestObj.removeMember(sessionId, 1);
         });
 
         Assertions.assertEquals(expectedException, exception.getMessage());
@@ -133,8 +131,6 @@ public class RemoveMemberTest {
         Mockito.verify(mockMemberRepository,
                         Mockito.times(0))
                 .save(otherSampleMember);
-
-
     }
 
 
@@ -169,8 +165,10 @@ public class RemoveMemberTest {
     void testRemoveSessionFailure(){
         String expectedException = "Session not found";
         Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.empty());
+
+        Long sessionId = sampleSession.getId();
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class,() ->{
-            manageSessionEndpointTestObj.removeSession(sampleSession.getId());
+            manageSessionEndpointTestObj.removeSession(sessionId);
         });
         Assertions.assertEquals(expectedException, exception.getMessage());
 
