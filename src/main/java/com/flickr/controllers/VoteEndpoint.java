@@ -82,7 +82,7 @@ public class VoteEndpoint {
         String platformParam = String.join("AND", session.getStreamingPlatforms());
 
         Set<String> languages = session.getLanguages();
-        String languageParam = String.join("OR", session.getLanguages());
+        String languageParam = String.join("OR", languages);
         if (languages.contains("any")) {
             languageParam = "";
         }

@@ -1,3 +1,4 @@
+import com.flickr.controllers.LogInEndpoint;
 import com.flickr.controllers.ManageProfileEndpoint;
 import com.flickr.controllers.ManageSessionEndpoint;
 import com.flickr.entities.Session;
@@ -41,6 +42,7 @@ public class TbhIdkTest {
     private VoteEndpoint voteEndpointTestObj;
     private ManageProfileEndpoint manageProfileEndpointTestObj;
     private ManageSessionEndpoint manageSessionEndpointTestObj;
+    private LogInEndpoint loginEndpointTestObj;
 
     private final Member sampleMember = new Member("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
     private final Movie sampleMovie = new Movie();
@@ -63,6 +65,7 @@ public class TbhIdkTest {
         voteEndpointTestObj = new VoteEndpoint(mockSessionRepository, mockMovieRepository, mockSessionMovieRepository, mockMemberRepository, mockSessionService, mockMemberService);
         manageProfileEndpointTestObj = new ManageProfileEndpoint(mockMemberRepository);
         manageSessionEndpointTestObj = new ManageSessionEndpoint(mockSessionRepository, mockSessionService, mockMemberRepository, mockMemberService);
+        loginEndpointTestObj = new LogInEndpoint(mockMemberRepository);
         sampleRequestBody.put("movieIndex", 6);
         sampleRequestBody2.put("language", "en");
     }
@@ -141,6 +144,28 @@ public class TbhIdkTest {
         Mockito.verify(mockMemberRepository,
                 Mockito.times(1))
                 .save(sampleMember);
+    }
+
+    @Test
+    void testUpdateUserAnon(){
+        String newEmail = "newEmail@gmail.com";
+        String newUsername = "newUsername";
+        Set<String> newPlatforms = new HashSet<>(){{
+            add("Netflix");
+        }};
+
+        Mockito.when(mockMemberRepository
+                        .findById(0L))
+                .thenReturn(Optional.empty());
+
+        manageProfileEndpointTestObj.updateUser("0", newEmail, newUsername, newPlatforms);
+        Assertions.assertEquals(sampleMember.getEmail(), "thisemail@gmail.net");
+        Assertions.assertEquals(sampleMember.getUsername(), "thisUsername");
+        Assertions.assertEquals(sampleMember.getStreamingPlatforms(), Set.of());
+
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .findById(0L);
     }
 
     @Test
@@ -232,8 +257,8 @@ public class TbhIdkTest {
                 .thenReturn(sampleSession);
 
         Assertions.assertEquals(
-                manageSessionEndpointTestObj.updateLanguages(sampleMember.getId().toString(), sampleRequestBody2),
-                sampleSession
+                manageSessionEndpointTestObj.updateLanguages(sampleMember.getId().toString(), sampleRequestBody2).getLanguages(),
+                Set.of("en")
         );
 
         Mockito.verify(mockMemberRepository,
@@ -247,6 +272,56 @@ public class TbhIdkTest {
         Mockito.verify(mockSessionRepository,
                 Mockito.times(1))
                 .save(sampleSession);
+    }
+
+    @Test
+    void testFetchMemberById() {
+        Mockito.when(mockMemberRepository
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+
+        Assertions.assertEquals(
+                voteEndpointTestObj.fetchMemberById(sampleMember.getId().toString()),
+                sampleMember
+        );
+
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .findById(sampleMember.getId());
+    }
+
+    @Test
+    void testGetMemberStreamingPlatforms () {
+        Mockito.when(mockMemberRepository
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+
+        sampleMember.setStreamingPlatforms(Set.of("Netflix"));
+
+        Assertions.assertEquals(
+                mockMemberService.getMemberStreamingPlatforms(sampleMember.getId().toString()),
+                Set.of("Netflix")
+        );
+
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .findById(sampleMember.getId());
+    }
+
+    @Test
+    void testGetMember() {
+        Mockito.when(mockMemberRepository
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+
+        Assertions.assertEquals(
+                loginEndpointTestObj.getMember(sampleMember.getId().toString()),
+                Optional.of(sampleMember)
+        );
+
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .findById(sampleMember.getId());
     }
 
 }

@@ -162,4 +162,38 @@ public class JoinSessionEndpointTest {
                         .times(0))
                 .save(Mockito.any(Session.class));
     }
+
+    @Test
+    void testJoinSessionMemberJoinDuplicateFail(){
+        Mockito.when(mockSessionRepository
+                        .findById(sampleSession.getId()))
+                .thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockMemberRepository
+                        .findByEmail(sampleEmail))
+                .thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockMemberRepository
+                        .save(sampleMember))
+                .thenReturn(sampleMember);
+        Mockito.when(mockSessionRepository
+                        .save(sampleSession))
+                .thenReturn(sampleSession);
+
+        joinSessionEndpointTestObj.joinSession(sampleSession.getId(), sampleEmail);
+        joinSessionEndpointTestObj.joinSession(sampleSession.getId(), sampleEmail);
+
+        Assertions.assertEquals(sampleSession.getMembers().size(), 1);
+
+        Mockito.verify(mockSessionRepository, Mockito
+                        .times(2))
+                .findById(sampleSession.getId());
+        Mockito.verify(mockMemberRepository, Mockito
+                        .times(2))
+                .findByEmail(sampleEmail);
+        Mockito.verify(mockMemberRepository, Mockito
+                        .times(2))
+                .save(sampleMember);
+        Mockito.verify(mockSessionRepository, Mockito
+                        .times(2))
+                .save(sampleSession);
+    }
 }

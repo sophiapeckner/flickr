@@ -45,6 +45,10 @@ public class MemberService {
         return getMemberById(memberId).getDisplayName();
     }
 
+    public Set<String> getMemberStreamingPlatforms(String memberId) {
+        return getMemberById(memberId).getStreamingPlatforms();
+    }
+
 }
 
 

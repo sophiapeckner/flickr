@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -71,6 +72,25 @@ public class GenerateSuggestionsTest {
      */
     @Test
     public void testGenerateSuggestions() throws JSONException, IOException, InterruptedException{
+        sampleSession.setLanguages(Set.of("any"));
+        Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockSessionRepository.findById(sampleMember.getSessionId())).thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockMovieRepository.save(Mockito.any(Movie.class))).thenReturn(new Movie());
+        Mockito.when(mockSessionMovieRepository.save(Mockito.any(SessionMovie.class))).thenReturn(new SessionMovie());
+        Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
+
+        Assertions.assertEquals(sampleSession, voteEndpointTestObj.generateSuggestions(sampleMember.getId().toString()));
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
+        Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(sampleMember.getSessionId());
+        Mockito.verify(mockMovieRepository, Mockito.times(20)).save(Mockito.any(Movie.class));
+        Mockito.verify(mockSessionMovieRepository, Mockito.times(20)).save(Mockito.any(SessionMovie.class));
+        Mockito.verify(mockSessionRepository, Mockito.times(1)).save(sampleSession);
+    }
+
+    @Test
+    public void testGenerateSuggestionsLanguageParam() throws JSONException, IOException, InterruptedException{
+        sampleSession.setLanguages(Set.of("it"));
         Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.of(sampleMember));
         Mockito.when(mockSessionRepository.findById(sampleMember.getSessionId())).thenReturn(Optional.of(sampleSession));
         Mockito.when(mockMovieRepository.save(Mockito.any(Movie.class))).thenReturn(new Movie());
