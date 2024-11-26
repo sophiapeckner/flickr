@@ -32,6 +32,9 @@ public class ManageSessionEndpointTest {
     private final Map<String,String> sampleRequestBody = new HashMap<>(){{
         put("displayName", "updated");
     }};
+    private final Map<String,String> sampleRequestBody2 = new HashMap<>(){{
+        put("displayName", "");
+    }};
     private final Session sampleSession = new Session("432b423d", sampleMember.getId().toString());
     private final Set<String> sampleGenreSet =
             new HashSet<>(Arrays.asList("war", "romance"));
@@ -96,6 +99,26 @@ public class ManageSessionEndpointTest {
     }
 
     @Test
+    void testUpdateMemberDisplayNameSuccessAnon(){
+        Mockito.when(mockMemberRepository
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockMemberRepository
+                        .save(sampleMember))
+                .thenReturn(sampleMember);
+
+        Assertions.assertEquals(sampleMember, manageSessionEndpointTestObj.updateDisplayName(sampleMember.getId().toString(), sampleRequestBody2));
+        Assertions.assertEquals(sampleMember.getDisplayName(), "Anonymous");
+
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .findById(sampleMember.getId());
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .save(sampleMember);
+    }
+
+    @Test
     void testUpdateGenres(){
         Mockito.when(mockMemberRepository
                 .findById(sampleMember.getId()))
@@ -136,8 +159,8 @@ public class ManageSessionEndpointTest {
                 .thenReturn(sampleSession);
 
 
-        Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateGenres(sampleMember.getId().toString(), samplePlatformList));
-        Assertions.assertEquals(samplePlatformSet, sampleSession.getGenres());
+        Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateStreamingPlatforms(sampleMember.getId().toString(), samplePlatformList));
+        Assertions.assertEquals(samplePlatformSet, sampleSession.getStreamingPlatforms());
 
         Mockito.verify(mockMemberRepository,
                 Mockito.times(1))
