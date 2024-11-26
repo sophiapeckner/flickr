@@ -1,4 +1,6 @@
 import com.flickr.controllers.ManageProfileEndpoint;
+import com.flickr.controllers.ManageSessionEndpoint;
+import com.flickr.entities.Session;
 import com.flickr.services.MemberService;
 import com.flickr.services.SessionService;
 import com.flickr.controllers.VoteEndpoint;
@@ -38,12 +40,15 @@ public class TbhIdkTest {
 
     private VoteEndpoint voteEndpointTestObj;
     private ManageProfileEndpoint manageProfileEndpointTestObj;
+    private ManageSessionEndpoint manageSessionEndpointTestObj;
 
     private final Member sampleMember = new Member("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
     private final Movie sampleMovie = new Movie();
     private final Map <String, Integer> sampleRequestBody = new HashMap<>();
+    private final Map <String, String> sampleRequestBody2 = new HashMap<>();
     private final SessionMovie sampleSessionMovie = new SessionMovie();
     private final List<String> voterList = new ArrayList<>(List.of("thisUsername"));
+    private final Session sampleSession = new Session("groupcode", sampleMember.getId().toString());
 
 
     @BeforeEach
@@ -57,7 +62,9 @@ public class TbhIdkTest {
         mockMemberService = new MemberService(mockMemberRepository);
         voteEndpointTestObj = new VoteEndpoint(mockSessionRepository, mockMovieRepository, mockSessionMovieRepository, mockMemberRepository, mockSessionService, mockMemberService);
         manageProfileEndpointTestObj = new ManageProfileEndpoint(mockMemberRepository);
+        manageSessionEndpointTestObj = new ManageSessionEndpoint(mockSessionRepository, mockSessionService, mockMemberRepository, mockMemberService);
         sampleRequestBody.put("movieIndex", 6);
+        sampleRequestBody2.put("language", "en");
     }
 
     @Test
@@ -134,6 +141,112 @@ public class TbhIdkTest {
         Mockito.verify(mockMemberRepository,
                 Mockito.times(1))
                 .save(sampleMember);
+    }
+
+    @Test
+    void testGetDispayName() {
+        Mockito.when(mockMemberRepository
+                .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+
+        sampleMember.setDisplayName("AHH");
+
+        Assertions.assertEquals(
+                "AHH",
+                mockMemberService.getMemberDisplayName(sampleMember.getId().toString())
+        );
+
+        Mockito.verify(mockMemberRepository,
+                Mockito.times(1))
+                .findById(sampleMember.getId());
+    }
+
+    @Test
+    void testFetchSessionByGroupCode() {
+        Mockito.when(mockSessionRepository
+                .findByGroupCode(sampleSession.getGroupCode()))
+                .thenReturn(Optional.of(sampleSession));
+
+        Assertions.assertEquals(
+                manageSessionEndpointTestObj.fetchSessionByGroupCode(sampleSession.getGroupCode()),
+                sampleSession
+        );
+
+        Mockito.verify(mockSessionRepository,
+                        Mockito.times(1))
+                .findByGroupCode(sampleSession.getGroupCode());
+    }
+
+    @Test
+    void testFetchSessionByGroupCodeFailure() {
+        Mockito.when(mockSessionRepository
+                        .findByGroupCode("INVALID"))
+                .thenReturn(Optional.empty());
+
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            manageSessionEndpointTestObj.fetchSessionByGroupCode("INVALID");
+        });
+        Assertions.assertEquals("Session not found", exception.getMessage());
+
+        Mockito.verify(mockSessionRepository,
+                        Mockito.times(1))
+                .findByGroupCode("INVALID");
+    }
+
+    @Test
+    void testCreateSession() {
+        Mockito.when(mockMemberRepository
+                .findByEmail(sampleMember.getEmail()))
+                .thenReturn(Optional.of(sampleMember));
+
+        Mockito.when(mockSessionRepository
+                .save(Mockito.any(Session.class)))
+                .thenReturn(sampleSession);
+
+        Assertions.assertEquals(
+                manageSessionEndpointTestObj.createSession(sampleMember.getEmail()),
+                sampleSession
+        );
+
+        Mockito.verify(mockMemberRepository,
+                Mockito.times(1))
+                .findByEmail(sampleMember.getEmail());
+
+        Mockito.verify(mockSessionRepository,
+                Mockito.times(1))
+                .save(Mockito.any(Session.class));
+    }
+
+    @Test
+    void testUpdateLanguage() {
+        Mockito.when(mockMemberRepository
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+
+        Mockito.when(mockSessionRepository
+                        .findById(sampleMember.getSessionId()))
+                .thenReturn(Optional.of(sampleSession));
+
+        Mockito.when(mockSessionRepository
+                        .save(sampleSession))
+                .thenReturn(sampleSession);
+
+        Assertions.assertEquals(
+                manageSessionEndpointTestObj.updateLanguages(sampleMember.getId().toString(), sampleRequestBody2),
+                sampleSession
+        );
+
+        Mockito.verify(mockMemberRepository,
+                Mockito.times(1))
+                .findById(sampleMember.getId());
+
+        Mockito.verify(mockSessionRepository,
+                Mockito.times(1))
+                .findById(sampleSession.getId());
+
+        Mockito.verify(mockSessionRepository,
+                Mockito.times(1))
+                .save(sampleSession);
     }
 
 }
