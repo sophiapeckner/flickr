@@ -21,12 +21,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-class IncrementAndUpdateInVoteEndpointTest {
+class MovieSwipingLogisticsTest {
 
     @Mock
     private SessionRepository mockSessionRepository;
@@ -45,6 +44,7 @@ class IncrementAndUpdateInVoteEndpointTest {
     private final Movie sampleMovie = new Movie();
     private final Map <String, Integer> sampleRequestBody = new HashMap<>();
     private final SessionMovie sampleSessionMovie = new SessionMovie();
+    private final List<String> voterList = new ArrayList<>(List.of("thisUsername"));
 
     @BeforeEach
     public void setup() {
@@ -115,4 +115,56 @@ class IncrementAndUpdateInVoteEndpointTest {
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
         Mockito.verify(mockMemberRepository, Mockito.times(0)).save(Mockito.any(Member.class));
     }
+
+    @Test
+    void testAddVoterSuccess(){
+        Mockito.when(mockMemberRepository
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockSessionMovieRepository
+                        .findById(sampleMovie.getId()))
+                .thenReturn(Optional.of(sampleSessionMovie));
+        Mockito.when(mockSessionMovieRepository
+                        .save(sampleSessionMovie))
+                .thenReturn(sampleSessionMovie);
+
+        Assertions.assertEquals(sampleSessionMovie, voteEndpointTestObj.addVoter(sampleMovie.getId(), sampleMember.getId().toString()));
+        Assertions.assertEquals(sampleSessionMovie.getVoters(), voterList);
+
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .findById(sampleMember.getId());
+        Mockito.verify(mockSessionMovieRepository,
+                        Mockito.times(1))
+                .findById(sampleMovie.getId());
+        Mockito.verify(mockSessionMovieRepository,
+                        Mockito.times(1))
+                .save(sampleSessionMovie);
+    }
+
+    @Test
+    void testAddVoterFailure(){
+        String expectedException = "SessionMovie not found";
+        Mockito.when(mockMemberRepository
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockSessionMovieRepository
+                        .findById(sampleMovie.getId()))
+                .thenReturn(Optional.empty());
+
+        Long movieId = sampleMovie.getId();
+        String memberId = sampleMember.getId().toString();
+        Exception exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            voteEndpointTestObj.addVoter(movieId, memberId);
+        });
+        Assertions.assertEquals(expectedException, exception.getMessage());
+
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .findById(sampleMember.getId());
+        Mockito.verify(mockSessionMovieRepository,
+                        Mockito.times(1))
+                .findById(sampleMovie.getId());
+    }
+
 }

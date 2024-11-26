@@ -19,7 +19,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
-class RemoveMemberTest {
+class ManageSessionTest {
 
     @Mock
     SessionRepository mockSessionRepository;
@@ -47,6 +47,30 @@ class RemoveMemberTest {
         mockSessionService = new SessionService(mockMemberRepository, mockSessionRepository);
         manageSessionEndpointTestObj = new ManageSessionEndpoint(mockSessionRepository, mockSessionService, mockMemberRepository, mockMemberService);
         joinSessionEndpointTestObj = new JoinSessionEndpoint(mockSessionRepository, mockMemberRepository, mockMemberService);
+    }
+
+    @Test
+    void testCreateSession() {
+        Mockito.when(mockMemberRepository
+                        .findByEmail(sampleMember.getEmail()))
+                .thenReturn(Optional.of(sampleMember));
+
+        Mockito.when(mockSessionRepository
+                        .save(Mockito.any(Session.class)))
+                .thenReturn(sampleSession);
+
+        Assertions.assertEquals(
+                manageSessionEndpointTestObj.createSession(sampleMember.getEmail()),
+                sampleSession
+        );
+
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .findByEmail(sampleMember.getEmail());
+
+        Mockito.verify(mockSessionRepository,
+                        Mockito.times(1))
+                .save(Mockito.any(Session.class));
     }
 
     @Test

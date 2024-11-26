@@ -15,15 +15,18 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-class CreateUserTest {
+class SignUpLogInTest {
     @Mock
     private MemberRepository mockMemberRepository;
 
-    private LogInEndpoint logInEndpointTestObj = new LogInEndpoint(mockMemberRepository);
+    private LogInEndpoint logInEndpointTestObj;
 
     private final String sampleUsername = "thisUser";
     private final String samplePass = new BCryptPasswordEncoder().encode("thisPass");
     private final String sampleEmail = "thisemail@gmail.com";
+
+    private final Member sampleMember = new Member(sampleEmail, sampleUsername, samplePass);
+
 
     @BeforeEach
     void setup() {
@@ -69,6 +72,40 @@ class CreateUserTest {
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(Mockito.any(String.class));
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findByUsername(Mockito.any(String.class));
         Mockito.verify(mockMemberRepository, Mockito.times(0)).save(Mockito.any(Member.class));
+    }
+
+    @Test
+    void testLoginAbsent(){
+        String logEmail = "thisemail@gmail.net";
+        String logPassword = "thisPass";
+        final String expected = "User Not found";
+        Mockito.when(mockMemberRepository.findByEmail(logEmail)).thenReturn(Optional.empty());
+
+        Assertions.assertEquals(expected, logInEndpointTestObj.login(logEmail, logPassword));
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(logEmail);
+    }
+
+    @Test
+    void testLoginPresent(){
+        String nonEncryptPass = "thisPass";
+        String expected = sampleMember.getId().toString();
+        Mockito.when(mockMemberRepository.findByEmail(sampleMember.getEmail())).thenReturn(Optional.of(sampleMember));
+
+        Assertions.assertEquals(expected, logInEndpointTestObj.login(sampleMember.getEmail(), nonEncryptPass));
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(sampleMember.getEmail());
+    }
+
+    @Test
+    void testLoginWrongPass(){
+        String wrongPass = "wrongPass";
+        String expected = "Wrong password";
+        Mockito.when(mockMemberRepository.findByEmail(sampleMember.getEmail())).thenReturn(Optional.of(sampleMember));
+
+        Assertions.assertEquals(expected, logInEndpointTestObj.login(sampleMember.getEmail(), wrongPass));
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(sampleMember.getEmail());
     }
 
 }

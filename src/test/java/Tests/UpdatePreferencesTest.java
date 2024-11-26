@@ -18,12 +18,13 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
-class ManageSessionEndpointTest {
+class UpdatePreferencesTest {
 
     @Mock
     SessionRepository mockSessionRepository;
     @Mock
     MemberRepository mockMemberRepository;
+
     MemberService mockMemberService;
     SessionService mockSessionService;
 
@@ -59,25 +60,89 @@ class ManageSessionEndpointTest {
     }
 
     @Test
-    void testUpdateMemberDisplayNameGetMemberFail(){
-        String expected = "Member not found";
+    void testUpdateGenres(){
         Mockito.when(mockMemberRepository
-                .findById(sampleMember.getId()))
-                .thenReturn(Optional.empty());
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockSessionRepository
+                        .findById(sampleMember.getSessionId()))
+                .thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockSessionRepository
+                        .save(sampleSession))
+                .thenReturn(sampleSession);
 
-        String memberId = sampleMember.getId().toString();
-        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            manageSessionEndpointTestObj
-                    .updateDisplayName(memberId, sampleRequestBody);
-        });
-        Assertions.assertEquals(expected, exception.getMessage());
+
+        Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateGenres(sampleMember.getId().toString(), sampleGenreList));
+        Assertions.assertEquals(sampleGenreSet, sampleSession.getGenres());
 
         Mockito.verify(mockMemberRepository,
-                Mockito.times(1))
+                        Mockito.times(1))
                 .findById(sampleMember.getId());
+        Mockito.verify(mockSessionRepository,
+                        Mockito.times(1))
+                .findById(sampleMember.getSessionId());
+        Mockito.verify(mockSessionRepository,
+                        Mockito.times(1))
+                .save(sampleSession);
+    }
+
+    @Test
+    void testUpdateStreamingPlatforms(){
+        Mockito.when(mockMemberRepository
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockSessionRepository
+                        .findById(sampleMember.getSessionId()))
+                .thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockSessionRepository
+                        .save(sampleSession))
+                .thenReturn(sampleSession);
+
+
+        Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateStreamingPlatforms(sampleMember.getId().toString(), samplePlatformList));
+        Assertions.assertEquals(samplePlatformSet, sampleSession.getStreamingPlatforms());
+
         Mockito.verify(mockMemberRepository,
-                Mockito.times(0))
-                .save(Mockito.any(Member.class));
+                        Mockito.times(1))
+                .findById(sampleMember.getId());
+        Mockito.verify(mockSessionRepository,
+                        Mockito.times(1))
+                .findById(sampleMember.getSessionId());
+        Mockito.verify(mockSessionRepository,
+                        Mockito.times(1))
+                .save(sampleSession);
+    }
+
+    @Test
+    void testUpdateLanguage() {
+        Mockito.when(mockMemberRepository
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.of(sampleMember));
+
+        Mockito.when(mockSessionRepository
+                        .findById(sampleMember.getSessionId()))
+                .thenReturn(Optional.of(sampleSession));
+
+        Mockito.when(mockSessionRepository
+                        .save(sampleSession))
+                .thenReturn(sampleSession);
+
+        Assertions.assertEquals(
+                manageSessionEndpointTestObj.updateLanguages(sampleMember.getId().toString(), sampleRequestBody2).getLanguages(),
+                Set.of("en")
+        );
+
+        Mockito.verify(mockMemberRepository,
+                        Mockito.times(1))
+                .findById(sampleMember.getId());
+
+        Mockito.verify(mockSessionRepository,
+                        Mockito.times(1))
+                .findById(sampleSession.getId());
+
+        Mockito.verify(mockSessionRepository,
+                        Mockito.times(1))
+                .save(sampleSession);
     }
 
     @Test
@@ -122,57 +187,25 @@ class ManageSessionEndpointTest {
     }
 
     @Test
-    void testUpdateGenres(){
+    void testUpdateMemberDisplayNameGetMemberFail(){
+        String expected = "Member not found";
         Mockito.when(mockMemberRepository
-                .findById(sampleMember.getId()))
-                .thenReturn(Optional.of(sampleMember));
-        Mockito.when(mockSessionRepository
-                .findById(sampleMember.getSessionId()))
-                .thenReturn(Optional.of(sampleSession));
-        Mockito.when(mockSessionRepository
-                .save(sampleSession))
-                .thenReturn(sampleSession);
+                        .findById(sampleMember.getId()))
+                .thenReturn(Optional.empty());
 
-
-        Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateGenres(sampleMember.getId().toString(), sampleGenreList));
-        Assertions.assertEquals(sampleGenreSet, sampleSession.getGenres());
+        String memberId = sampleMember.getId().toString();
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            manageSessionEndpointTestObj
+                    .updateDisplayName(memberId, sampleRequestBody);
+        });
+        Assertions.assertEquals(expected, exception.getMessage());
 
         Mockito.verify(mockMemberRepository,
-                Mockito.times(1))
+                        Mockito.times(1))
                 .findById(sampleMember.getId());
-        Mockito.verify(mockSessionRepository,
-                Mockito.times(1))
-                .findById(sampleMember.getSessionId());
-        Mockito.verify(mockSessionRepository,
-                Mockito.times(1))
-                .save(sampleSession);
-
-    }
-
-    @Test
-    void testUpdateStreamingPlatforms(){
-        Mockito.when(mockMemberRepository
-                .findById(sampleMember.getId()))
-                .thenReturn(Optional.of(sampleMember));
-        Mockito.when(mockSessionRepository
-                .findById(sampleMember.getSessionId()))
-                .thenReturn(Optional.of(sampleSession));
-        Mockito.when(mockSessionRepository
-                .save(sampleSession))
-                .thenReturn(sampleSession);
-
-
-        Assertions.assertEquals(sampleSession, manageSessionEndpointTestObj.updateStreamingPlatforms(sampleMember.getId().toString(), samplePlatformList));
-        Assertions.assertEquals(samplePlatformSet, sampleSession.getStreamingPlatforms());
-
         Mockito.verify(mockMemberRepository,
-                Mockito.times(1))
-                .findById(sampleMember.getId());
-        Mockito.verify(mockSessionRepository,
-                Mockito.times(1))
-                .findById(sampleMember.getSessionId());
-        Mockito.verify(mockSessionRepository,
-                Mockito.times(1))
-                .save(sampleSession);
+                        Mockito.times(0))
+                .save(Mockito.any(Member.class));
     }
+
 }

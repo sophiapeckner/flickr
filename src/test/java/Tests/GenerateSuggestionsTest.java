@@ -48,12 +48,9 @@ class GenerateSuggestionsTest {
     private VoteEndpoint voteEndpointTestObj;
     private JoinSessionEndpoint joinSessionEndpointTestObj;
 
-
     private final Member sampleMember = new Member("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
     private final Map <String, Integer> sampleRequestBody = new HashMap<>();
     private final Session sampleSession = new Session("GroupCode", sampleMember.getId().toString());
-    private final Movie sampleMovie = new Movie();
-    private final SessionMovie sampleSessionMovie = new SessionMovie();
 
     @BeforeEach
     public void setup() {
@@ -68,7 +65,6 @@ class GenerateSuggestionsTest {
         joinSessionEndpointTestObj = new JoinSessionEndpoint(mockSessionRepository, mockMemberRepository, mockMemberService);
         sampleRequestBody.put("movieIndex", 6);
     }
-
 
     /**
      * This method is being used for the purpose of loop testing
@@ -137,9 +133,6 @@ class GenerateSuggestionsTest {
         Mockito.verify(mockMovieRepository, Mockito.times(20)).save(Mockito.any(Movie.class));
         Mockito.verify(mockSessionMovieRepository, Mockito.times(20)).save(Mockito.any(SessionMovie.class));
         Mockito.verify(mockSessionRepository, Mockito.times(2)).save(sampleSession);
-
-
-
     }
 
 }

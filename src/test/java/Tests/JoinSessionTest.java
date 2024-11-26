@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-class JoinSessionEndpointTest {
+class JoinSessionTest {
     @Mock
     private SessionRepository mockSessionRepository;
     @Mock
@@ -68,7 +68,7 @@ class JoinSessionEndpointTest {
     }
 
     // so instead of checking for the ID matching like I usually do,
-    // in this test I just mkae sure that the size of the members list is long enough
+    // in this test I just make sure that the size of the members list is long enough
     @Test
     void testJoinSessionAnonJoin(){
         Mockito.when(mockSessionRepository
