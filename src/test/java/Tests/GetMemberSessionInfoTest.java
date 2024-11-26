@@ -17,7 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.*;
 
-public class GetMemberSessionInfoTest {
+class GetMemberSessionInfoTest {
 
     @Mock
     private SessionRepository mockSessionRepository;
