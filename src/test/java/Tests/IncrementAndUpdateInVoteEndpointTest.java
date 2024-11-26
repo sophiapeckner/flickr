@@ -1,3 +1,5 @@
+package Tests;
+
 import com.flickr.services.MemberService;
 import com.flickr.services.SessionService;
 import com.flickr.controllers.VoteEndpoint;

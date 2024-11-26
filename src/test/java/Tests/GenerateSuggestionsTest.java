@@ -1,3 +1,5 @@
+package Tests;
+
 import com.flickr.controllers.JoinSessionEndpoint;
 import com.flickr.services.MemberService;
 import com.flickr.services.SessionService;
@@ -17,7 +19,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;

@@ -1,3 +1,5 @@
+package Tests;
+
 import com.flickr.controllers.ManageSessionEndpoint;
 import com.flickr.entities.Member;
 import com.flickr.entities.Session;
