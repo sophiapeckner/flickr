@@ -13,7 +13,7 @@ export const style = {
 		float: 'left',
 		fontSize: 20,
 		marginRight: 15,
-        color: colors.main
+    color: colors.main
 	},
 	topCornerButton: {
 		height: "25px",
@@ -25,6 +25,7 @@ export const style = {
     textAlign: 'center',
     fontSize: '52px',
     fontFamily: 'Nunito, Verdana',
+    paddingTop: 20
   },
   innerDiv: {
     flexDirection: 'column',
@@ -48,6 +49,7 @@ export const style = {
     bottom: "0px",
   },
   navBarItem: {
+    all: 'unset',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

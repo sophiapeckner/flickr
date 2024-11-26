@@ -5,7 +5,7 @@ import {Button, EmailField, MultiSelectComboBox, TextField} from "@vaadin/react-
 import {useNavigate} from "react-router-dom";
 import { getMember, logout } from "Frontend/auth";
 import {updateUser} from "Frontend/generated/ManageProfileEndpoint";
-import {CustomHeader} from "Frontend/views/elements";
+import {CustomHeader} from "Frontend/elements";
 
 export const config: ViewConfig = {
   menu: { order: 8, icon: "line-awesome/svg/file.svg" },

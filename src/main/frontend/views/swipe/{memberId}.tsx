@@ -3,7 +3,7 @@ import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {Icon, Scroller} from "@vaadin/react-components";
-import {CustomHeader, NoLongerInSession} from "Frontend/views/elements";
+import {CustomHeader, NoLongerInSession} from "Frontend/elements";
 import {isLoggedIn} from "Frontend/auth";
 import {colors} from "Frontend/themes/flickr/colors";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -196,10 +196,10 @@ export default function SwipeView() {
                     <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
                     <span>Suggestions</span>
                 </div>
-                <div style={{...style.navBarItem, color: colors.half}} onClick={viewList} role={'button'}>
+                <button style={{...style.navBarItem, color: colors.half}} onClick={viewList}>
                     <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
                     <span>Liked</span>
-                </div>
+                </button>
             </div>
         </div>
     );

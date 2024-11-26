@@ -4,7 +4,7 @@ import {style} from "../../themes/flickr/css.js";
 import {colors} from "../../themes/flickr/colors";
 import SessionMovie from "Frontend/generated/com/flickr/entities/SessionMovie";
 import {useParams} from "react-router-dom";
-import {CustomHeader} from "Frontend/views/elements";
+import {CustomHeader} from "Frontend/elements";
 import {isLoggedIn} from "Frontend/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark, faFilm } from '@fortawesome/free-solid-svg-icons';
@@ -85,10 +85,10 @@ export default function MovieListView() {
           </div>
 
         <div style={style.bottomNav}>
-          <div style={{...style.navBarItem, color: colors.half}} onClick={swipe} role='button'>
+          <button style={{...style.navBarItem, color: colors.half}} onClick={swipe}>
             <FontAwesomeIcon icon={faFilm} style={style.navBarIcon}/>
             <span>Suggestions</span>
-          </div>
+          </button>
           <div style={style.navBarItem}>
             <FontAwesomeIcon icon={faBookmark} style={style.navBarIcon}/>
             <span>Liked</span>

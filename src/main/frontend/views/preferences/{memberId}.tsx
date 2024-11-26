@@ -3,7 +3,7 @@ import { style } from "../../themes/flickr/css.js";
 import {useParams} from "react-router-dom";
 import {Button, FormLayout, MultiSelectComboBox, TextField, RadioButton, RadioGroup} from "@vaadin/react-components";
 import {useEffect, useState} from "react";
-import {CustomHeader, NoLongerInSession} from "../elements";
+import {CustomHeader, NoLongerInSession} from "../../elements";
 import {getMember, isLoggedIn} from "Frontend/auth";
 import {getMemberById, getMemberDisplayName} from "Frontend/generated/MemberService";
 import {colors} from "Frontend/themes/flickr/colors";

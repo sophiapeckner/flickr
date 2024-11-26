@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import Member from "Frontend/generated/com/flickr/entities/Member";
 import {useParams} from "react-router-dom";
 import {Avatar, Button, Icon, Scroller} from "@vaadin/react-components";
-import {CustomHeader, NoLongerInSession} from "Frontend/views/elements";
+import {CustomHeader, NoLongerInSession} from "Frontend/elements";
 import {isLoggedIn} from "Frontend/auth";
 import Session from "Frontend/generated/com/flickr/entities/Session";
 import {getMemberById} from "Frontend/generated/MemberService";
