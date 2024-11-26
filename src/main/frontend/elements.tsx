@@ -46,6 +46,11 @@ export const ExitWarningOptions: React.FC<CustomExitWarningProps> = (
 }
 
 // @ts-ignore
+function exitOptions (dialogOpened, isAdmin, sessionId) {
+  return <ExitWarningOptions dialogOpened={dialogOpened} isAdmin={isAdmin} sessionId={sessionId} />
+}
+
+// @ts-ignore
 export const CustomHeader: React.FC<CustomHeaderProps> = (
   {
     hideBackButton = false,
@@ -86,9 +91,7 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
             onOpenedChanged={({ detail }) => {
               dialogOpened.value = detail.value;
             }}
-            footerRenderer={() => (
-              <ExitWarningOptions dialogOpened={dialogOpened} isAdmin={isAdmin} sessionId={sessionId} />
-            )}
+            footerRenderer={() => exitOptions(dialogOpened, isAdmin, sessionId)}
           >Are you sure you want to leave the session?
           </Dialog>
         </>
