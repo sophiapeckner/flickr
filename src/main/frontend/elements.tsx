@@ -3,10 +3,11 @@ import {style} from "Frontend/themes/flickr/css";
 import {items} from "Frontend/themes/flickr/ProfileMenuBar";
 import {useNavigate} from "react-router-dom";
 import {logout} from "Frontend/auth";
-import {useSignal} from "@vaadin/hilla-react-signals";
+import {Signal, useSignal} from "@vaadin/hilla-react-signals";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {removeSession} from "Frontend/generated/ManageSessionEndpoint";
+import React from "react";
 
 interface CustomHeaderProps {
   hideBackButton?: boolean,
@@ -17,6 +18,33 @@ interface CustomHeaderProps {
   sessionId?: number;
 }
 
+interface CustomExitWarningProps {
+  dialogOpened: Signal<boolean>,
+  isAdmin: boolean,
+  sessionId: number,
+}
+
+export const ExitWarningOptions: React.FC<CustomExitWarningProps> = (
+  {dialogOpened, isAdmin, sessionId}
+) => {
+  return (
+    <>
+      <Button onClick={() => { dialogOpened.value = false; }}>
+        Cancel
+      </Button>
+      <Button theme="primary"
+              onClick={() => {
+                dialogOpened.value = false;
+                if (isAdmin) removeSession(sessionId ?? 0);
+                window.location.href = "/start"
+              }}
+      >
+        Leave
+      </Button>
+    </>
+  )
+}
+
 // @ts-ignore
 export const CustomHeader: React.FC<CustomHeaderProps> = (
   {
@@ -24,8 +52,8 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
     hideProfileIcon = false,
     confirmExit = false,
     loggedIn = true,
-      isAdmin = false,
-      sessionId = 0,
+    isAdmin = false,
+    sessionId = 0,
   }) => {
   const navigate = useNavigate()
   const dialogOpened = useSignal(false);
@@ -59,20 +87,7 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
               dialogOpened.value = detail.value;
             }}
             footerRenderer={() => (
-              <>
-                <Button onClick={() => { dialogOpened.value = false; }}>
-                  Cancel
-                </Button>
-                <Button theme="primary"
-                  onClick={() => {
-                    dialogOpened.value = false;
-                    if (isAdmin)    removeSession(sessionId ?? 0);
-                    window.location.href = "/start"
-                  }}
-                >
-                  Leave
-                </Button>
-              </>
+              <ExitWarningOptions dialogOpened={dialogOpened} isAdmin={isAdmin} sessionId={sessionId} />
             )}
           >Are you sure you want to leave the session?
           </Dialog>
