@@ -36,6 +36,9 @@ class UpdatePreferencesTest {
         put("displayName", "updated");
     }};
     private final Map<String,String> sampleRequestBody2 = new HashMap<>(){{
+        put("language", "en");
+    }};
+    private final Map<String,String> sampleRequestBody3 = new HashMap<>(){{
         put("displayName", "");
     }};
     private final Session sampleSession = new Session("432b423d", sampleMember.getId().toString());
@@ -175,7 +178,7 @@ class UpdatePreferencesTest {
                         .save(sampleMember))
                 .thenReturn(sampleMember);
 
-        Assertions.assertEquals(sampleMember, manageSessionEndpointTestObj.updateDisplayName(sampleMember.getId().toString(), sampleRequestBody2));
+        Assertions.assertEquals(sampleMember, manageSessionEndpointTestObj.updateDisplayName(sampleMember.getId().toString(), sampleRequestBody3));
         Assertions.assertEquals("Anonymous", sampleMember.getDisplayName());
 
         Mockito.verify(mockMemberRepository,
