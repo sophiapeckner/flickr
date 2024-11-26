@@ -67,7 +67,7 @@ public class VoteEndpoint {
      * @param memberId ID of the member
      * @return Session that movie suggestions have been generated for
      */
-    // when start voiting is presssed, this is called
+    // when start voting is pressed, this is called
     // passes the member id of whoever pressed start voting
     @PostMapping("/{memberId}/movies")
     public Session generateSuggestions(@PathVariable String memberId) throws JSONException, IOException, InterruptedException {

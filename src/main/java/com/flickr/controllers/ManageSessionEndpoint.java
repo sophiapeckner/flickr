@@ -33,14 +33,6 @@ public class ManageSessionEndpoint {
     }
 
     /**
-     * Get all sessions in the DB
-     * @return List of sessions in the DB
-     */
-    public List<Session> findAll() {
-        return sessionRepository.findAll();
-    }
-
-    /**
      * Fetch the session with specified group code
      * @param groupCode The session's code
      * @return The session with corresponding group code

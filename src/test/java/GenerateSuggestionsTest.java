@@ -1,3 +1,4 @@
+import com.flickr.controllers.JoinSessionEndpoint;
 import com.flickr.services.MemberService;
 import com.flickr.services.SessionService;
 import com.flickr.controllers.VoteEndpoint;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -43,10 +45,12 @@ public class GenerateSuggestionsTest {
     private MemberService mockMemberService;
 
     private VoteEndpoint voteEndpointTestObj;
+    private JoinSessionEndpoint joinSessionEndpointTestObj;
+
 
     private final Member sampleMember = new Member("thisemail@gmail.net", "thisUsername", new BCryptPasswordEncoder().encode("thisPass"));
     private final Map <String, Integer> sampleRequestBody = new HashMap<>();
-    private final Session sampleSession = new Session();
+    private final Session sampleSession = new Session("GroupCode", sampleMember.getId().toString());
     private final Movie sampleMovie = new Movie();
     private final SessionMovie sampleSessionMovie = new SessionMovie();
 
@@ -60,14 +64,14 @@ public class GenerateSuggestionsTest {
         mockMemberService = new MemberService(mockMemberRepository);
         mockSessionService = new SessionService(mockMemberRepository, mockSessionRepository);
         voteEndpointTestObj = new VoteEndpoint(mockSessionRepository, mockMovieRepository, mockSessionMovieRepository, mockMemberRepository, mockSessionService, mockMemberService);
+        joinSessionEndpointTestObj = new JoinSessionEndpoint(mockSessionRepository, mockMemberRepository, mockMemberService);
         sampleRequestBody.put("movieIndex", 6);
     }
 
 
     /**
-     * Might move this into the other Vote Endpoint testing class because I don't know what other tests to write
-     * Maybe Sophia can explain some other possibilities that are worth testing
-     * But until then this will stay here
+     * This method is being used for the purpose of loop testing
+     * This specific test is for the standard use and maximum use of the loop
      */
     @Test
     public void testGenerateSuggestions() throws JSONException, IOException, InterruptedException{
@@ -78,6 +82,8 @@ public class GenerateSuggestionsTest {
         Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
 
         Assertions.assertEquals(sampleSession, voteEndpointTestObj.generateSuggestions(sampleMember.getId().toString()));
+        //Asserts that the loop has been run through the maximum amount of times (20). This would fill the List with 20 movies
+        Assertions.assertEquals(sampleSession.getMovies().size(), 20);
 
         Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
         Mockito.verify(mockSessionRepository, Mockito.times(1)).findById(sampleMember.getSessionId());
@@ -86,20 +92,35 @@ public class GenerateSuggestionsTest {
         Mockito.verify(mockSessionRepository, Mockito.times(1)).save(sampleSession);
     }
 
-//    @Test
-//    public void testIncrementMovieCountFailure(){
-////        String expectedException = "SessionMovie not found";
-////        Mockito.when(mockSessionMovieRepository.findById(sampleMovie.getId())).thenReturn(Optional.empty());
-////
-////        Exception exception = Assertions.assertThrows(RuntimeException.class, () -> {
-////            voteEndpointTestObj.incrementMovieVoteCount(sampleMovie.getId());
-////        });
-////
-////        Assertions.assertEquals(expectedException, exception.getMessage());
-////
-////        Mockito.verify(mockSessionMovieRepository, Mockito.times(1)).findById(Mockito.any(Long.class));
-////        Mockito.verify(mockSessionMovieRepository, Mockito.times(0)).save(Mockito.any(SessionMovie.class));
-//    }
+    @Test
+    public void testHighSpecificityGenerateSuggestions() throws JSONException, IOException, InterruptedException{
+        sampleSession.setStreamingPlatforms(Set.of("2", "9", "15"));
+        sampleSession.setGenres(Set.of("28", "12", "16", "35", "80", "99", "18", "10751", "14"));
+        Mockito.when(mockSessionRepository.findById(sampleSession.getId())).thenReturn(Optional.of(sampleSession));
+        Mockito.when(mockMemberRepository.findByEmail(sampleMember.getEmail())).thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockMemberRepository.save(sampleMember)).thenReturn(sampleMember);
+        Mockito.when(mockSessionRepository.save(sampleSession)).thenReturn(sampleSession);
+
+        joinSessionEndpointTestObj.joinSession(sampleSession.getId(), sampleMember.getEmail());
+
+        Mockito.when(mockMemberRepository.findById(sampleMember.getId())).thenReturn(Optional.of(sampleMember));
+        Mockito.when(mockMovieRepository.save(Mockito.any(Movie.class))).thenReturn(new Movie());
+        Mockito.when(mockSessionMovieRepository.save(Mockito.any(SessionMovie.class))).thenReturn(new SessionMovie());
+
+        voteEndpointTestObj.generateSuggestions(sampleMember.getId().toString());
+        //This shows that the method will always run the loop 20 times, regardless of how specific the API request is
+        Assertions.assertEquals(sampleSession.getMovies().size(), 20);
+
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findByEmail(sampleMember.getEmail());
+        Mockito.verify(mockMemberRepository, Mockito.times(1)).findById(sampleMember.getId());
+        Mockito.verify(mockSessionRepository, Mockito.times(2)).findById(sampleMember.getSessionId());
+        Mockito.verify(mockMovieRepository, Mockito.times(20)).save(Mockito.any(Movie.class));
+        Mockito.verify(mockSessionMovieRepository, Mockito.times(20)).save(Mockito.any(SessionMovie.class));
+        Mockito.verify(mockSessionRepository, Mockito.times(2)).save(sampleSession);
+
+
+
+    }
 
 //    @Test
 //    void testUpdateMemberMovieIndexSuccess(){
