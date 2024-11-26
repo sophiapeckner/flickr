@@ -24,9 +24,8 @@ interface CustomExitWarningProps {
   sessionId: number,
 }
 
-export const ExitWarningOptions: React.FC<CustomExitWarningProps> = (
-  {dialogOpened, isAdmin, sessionId}
-) => {
+// styling for the exit warning options
+function exitOptions ({dialogOpened, isAdmin, sessionId}: CustomExitWarningProps) {
   return (
     <>
       <Button onClick={() => { dialogOpened.value = false; }}>
@@ -45,12 +44,8 @@ export const ExitWarningOptions: React.FC<CustomExitWarningProps> = (
   )
 }
 
-// @ts-ignore
-function exitOptions (dialogOpened, isAdmin, sessionId) {
-  return <ExitWarningOptions dialogOpened={dialogOpened} isAdmin={isAdmin} sessionId={sessionId} />
-}
-
-// @ts-ignore
+// standard header displayed at the top of most views
+// options determined on the current permissions and location of the user
 export const CustomHeader: React.FC<CustomHeaderProps> = (
   {
     hideBackButton = false,
@@ -91,7 +86,7 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
             onOpenedChanged={({ detail }) => {
               dialogOpened.value = detail.value;
             }}
-            footerRenderer={() => exitOptions(dialogOpened, isAdmin, sessionId)}
+            footerRenderer={() => exitOptions({dialogOpened, isAdmin, sessionId})}
           >Are you sure you want to leave the session?
           </Dialog>
         </>
@@ -122,6 +117,7 @@ export const CustomHeader: React.FC<CustomHeaderProps> = (
   );
 }
 
+// standard page displayed when a user is no longer part of a session
 export const NoLongerInSession = () => {
   return (
     <div style={{textAlign: 'center', marginTop: '20%'}}>
